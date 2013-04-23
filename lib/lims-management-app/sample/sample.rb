@@ -48,6 +48,12 @@ module Lims::ManagementApp
     def ensure_sample_type_value
       SAMPLE_TYPE.map(&:downcase).include?(sample_type.downcase) if sample_type
     end
+
+    module SangerSampleID
+      def self.generate(unique_identifier)
+        "S2-#{unique_identifier}-ID"
+      end
+    end
   end
 end
 
