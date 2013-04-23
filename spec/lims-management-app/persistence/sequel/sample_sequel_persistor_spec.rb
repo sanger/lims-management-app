@@ -1,5 +1,5 @@
 require 'lims-management-app/persistence/sequel/spec_helper'
-require 'integration/spec_helper'
+require 'integrations/spec_helper'
 require 'lims-management-app/sample/sample_sequel_persistor'
 
 module Lims::ManagementApp
