@@ -24,7 +24,7 @@ shared_context 'use core context service' do
 
   before(:each) { app.set(:context_service, context_service) }
   after(:each) do
-#    %w{samples uuid_resources}.each { |table| db[table.to_sym].delete }
+    %w{samples uuid_resources}.each { |table| db[table.to_sym].delete }
     db.disconnect
   end
 end
