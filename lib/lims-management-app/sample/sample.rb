@@ -1,4 +1,5 @@
 require 'lims-core/resource'
+require 'securerandom'
 
 module Lims::ManagementApp
   class Sample
@@ -18,7 +19,7 @@ module Lims::ManagementApp
 
     # required attributes
     # sanger_sample_id is not initializable 
-    attribute :sanger_sample_id, String, :required => true, :writer => :private
+    attribute :sanger_sample_id, String, :required => true, :writer => :private, :initializable => true
     attribute :gender, String, :required => true, :writer => :private, :initializable => true
     attribute :sample_type, String, :required => true, :writer => :private, :initializable => true
 
@@ -49,9 +50,19 @@ module Lims::ManagementApp
       SAMPLE_TYPE.map(&:downcase).include?(sample_type.downcase) if sample_type
     end
 
+
     module SangerSampleID
-      def self.generate(unique_identifier)
-        "S2-#{unique_identifier}-ID"
+      # @param [String,Integer] unique identifier
+      # @return [String]
+      # Generate a new sanger sample id using the
+      # unique identifier in parameter.
+      # @example S2-521-ID
+      def self.generate
+        "S2-#{unique_identifier.to_s}-ID"
+      end
+
+      def self.unique_identifier
+        SecureRandom.hex(10)
       end
     end
   end

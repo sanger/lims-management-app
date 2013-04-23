@@ -17,13 +17,10 @@ module Lims::ManagementApp
 
       private
 
+      # @return [String]
+      # Generate a new sanger sample id
       def new_sanger_sample_id
-        SangerSampleID.generate(unique_identifier)
-      end
-
-      def unique_identifier
-        last_id = dataset.select(:id).limit(1).order(:id).last
-        last_id ? last_id[:id] + 1 : 1
+        SangerSampleID.generate
       end
     end
   end
