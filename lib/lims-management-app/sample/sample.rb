@@ -18,7 +18,6 @@ module Lims::ManagementApp
     attribute :is_re_submitted_sample, Boolean, :required => false, :writer => :private, :initializable => true
 
     # required attributes
-    # sanger_sample_id is not initializable 
     attribute :sanger_sample_id, String, :required => true, :writer => :private, :initializable => true
     attribute :gender, String, :required => true, :writer => :private, :initializable => true
     attribute :sample_type, String, :required => true, :writer => :private, :initializable => true
