@@ -3,10 +3,10 @@ Sequel.migration do
   change do
     # Samples
     create_table :samples do
-      primary_key :internal_id
-      foreign_key :dna_id, :dna, :key => :internal_id
-      foreign_key :rna_id, :rna, :key => :internal_id
-      foreign_key :cellular_material_id, :cellular_material, :key => :internal_id
+      primary_key :id
+      foreign_key :dna_id, :dna, :key => :id
+      foreign_key :rna_id, :rna, :key => :id
+      foreign_key :cellular_material_id, :cellular_material, :key => :id
       String :hmdmc_number
       String :supplier_sample_name
       String :common_name
@@ -33,7 +33,7 @@ Sequel.migration do
 
     # genotyping_studies
     create_table :genotyping_studies do
-      primary_key :internal_id
+      primary_key :id
       String :country_of_origin
       String :geographical_region
       String :ethnicity
@@ -41,13 +41,13 @@ Sequel.migration do
 
     # cellular material
     create_table :cellular_material do
-      primary_key :internal_id
+      primary_key :id
       Bool :lysed
     end
 
     # dna
     create_table :dna do
-      primary_key :internal_id
+      primary_key :id
       Bool :pre_amplified
       DateTime :date_of_sample_extraction
       String :extraction_method
@@ -58,7 +58,7 @@ Sequel.migration do
 
     # rna
     create_table :rna do
-      primary_key :internal_id
+      primary_key :id
       Bool :pre_amplified
       DateTime :date_of_sample_extraction
       String :extraction_method
@@ -69,7 +69,7 @@ Sequel.migration do
 
     # uuid resources
     create_table :uuid_resources do
-      primary_key :internal_id
+      primary_key :id
       String :uuid, :fixed => true, :size => 64
       String :model_class
       Integer :key
