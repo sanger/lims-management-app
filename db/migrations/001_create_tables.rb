@@ -27,6 +27,8 @@ Sequel.migration do
       String :public_name
       String :cohort
       String :storage_conditions
+
+      unique :sanger_sample_id
     end
 
     # genotyping_studies
