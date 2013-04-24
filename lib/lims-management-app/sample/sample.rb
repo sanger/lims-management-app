@@ -1,4 +1,5 @@
 require 'lims-core/resource'
+require 'lims-management-app/sample/dna/dna'
 require 'securerandom'
 
 module Lims::ManagementApp
@@ -21,6 +22,7 @@ module Lims::ManagementApp
     attribute :date_of_sample_collection, DateTime, :required => false, :writer => :private, :initializable => true
     attribute :is_sample_a_control, Boolean, :required => false, :writer => :private, :initializable => true
     attribute :is_re_submitted_sample, Boolean, :required => false, :writer => :private, :initializable => true
+    attribute :dna, Dna, :required => false, :initializable => true
 
     validates_with_method :ensure_gender_value
     validates_with_method :ensure_sample_type_value
