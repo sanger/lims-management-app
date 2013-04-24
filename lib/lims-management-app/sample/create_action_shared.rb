@@ -23,6 +23,8 @@ module Lims::ManagementApp
           attribute :gender, String, :required => true, :writer => :private
           attribute :sample_type, String, :required => true, :writer => :private
 
+          attribute :dna, Dna, :required => false, :writer => :private
+
           validates_with_method :ensure_quantity_value
         end
       end
