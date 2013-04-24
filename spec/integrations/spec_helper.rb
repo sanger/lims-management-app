@@ -1,8 +1,5 @@
 #shared contexts for integrations
 require 'spec_helper'
-require 'lims-api/context_service'
-require 'lims-api/message_bus'
-require 'lims-core'
 
 require 'logger'
 require 'yaml'
