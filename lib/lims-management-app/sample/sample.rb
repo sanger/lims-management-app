@@ -30,6 +30,7 @@ module Lims::ManagementApp
 
     def generate_sanger_sample_id
       @sanger_sample_id = SangerSampleID.generate
+      self
     end
 
     private
