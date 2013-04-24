@@ -13,7 +13,9 @@ module Lims::ManagementApp
     :sample_type => "RNA", :volume => 1, :date_of_sample_collection => Time.now, 
     :is_sample_a_control => true, :is_re_submitted_sample => false} }
 
-    let(:sample) { Sample.new(parameters) }
+    let(:sample) do
+      Sample.new(parameters).generate_sanger_sample_id 
+    end
 
     context "when created within a session" do
       before do
