@@ -4,7 +4,7 @@ require 'lims-management-app/sample/create_action_shared'
 
 module Lims::ManagementApp
   class Sample
-    class CreateSample
+    class CreateBulkSample
       include Lims::Core::Actions::Action
       include CreateActionShared
 
@@ -12,7 +12,5 @@ module Lims::ManagementApp
         _create(session)
       end
     end
-
-    Create = CreateSample
   end
 end
