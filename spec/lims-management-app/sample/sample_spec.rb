@@ -1,4 +1,5 @@
 require 'lims-management-app/sample/sample'
+require 'lims-management-app/sample/dna/dna'
 
 module Lims::ManagementApp
   describe Sample do
@@ -59,6 +60,7 @@ module Lims::ManagementApp
       it_has_a :date_of_sample_collection
       it_has_a :is_sample_a_control
       it_has_a :is_re_submitted_sample
+      it_has_a :dna
     end
 
 
