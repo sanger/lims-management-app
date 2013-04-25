@@ -1,6 +1,7 @@
 require 'lims-core/resource'
 require 'lims-management-app/sample/dna/dna'
 require 'lims-management-app/sample/rna/rna'
+require 'lims-management-app/sample/cellular_material/cellular_material'
 require 'securerandom'
 
 module Lims::ManagementApp
@@ -25,6 +26,7 @@ module Lims::ManagementApp
     attribute :is_re_submitted_sample, Boolean, :required => false, :initializable => true
     attribute :dna, Dna, :required => false, :initializable => true
     attribute :rna, Rna, :required => false, :initializable => true
+    attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
 
     validates_with_method :ensure_gender_value
     validates_with_method :ensure_sample_type_value
