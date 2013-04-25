@@ -23,8 +23,8 @@ module Lims::ManagementApp
           attribute :gender, String, :required => true, :writer => :private
           attribute :sample_type, String, :required => true, :writer => :private
 
-          attribute :dna, Dna, :required => false, :writer => :private
-          attribute :rna, Rna, :required => false, :writer => :private
+          attribute :dna, Hash, :required => false, :writer => :private
+          attribute :rna, Hash, :required => false, :writer => :private
 
           validates_with_method :ensure_quantity_value
         end
@@ -37,6 +37,8 @@ module Lims::ManagementApp
         attributes[:quantity].times do
           sample = Sample.new(attributes)
           sample.generate_sanger_sample_id
+          sample.dna = Dna.new(dna) if dna && dna.size > 0
+          sample.rna = Rna.new(rna) if rna && rna.size > 0
           session << sample
           samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
         end
@@ -62,4 +64,3 @@ module Lims::ManagementApp
     end
   end
 end
-
