@@ -24,6 +24,7 @@ module Lims::ManagementApp
           attribute :sample_type, String, :required => true, :writer => :private
 
           attribute :dna, Dna, :required => false, :writer => :private
+          attribute :rna, Rna, :required => false, :writer => :private
 
           validates_with_method :ensure_quantity_value
         end
