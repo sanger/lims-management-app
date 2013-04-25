@@ -1,23 +1,18 @@
 require 'common'
+require 'lims-management-app/sample/component'
 
 module Lims::ManagementApp
   class Sample
     class Rna
       include Virtus
       include Aequitas
+      include Sample::Component
       attribute :pre_amplified, Boolean, :required => false, :initializable => true
       attribute :date_of_sample_extraction, DateTime, :required => false, :initializable => true
       attribute :extraction_method, String, :required => false, :initializable => true
       attribute :concentration, Integer, :required => false, :initializable => true
       attribute :sample_purified, Boolean, :required => false, :initializable => true
       attribute :concentration_determined_by_which_method, String, :required => false, :initializable => true
-
-      def initialize(*args, &block)
-        options = args.extract_options!.rekey { |k| k.to_sym }
-        initializables = self.class.attributes.select { |a| a.options[:initializable] == true }
-        initial_options = options.subset(initializables.map(&:name))
-        set_attributes(initial_options)
-      end
     end
   end
 end
