@@ -4,7 +4,7 @@ module Lims::ManagementApp
   class Sample
     class Dna
       class DnaPersistor < Lims::Core::Persistence::Persistor
-        Model = Dna
+        Model = Sample::Dna
       end
     end
   end
