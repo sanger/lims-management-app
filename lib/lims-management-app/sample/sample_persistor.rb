@@ -9,6 +9,7 @@ module Lims::ManagementApp
         attributes.mash do |k,v|
           case k
           when :dna then [:dna_id, save_component(v)]
+          when :rna then [:rna_id, save_component(v)]
           else [k,v]
           end
         end
@@ -32,6 +33,7 @@ module Lims::ManagementApp
         attributes.mash do |k,v|
           case k
           when :dna_id then [:dna, @session.dna[v]]
+          when :rna_id then [:rna, @session.rna[v]]
           else [k,v]
           end
         end
