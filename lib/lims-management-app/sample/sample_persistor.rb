@@ -10,6 +10,7 @@ module Lims::ManagementApp
           case k
           when :dna then [:dna_id, save_component(v)]
           when :rna then [:rna_id, save_component(v)]
+          when :cellular_material then [:cellular_material_id, save_component(v)]
           else [k,v]
           end
         end
@@ -34,6 +35,7 @@ module Lims::ManagementApp
           case k
           when :dna_id then [:dna, @session.dna[v]]
           when :rna_id then [:rna, @session.rna[v]]
+          when :cellular_material_id then [:cellular_material, @session.cellular_material[v]]
           else [k,v]
           end
         end
