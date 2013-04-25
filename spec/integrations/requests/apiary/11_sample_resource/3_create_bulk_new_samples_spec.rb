@@ -159,7 +159,8 @@ describe "create_bulk_new_samples", :sample => true do
         "gender": "Male",
         "sample_type": "RNA",
         "dna": null,
-        "rna": null
+        "rna": null,
+        "cellular_material": null
     }
 }
     EOD

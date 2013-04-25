@@ -62,6 +62,7 @@ module Lims::ManagementApp
       it_has_a :is_re_submitted_sample
       it_has_a :dna
       it_has_a :rna
+      it_has_a :cellular_material
     end
 
 
