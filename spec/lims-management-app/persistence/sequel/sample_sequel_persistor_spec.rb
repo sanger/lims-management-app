@@ -51,7 +51,7 @@ module Lims::ManagementApp
       it_behaves_like "a sample"
     end
 
-    context "sample with dna" do
+    context "sample with dna", :focus => true do
       let(:dna_parameters) { {:pre_amplified => true, :date_of_sample_extraction => Time.now,
                               :extraction_method => "method", :concentration => 10, :sample_purified => false,
                               :concentration_determined_by_which_method => "method"} }
