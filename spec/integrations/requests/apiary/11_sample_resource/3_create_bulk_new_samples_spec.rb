@@ -77,7 +77,8 @@ describe "create_bulk_new_samples", :sample => true do
                     "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false,
-                    "dna": null
+                    "dna": null,
+                    "rna": null
                 },
                 {
                     "actions": {
@@ -107,7 +108,8 @@ describe "create_bulk_new_samples", :sample => true do
                     "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false,
-                    "dna": null
+                    "dna": null,
+                    "rna": null
                 },
                 {
                     "actions": {
@@ -137,7 +139,8 @@ describe "create_bulk_new_samples", :sample => true do
                     "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false,
-                    "dna": null
+                    "dna": null,
+                    "rna": null
                 }
             ]
         },
@@ -161,7 +164,8 @@ describe "create_bulk_new_samples", :sample => true do
         "storage_conditions": "conditions",
         "gender": "Male",
         "sample_type": "RNA",
-        "dna": null
+        "dna": null,
+        "rna": null
     }
 }
     EOD

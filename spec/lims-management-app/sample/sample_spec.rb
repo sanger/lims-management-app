@@ -61,6 +61,7 @@ module Lims::ManagementApp
       it_has_a :is_sample_a_control
       it_has_a :is_re_submitted_sample
       it_has_a :dna
+      it_has_a :rna
     end
 
 

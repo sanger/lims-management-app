@@ -1,6 +1,6 @@
 require 'lims-management-app/persistence/sequel/spec_helper'
-require 'integrations/spec_helper'
 require 'lims-management-app/sample/sample_sequel_persistor'
+require 'integrations/spec_helper'
 
 module Lims::ManagementApp
   shared_examples "a sample" do
@@ -46,31 +46,58 @@ module Lims::ManagementApp
                         :sample_type => "RNA", :volume => 1, :date_of_sample_collection => Time.now, 
                         :is_sample_a_control => true, :is_re_submitted_sample => false} }
 
+    let(:dna_rna_parameters) { {:pre_amplified => true, :date_of_sample_extraction => Time.now,
+                                :extraction_method => "method", :concentration => 10, :sample_purified => false,
+                                :concentration_determined_by_which_method => "method"} }
+
     context "common sample" do
       let(:sample) { Sample.new(parameters).generate_sanger_sample_id } 
       it_behaves_like "a sample"
     end
 
-    context "sample with dna", :focus => true do
-      let(:dna_parameters) { {:pre_amplified => true, :date_of_sample_extraction => Time.now,
-                              :extraction_method => "method", :concentration => 10, :sample_purified => false,
-                              :concentration_determined_by_which_method => "method"} }
-      let(:dna) { Sample::Dna.new(dna_parameters) }
+
+    context "sample with dna" do
+      let(:dna) { Sample::Dna.new(dna_rna_parameters) }
       let(:sample) do
         s = Sample.new(parameters).generate_sanger_sample_id 
         s.dna = dna
         s
       end
       it_behaves_like "a sample"
+
+      it "should modify the dna table" do
+        expect do
+          store.with_session do |session|
+            session << sample
+          end
+        end.to change { db[:dna].count }.by(1)
+      end
     end
 
+
     context "sample with rna" do
-      pending
+      let(:rna) { Sample::Rna.new(dna_rna_parameters) }
+      let(:sample) do
+        s = Sample.new(parameters).generate_sanger_sample_id 
+        s.rna = rna
+        s
+      end
+      it_behaves_like "a sample"
+
+      it "should modify the rna table" do
+        expect do
+          store.with_session do |session|
+            session << sample
+          end
+        end.to change { db[:rna].count }.by(1)
+      end
     end
+
 
     context "sample with cellular material" do
       pending
     end
+
 
     context "sample with dna, rna, cellular material" do
       pending
