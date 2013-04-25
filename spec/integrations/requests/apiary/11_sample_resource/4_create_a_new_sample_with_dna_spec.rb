@@ -1,7 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "create_a_new_sample", :sample => true do
+describe "create_a_new_sample_with_dna", :sample => true do
   include_context "use core context service"
-  it "create_a_new_sample" do
+  it "create_a_new_sample_with_dna" do
     module Lims::ManagementApp::Sample::SangerSampleID
       def self.generate
         "S2-test-ID"
@@ -32,7 +32,15 @@ describe "create_a_new_sample", :sample => true do
         "gc_content": "content",
         "public_name": "name",
         "cohort": "cohort",
-        "storage_conditions": "conditions"
+        "storage_conditions": "conditions",
+        "dna": {
+            "pre_amplified": true,
+            "date_of_sample_extraction": "2013-04-25 11:05 UTC",
+            "extraction_method": "method",
+            "concentration": 20,
+            "sample_purified": false,
+            "concentration_determined_by_which_method": "method"
+        }
     }
 }
     EOD
@@ -66,7 +74,15 @@ describe "create_a_new_sample", :sample => true do
         "volume": 100,
         "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
         "is_sample_a_control": true,
-        "is_re_submitted_sample": false
+        "is_re_submitted_sample": false,
+        "dna": {
+            "pre_amplified": true,
+            "date_of_sample_extraction": "2013-04-25T11:05:00+00:00",
+            "extraction_method": "method",
+            "concentration": 20,
+            "sample_purified": false,
+            "concentration_determined_by_which_method": "method"
+        }
     }
 }
     EOD
