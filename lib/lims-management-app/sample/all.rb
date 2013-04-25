@@ -1,4 +1,5 @@
 require 'lims-management-app/sample/dna/all'
+require 'lims-management-app/sample/rna/all'
 require 'lims-management-app/sample/sample'
 require 'lims-management-app/sample/sample_persistor'
 require 'lims-management-app/sample/sample_sequel_persistor'
