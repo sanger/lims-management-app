@@ -8,24 +8,24 @@ module Lims::ManagementApp
         klass.class_eval do
           # If quantity is set to x, it creates x identical samples 
           # based on the given parameters.
-          attribute :quantity, Numeric, :required => false, :writer => :private
-          attribute :taxon_id, Numeric, :required => false, :writer => :private
-          attribute :volume, Integer, :required => false, :writer => :private
-          attribute :date_of_sample_collection, String, :required => false, :writer => :private
-          attribute :is_sample_a_control, Integer, :required => false, :writer => :private
-          attribute :is_re_submitted_sample, Integer, :required => false, :writer => :private
+          attribute :quantity, Numeric, :required => false
+          attribute :taxon_id, Numeric, :required => false
+          attribute :volume, Integer, :required => false
+          attribute :date_of_sample_collection, String, :required => false
+          attribute :is_sample_a_control, Integer, :required => false
+          attribute :is_re_submitted_sample, Integer, :required => false
           %w(hmdmc_number supplier_sample_name common_name ebi_accession_number sample_source
           mother father sibling gc_content public_name cohort storage_conditions).each do |name|
-            attribute :"#{name}", String, :required => false, :writer => :private
+            attribute :"#{name}", String, :required => false
           end
 
           # required attributes
-          attribute :gender, String, :required => true, :writer => :private
-          attribute :sample_type, String, :required => true, :writer => :private
+          attribute :gender, String, :required => true
+          attribute :sample_type, String, :required => true
 
-          attribute :dna, Hash, :required => false, :writer => :private
-          attribute :rna, Hash, :required => false, :writer => :private
-          attribute :cellular_material, Hash, :required => false, :writer => :private
+          attribute :dna, Hash, :required => false
+          attribute :rna, Hash, :required => false
+          attribute :cellular_material, Hash, :required => false
 
           validates_with_method :ensure_quantity_value
         end
