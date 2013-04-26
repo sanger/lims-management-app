@@ -8,10 +8,12 @@ module Lims::ManagementApp
       it_behaves_like "an action"
 
       it "creates a sample object" do
-        Persistence::Session.any_instance.should_receive(:save)
+        Lims::Core::Persistence::Session.any_instance.should_receive(:save)
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
+        sample.gender.should == gender
+        sample.sample_type.should == sample_type
       end
     end
 
@@ -48,7 +50,13 @@ module Lims::ManagementApp
 
 
     context "valid action" do
-      pending
+      subject {
+        described_class.new(:store => store, :user => user, :application => application) do |a,s|
+          a.gender = gender
+          a.sample_type = sample_type
+        end
+      }
+      it_behaves_like "creating a sample"
     end
   end
 end
