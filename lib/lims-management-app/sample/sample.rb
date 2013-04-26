@@ -2,11 +2,13 @@ require 'lims-core/resource'
 require 'lims-management-app/sample/dna/dna'
 require 'lims-management-app/sample/rna/rna'
 require 'lims-management-app/sample/cellular_material/cellular_material'
+require 'lims-management-app/sample/validation_shared'
 require 'securerandom'
 
 module Lims::ManagementApp
   class Sample
     include Lims::Core::Resource
+    include ValidationShared
 
     # required attributes
     attribute :sanger_sample_id, String, :required => true, :initializable => true
@@ -28,34 +30,12 @@ module Lims::ManagementApp
     attribute :rna, Rna, :required => false, :initializable => true
     attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
 
-    validates_with_method :ensure_gender_value
-    validates_with_method :ensure_sample_type_value
-
-    GENDER = ["Not applicable", "Male", "Female", "Mixed", "Hermaphrodite", "Unkown"]
-    SAMPLE_TYPE = ["DNA Human", "DNA Pathogen", "RNA", "Blood", "Saliva", "Tissue Non-Tumour", "Tissue Tumour", "Pathogen"]
-
     def generate_sanger_sample_id
       @sanger_sample_id = SangerSampleID.generate
       self
     end
 
     private
-
-    # @return [Boolean]
-    # Validate if gender value belongs to the gender enumeration
-    # Case insensitive
-    # TODO: for human samples, it must be something else than Not applicable and Unknown
-    def ensure_gender_value
-      GENDER.map(&:downcase).include?(gender.downcase) if gender
-    end
-
-    # @return [Boolean]
-    # Validate if sample_type value belongs to the sample_type enumeration
-    # Case insensitive
-    def ensure_sample_type_value
-      SAMPLE_TYPE.map(&:downcase).include?(sample_type.downcase) if sample_type
-    end
-
 
     module SangerSampleID
       # @param [String,Integer] unique identifier
@@ -73,4 +53,3 @@ module Lims::ManagementApp
     end
   end
 end
-
