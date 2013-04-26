@@ -6,9 +6,6 @@ module Lims::ManagementApp
 
       def self.included(klass)
         klass.class_eval do
-          # If quantity is set to x, it creates x identical samples 
-          # based on the given parameters.
-          attribute :quantity, Numeric, :required => false
           attribute :taxon_id, Numeric, :required => false
           attribute :volume, Integer, :required => false
           attribute :date_of_sample_collection, String, :required => false
@@ -26,8 +23,6 @@ module Lims::ManagementApp
           attribute :dna, Hash, :required => false
           attribute :rna, Hash, :required => false
           attribute :cellular_material, Hash, :required => false
-
-          validates_with_method :ensure_quantity_value
         end
       end
     
@@ -35,7 +30,8 @@ module Lims::ManagementApp
         attributes = filtered_attributes
         samples = []
 
-        attributes[:quantity].times do
+        quantity = attributes[:quantity] ? attributes[:quantity] : 1
+        quantity.times do
           sample = Sample.new(attributes)
           sample.generate_sanger_sample_id
           sample.dna = Dna.new(dna) if dna && dna.size > 0
@@ -45,14 +41,10 @@ module Lims::ManagementApp
           samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
         end
 
-        (attributes[:quantity] == 1) ? samples.last : {:samples => samples.map { |e| e[:sample] }}
+        (quantity == 1) ? samples.last : {:samples => samples.map { |e| e[:sample] }}
       end
 
       private
-
-      def ensure_quantity_value
-        quantity ? quantity > 0 : true
-      end
 
       def filtered_attributes
         self.attributes.mash do |k,v|
