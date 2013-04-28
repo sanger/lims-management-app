@@ -1,5 +1,4 @@
-require 'lims-management-app/sample/sample'
-require 'lims-management-app/sample/dna/dna'
+require 'lims-management-app/sample/sample_shared'
 
 module Lims::ManagementApp
   describe Sample do
@@ -19,7 +18,7 @@ module Lims::ManagementApp
 
     def self.it_needs_a(attribute)
       context "is invalid" do
-        subject { Sample.new(parameters - [attribute]) }
+        subject { Sample.new(common_sample_parameters - [attribute]) }
         it { subject.valid?.should == false }
         context "after validation" do
           before { subject.validate }
@@ -31,15 +30,13 @@ module Lims::ManagementApp
     end
     # End Macros
 
-    let(:parameters) { {:hmdmc_number => "test", :supplier_sample_name => "test", :common_name => "test",
-    :ebi_accession_number => "test", :sample_source => "test", :mother => "test", :father => "test",
-    :sibling => "test", :gc_content => "test", :public_name => "test", :cohort => "test", 
-    :storage_conditions => "test", :taxon_id => 1, :gender => "male", :sanger_sample_id => "test",
-    :sample_type => "RNA", :volume => 1, :date_of_sample_collection => Time.now, 
-    :is_sample_a_control => true, :is_re_submitted_sample => false} }
-
+    include_context "sample factory"
     context "valid" do
-      subject { Sample.new(parameters) }
+      subject { 
+        sample = new_sample_with_dna_rna_cellular 
+        sample.generate_sanger_sample_id
+        sample
+      }
 
       it "is a valid sample" do
         subject.valid?.should == true
@@ -68,11 +65,11 @@ module Lims::ManagementApp
 
     context "invalid" do
       it "is invalid if the gender is not known" do
-        Sample.new(parameters.merge({:gender => "dummy"})).valid?.should == false
+        Sample.new(full_sample_parameters.merge({:gender => "dummy"})).valid?.should == false
       end
 
       it "is invalid if the sample_type is not known" do
-        Sample.new(parameters.merge({:sample_type => "dummy"})).valid?.should == false
+        Sample.new(full_sample_parameters.merge({:sample_type => "dummy"})).valid?.should == false
       end
     end
   end

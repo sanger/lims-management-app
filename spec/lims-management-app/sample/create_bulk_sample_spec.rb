@@ -1,4 +1,5 @@
 require 'lims-management-app/sample/create_bulk_sample'
+require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 
 module Lims::ManagementApp
@@ -15,25 +16,20 @@ module Lims::ManagementApp
         samples.size.should == quantity
         samples.each do |sample|
           sample.should be_a(Sample)
-          sample.gender.should == gender
-          sample.sample_type.should == sample_type
         end
       end
     end
 
+    include_context "sample factory"
     include_context "for application", "sample creation"
-    let(:gender) { "Female" }
-    let(:sample_type) { "DNA Pathogen" }
     let(:quantity) { 3 }
     let(:parameters) { 
       {
         :store => store, 
         :user => user, 
         :application => application,
-        :quantity => quantity,
-        :gender => gender,
-        :sample_type => sample_type
-      } 
+        :quantity => quantity
+      }.merge(full_sample_parameters) 
     }
 
     context "invalid action" do
@@ -62,8 +58,9 @@ module Lims::ManagementApp
     context "valid action" do
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
-          a.gender = gender
-          a.sample_type = sample_type
+          full_sample_parameters.each do |k,v|
+            a.send("#{k}=", v)
+          end
           a.quantity = quantity
         end
       }

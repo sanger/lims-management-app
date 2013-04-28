@@ -1,5 +1,7 @@
 require 'lims-management-app/sample/create_sample'
+require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
+require 'time'
 
 module Lims::ManagementApp
   describe Sample::CreateSample do
@@ -12,22 +14,26 @@ module Lims::ManagementApp
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
-        sample.gender.should == gender
-        sample.sample_type.should == sample_type
+        full_sample_parameters.each do |k,v|
+          if [:dna, :rna, :cellular_material].include?(k)
+            v.each do |k2,v2|
+              sample.send(k).send(k2).to_s.should == v2.to_s
+            end
+          else
+            sample.send(k).to_s.should == v.to_s
+          end
+        end
       end
     end
 
+    include_context "sample factory"
     include_context "for application", "sample creation"
-    let(:gender) { "Female" }
-    let(:sample_type) { "DNA Pathogen" }
     let(:parameters) { 
       {
         :store => store, 
         :user => user, 
-        :application => application,
-        :gender => gender,
-        :sample_type => sample_type
-      } 
+        :application => application
+      }.merge(common_sample_parameters) 
     }
 
     context "invalid action" do
@@ -52,8 +58,9 @@ module Lims::ManagementApp
     context "valid action" do
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
-          a.gender = gender
-          a.sample_type = sample_type
+          full_sample_parameters.each do |k,v|
+            a.send("#{k}=", v)
+          end
         end
       }
       it_behaves_like "creating a sample"
