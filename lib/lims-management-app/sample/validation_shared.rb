@@ -17,14 +17,22 @@ module Lims::ManagementApp
       # Case insensitive
       # TODO: for human samples, it must be something else than Not applicable and Unknown
       def ensure_gender_value
-        GENDER.map(&:downcase).include?(gender.downcase) if gender
+        if gender
+          GENDER.map(&:downcase).include?(gender.downcase)
+        else
+          true
+        end
       end
 
       # @return [Boolean]
       # Validate if sample_type value belongs to the sample_type enumeration
       # Case insensitive
       def ensure_sample_type_value
-        SAMPLE_TYPE.map(&:downcase).include?(sample_type.downcase) if sample_type
+        if sample_type
+          SAMPLE_TYPE.map(&:downcase).include?(sample_type.downcase)
+        else
+          true
+        end
       end
     end
   end

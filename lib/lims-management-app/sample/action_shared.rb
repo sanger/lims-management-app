@@ -57,6 +57,14 @@ module Lims::ManagementApp
           if is_a_sample_attribute(k) && v
             if v.is_a?(Hash)
               v.each do |component_key, component_value|
+                unless sample.send(k)
+                  component = case k
+                              when :dna then Dna.new
+                              when :rna then Rna.new
+                              when :cellular_material then CellularMaterial.new
+                              end
+                  sample.send("#{k}=", component)
+                end
                 sample.send(k).send("#{component_key}=", component_value) 
               end
             elsif
