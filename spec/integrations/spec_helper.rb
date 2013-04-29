@@ -16,6 +16,12 @@ def config_bus(env)
   YAML.load_file(File.join('config','amqp.yml'))[env.to_s] 
 end
 
+def set_uuid(session, object, uuid)
+  session << object
+  ur = session.new_uuid_resource_for(object)
+  ur.send(:uuid=, uuid)
+end
+
 shared_context 'use core context service' do
   let(:db) { connect_db(:test) }
   let(:store) { Lims::Core::Persistence::Sequel::Store.new(db) }
@@ -28,7 +34,7 @@ shared_context 'use core context service' do
   #This code is cleaning up the DB after each test case execution
   after(:each) do
     # list of all the tables in our DB
-    %w{samples dna rna uuid_resources}.each do |table|
+    %w{samples dna rna cellular_material uuid_resources}.each do |table|
       db[table.to_sym].delete
     end
     db.disconnect

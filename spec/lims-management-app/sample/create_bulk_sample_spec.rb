@@ -64,7 +64,12 @@ module Lims::ManagementApp
           a.quantity = quantity
         end
       }
-      it_behaves_like "creating bulk samples"
+
+      it "has valid parameters" do
+        described_class.new(parameters).valid?.should == true
+      end
+
+     it_behaves_like "creating bulk samples"
     end
   end
 end

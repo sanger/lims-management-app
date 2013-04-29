@@ -25,7 +25,7 @@ module Lims::ManagementApp
     end
 
     include_context "sample factory"
-    include_context "for application", "sample creation"
+    include_context "for application", "sample update"
     let(:new_gender) { "Female" }
     let(:new_sample_type) { "DNA Pathogen" }
     let(:new_dna) { {:sample_purified => false} }
@@ -34,18 +34,18 @@ module Lims::ManagementApp
         :store => store, 
         :user => user, 
         :application => application,
-        :sample => mock(:sample)
-      } 
+        :sample => new_common_sample
+      }
     }
 
     context "invalid action" do
-      it "requires a sample" do
-        described_class.new(parameters - [:sample]).valid?.should == false
+      it "requires a sample or a sanger sample id" do
+        described_class.new(parameters - [:sample, :sanger_sample_id]).valid?.should == false
       end
     end
 
 
-    context "valid action" do
+    context "valid action given a sample" do
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
           a.sample = new_sample_with_dna_rna_cellular
@@ -54,7 +54,33 @@ module Lims::ManagementApp
           a.dna = new_dna
         end
       }
+
+      it "is valid" do
+        described_class.new(parameters).valid?.should == true
+      end
+
       it_behaves_like "updating a sample"
+    end
+
+    context "valid action given a sanger sample id" do
+      pending "to finish"
+#      subject {
+#        described_class.new(:store => store, :user => user, :application => application) do |a,s|
+#          a.sanger_sample_id = new_sample_with_dna_rna_cellular.tap do |sample|
+#            sample.generate_sanger_sample_id
+#          end.sanger_sample_id
+#          a.gender = new_gender
+#          a.sample_type = new_sample_type
+#          a.dna = new_dna
+#        end
+#      }
+#
+#      it "is valid" do
+#        pending "to fix"
+#        described_class.new(parameters).valid?.should == true
+#      end
+#
+#      it_behaves_like "updating a sample"
     end
   end
 end

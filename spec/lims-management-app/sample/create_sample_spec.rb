@@ -54,7 +54,6 @@ module Lims::ManagementApp
       end
     end
 
-
     context "valid action" do
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
@@ -63,6 +62,11 @@ module Lims::ManagementApp
           end
         end
       }
+
+      it "has valid parameters" do
+        described_class.new(parameters).valid?.should == true
+      end
+
       it_behaves_like "creating a sample"
     end
   end
