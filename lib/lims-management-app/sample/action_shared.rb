@@ -78,6 +78,15 @@ module Lims::ManagementApp
         (samples.size == 1) ? {:sample => samples.first} : {:samples => samples}
       end
 
+
+      def _delete(samples, session)
+        samples.each do |current_sample|
+          session.delete(current_sample)
+        end
+        (samples.size == 1) ? {:sample => samples.first} : {:samples => samples}
+      end
+
+
       private
 
       def is_a_sample_attribute(name)
