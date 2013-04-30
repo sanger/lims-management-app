@@ -38,5 +38,9 @@ module Lims::ManagementApp
     class BulkUpdateSampleResource < Lims::Api::CoreActionResource
       include BulkSampleResource
     end
+
+    class BulkDeleteSampleResource < Lims::Api::CoreActionResource
+      include BulkSampleResource
+    end
   end
 end
