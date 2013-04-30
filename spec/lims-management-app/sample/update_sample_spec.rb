@@ -1,7 +1,6 @@
 require 'lims-management-app/sample/update_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
-require 'lims-management-app/sample/all'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
