@@ -87,7 +87,7 @@ module Lims::ManagementApp
 
     context "with sanger sample ids" do
       let!(:sanger_sample_ids) do
-        [new_common_sample, new_common_sample].map do |sample|
+        samples.map do |sample|
           store.with_session do |session|
             session << sample
             sample.generate_sanger_sample_id
