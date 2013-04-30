@@ -3,7 +3,7 @@ require 'lims-api/struct_stream'
 
 module Lims::ManagementApp
   class Sample
-    class CreateBulkSampleResource < Lims::Api::CoreActionResource
+    class BulkCreateSampleResource < Lims::Api::CoreActionResource
 
       def object_to_stream(object, s, mime_type, in_hash = true)
         case object
