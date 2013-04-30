@@ -17,7 +17,8 @@ module Lims::ManagementApp
       validates_with_method :ensure_sample_reference
 
       def _call_in_session(session)
-        _update(session)                  
+        sample_to_update = sanger_sample_id ? session.sample[{:sanger_sample_id => sanger_sample_id}] : sample
+        _update([sample_to_update], session)
       end
 
       private
