@@ -28,6 +28,7 @@ module Lims::ManagementApp
 
     include_context "sample factory"
     include_context "for application", "sample creation"
+    let!(:store) { Lims::Core::Persistence::Store.new }
     let(:parameters) { 
       {
         :store => store, 

@@ -14,7 +14,6 @@ end
 
 shared_context "for application" do |application_string|
   let(:user) { mock(:user) }
-  let(:store) { Lims::Core::Persistence::Store.new }
   let(:application) { application_string }
 end
 

@@ -1,8 +1,10 @@
 #shared contexts for integrations
 require 'spec_helper'
-
 require 'logger'
 require 'yaml'
+require 'sequel'
+require 'lims-core/persistence/sequel/store' 
+Sequel.extension :migration 
 
 Loggers = []
 #Loggers << Logger.new($stdout)
@@ -20,6 +22,12 @@ def set_uuid(session, object, uuid)
   session << object
   ur = session.new_uuid_resource_for(object)
   ur.send(:uuid=, uuid)
+end
+
+shared_context "sequel store" do
+  let(:db) { Sequel.sqlite '' }
+  let(:store) { Lims::Core::Persistence::Sequel::Store.new(db) }
+  before(:each) { Sequel::Migrator.run(db, 'db/migrations') }
 end
 
 shared_context 'use core context service' do

@@ -1,6 +1,8 @@
 require 'lims-management-app/sample/update_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
+require 'lims-management-app/sample/all'
+require 'integrations/spec_helper'
 
 module Lims::ManagementApp
   describe Sample::UpdateSample do
@@ -26,6 +28,7 @@ module Lims::ManagementApp
 
     include_context "sample factory"
     include_context "for application", "sample update"
+    let!(:store) { Lims::Core::Persistence::Store.new }
     let(:new_gender) { "Female" }
     let(:new_sample_type) { "DNA Pathogen" }
     let(:new_dna) { {:sample_purified => false} }
@@ -63,24 +66,7 @@ module Lims::ManagementApp
     end
 
     context "valid action given a sanger sample id" do
-      pending "to finish"
-#      subject {
-#        described_class.new(:store => store, :user => user, :application => application) do |a,s|
-#          a.sanger_sample_id = new_sample_with_dna_rna_cellular.tap do |sample|
-#            sample.generate_sanger_sample_id
-#          end.sanger_sample_id
-#          a.gender = new_gender
-#          a.sample_type = new_sample_type
-#          a.dna = new_dna
-#        end
-#      }
-#
-#      it "is valid" do
-#        pending "to fix"
-#        described_class.new(parameters).valid?.should == true
-#      end
-#
-#      it_behaves_like "updating a sample"
+      pending
     end
   end
 end

@@ -4,7 +4,7 @@ h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
 h[:method] = "POST"
-h[:url] = '/actions/create_bulk_sample'
+h[:url] = '/actions/bulk_create_sample'
 h[:header] << 'Accept: application/json'
 h[:setup] = <<EOD
 module Lims::ManagementApp::Sample::SangerSampleID
@@ -16,7 +16,7 @@ module Lims::ManagementApp::Sample::SangerSampleID
 end
 EOD
 h[:parameters] = <<EOD
-{ "create_bulk_sample": {
+{ "bulk_create_sample": {
     "quantity": 3,
     "gender": "Male",
     "sample_type": "RNA",
@@ -43,7 +43,7 @@ h[:status]=200
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
 {
-"create_bulk_sample": {
+"bulk_create_sample": {
 "actions": {
   },
   "user": "user",

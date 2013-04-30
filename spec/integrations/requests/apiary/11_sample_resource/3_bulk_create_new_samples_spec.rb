@@ -1,7 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "create_bulk_new_samples", :sample => true do
+describe "bulk_create_new_samples", :sample => true do
   include_context "use core context service"
-  it "create_bulk_new_samples" do
+  it "bulk_create_new_samples" do
     module Lims::ManagementApp::Sample::SangerSampleID
       def self.generate
         @count ||= 0
@@ -13,9 +13,9 @@ describe "create_bulk_new_samples", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/create_bulk_sample", <<-EOD
+    response = post "/actions/bulk_create_sample", <<-EOD
     {
-    "create_bulk_sample": {
+    "bulk_create_sample": {
         "quantity": 3,
         "gender": "Male",
         "sample_type": "RNA",
@@ -42,7 +42,7 @@ describe "create_bulk_new_samples", :sample => true do
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "create_bulk_sample": {
+    "bulk_create_sample": {
         "actions": {
         },
         "user": "user",

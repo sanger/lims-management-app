@@ -1,10 +1,10 @@
-require 'lims-management-app/sample/create_bulk_sample'
+require 'lims-management-app/sample/bulk_create_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::CreateBulkSample do
-    shared_examples_for "creating bulk samples" do
+  describe Sample::BulkCreateSample do
+    shared_examples_for "bulk creating samples" do
       include_context "create object"
       it_behaves_like "an action"
 
@@ -22,6 +22,7 @@ module Lims::ManagementApp
 
     include_context "sample factory"
     include_context "for application", "sample creation"
+    let!(:store) { Lims::Core::Persistence::Store.new }
     let(:quantity) { 3 }
     let(:parameters) { 
       {
@@ -69,7 +70,7 @@ module Lims::ManagementApp
         described_class.new(parameters).valid?.should == true
       end
 
-     it_behaves_like "creating bulk samples"
+     it_behaves_like "bulk creating samples"
     end
   end
 end
