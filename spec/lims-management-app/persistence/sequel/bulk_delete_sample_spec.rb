@@ -10,7 +10,7 @@ module Lims::ManagementApp
     include_context "for application", "bulk delete"
     include_context "sequel store"
 
-    shared_examples_for "bulk deleting samples" do
+    shared_examples_for "sequel bulk deleting samples" do
       context "common samples" do
         let(:samples) { [new_common_sample, new_common_sample] }
         it "modify the samples table" do
@@ -81,7 +81,7 @@ module Lims::ManagementApp
         end
       }
 
-      it_behaves_like "bulk deleting samples"
+      it_behaves_like "sequel bulk deleting samples"
     end
 
 
@@ -102,7 +102,7 @@ module Lims::ManagementApp
         end
       }
 
-      it_behaves_like "bulk deleting samples"
+      it_behaves_like "sequel bulk deleting samples"
     end
   end
 end
