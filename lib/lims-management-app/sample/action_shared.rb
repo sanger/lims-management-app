@@ -34,12 +34,11 @@ module Lims::ManagementApp
         #end
       end
     
-      def _create(session)
+      def _create(sample_quantity, session)
         attributes = filtered_attributes
         samples = []
 
-        quantity = attributes[:quantity] ? attributes[:quantity] : 1
-        quantity.times do
+        sample_quantity.times do
           sample = Sample.new(attributes)
           sample.generate_sanger_sample_id
           sample.dna = Dna.new(dna) if dna && dna.size > 0
@@ -49,31 +48,34 @@ module Lims::ManagementApp
           samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
         end
 
-        (quantity == 1) ? samples.last : {:samples => samples.map { |e| e[:sample] }}
+        (sample_quantity == 1) ? samples.first : {:samples => samples.map { |e| e[:sample] }}
       end
 
-      def _update(session)
-        filtered_attributes.each do |k,v|
-          if is_a_sample_attribute(k) && v
-            if v.is_a?(Hash)
-              v.each do |component_key, component_value|
-                unless sample.send(k)
-                  component = case k
-                              when :dna then Dna.new
-                              when :rna then Rna.new
-                              when :cellular_material then CellularMaterial.new
-                              end
-                  sample.send("#{k}=", component)
+
+      def _update(samples, session)
+        samples.each do |current_sample|
+          filtered_attributes.each do |k,v|
+            if is_a_sample_attribute(k) && v
+              if v.is_a?(Hash)
+                v.each do |component_key, component_value|
+                  unless current_sample.send(k)
+                    component = case k
+                                when :dna then Dna.new
+                                when :rna then Rna.new
+                                when :cellular_material then CellularMaterial.new
+                                end
+                    current_sample.send("#{k}=", component)
+                  end
+                  current_sample.send(k).send("#{component_key}=", component_value) 
                 end
-                sample.send(k).send("#{component_key}=", component_value) 
+              elsif
+                current_sample.send("#{k}=", v)
               end
-            elsif
-              sample.send("#{k}=", v)
             end
           end
         end
 
-        {:sample => sample}
+        (samples.size == 1) ? {:sample => samples.first} : {:samples => samples}
       end
 
       private
