@@ -1,12 +1,14 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "create_a_new_sample", :sample => true do
   include_context "use core context service"
-  it "create_a_new_sample" do
-    module Lims::ManagementApp::Sample::SangerSampleID
-      def self.generate
-        "S2-test-ID"
-      end
+  before do
+  module Lims::ManagementApp::Sample::SangerSampleID
+    def self.generate
+      "S2-test-ID"
     end
+  end
+  end
+  it "create_a_new_sample" do
 
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
