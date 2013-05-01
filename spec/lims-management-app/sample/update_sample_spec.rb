@@ -42,7 +42,7 @@ module Lims::ManagementApp
 
     context "invalid action" do
       it "requires a sample or a sanger sample id" do
-        described_class.new(parameters - [:sample, :sanger_sample_id]).valid?.should == false
+        described_class.new(parameters - [:sample]).valid?.should == false
       end
     end
 
@@ -62,10 +62,6 @@ module Lims::ManagementApp
       end
 
       it_behaves_like "updating a sample"
-    end
-
-    context "valid action given a sanger sample id" do
-      pending
     end
   end
 end
