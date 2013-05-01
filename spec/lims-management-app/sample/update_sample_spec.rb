@@ -14,14 +14,16 @@ module Lims::ManagementApp
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
-        sample.gender.should == new_gender
-        sample.sample_type.should == new_sample_type
-        sample.dna.sample_purified.should == new_dna[:sample_purified]
-        sample.dna.concentration.should == 100
-      end
-
-      it do
-        pending "needs to be improved"
+        updated_parameters.each do |k,v|
+          v = DateTime.parse(v) if k.to_s =~ /date/
+          if [:dna, :rna, :cellular_material].include?(k)
+            v.each do |k2,v2|
+              sample.send(k).send(k2).to_s.should == v2.to_s
+            end
+          else
+            sample.send(k).to_s.should == v.to_s
+          end
+        end
       end
     end
 
@@ -39,6 +41,7 @@ module Lims::ManagementApp
         :sample => new_common_sample
       }
     }
+    let(:updated_parameters) { update_parameters(full_sample_parameters) }
 
     context "invalid action" do
       it "requires a sample or a sanger sample id" do
@@ -51,9 +54,9 @@ module Lims::ManagementApp
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
           a.sample = new_sample_with_dna_rna_cellular
-          a.gender = new_gender
-          a.sample_type = new_sample_type
-          a.dna = new_dna
+          updated_parameters.each do |k,v|
+            a.send("#{k}=", v)
+          end
         end
       }
 
