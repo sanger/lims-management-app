@@ -12,6 +12,15 @@ module Lims::ManagementApp
 
       private
 
+      # @param [Object] object
+      # @param [Integer] id
+      # @param [Arguments] params
+      # @return [Integer]
+      # Override lims-core sequel/persistor#delete_raw.
+      # After a sample is deleted, we need to delete
+      # the DNA, RNA, Cellular Material it references 
+      # with its foreign keys. We need to first delete
+      # the sample object to verify the constraints.
       def delete_raw(object, id, *params)
         sample_id = super
         components = [object.dna, object.rna, object.cellular_material]
