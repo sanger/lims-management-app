@@ -60,7 +60,8 @@ module Lims::ManagementApp
       def _update(samples, session)
         samples.each do |current_sample|
           filtered_attributes.each do |k,v|
-            if is_a_sample_attribute(k) && v
+            if is_a_sample_attribute(k)
+              next if v.nil? # test nil on v otherwise bug with boolean value
               if v.is_a?(Hash)
                 v.each do |component_key, component_value|
                   unless current_sample.send(k)
@@ -73,7 +74,7 @@ module Lims::ManagementApp
                   end
                   current_sample.send(k).send("#{component_key}=", component_value) 
                 end
-              elsif
+              else
                 current_sample.send("#{k}=", v)
               end
             end
