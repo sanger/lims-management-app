@@ -8,10 +8,8 @@ h[:url] = '/11111111-2222-3333-4444-555555555555'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
-module Lims::ManagementApp::Sample::SangerSampleID
-  def self.generate
-    "S2-test-ID"
-  end
+Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+  "S2-test-ID"
 end
 end
 EOD

@@ -2,12 +2,10 @@ require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_create_new_samples", :sample => true do
   include_context "use core context service"
   before do
-  module Lims::ManagementApp::Sample::SangerSampleID
-    def self.generate
-      @count ||= 0
-      @count += 1
+  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+    @count ||= 0
+    @count += 1
       "S2-test" << @count.to_s << "-ID"
-    end
   end
   end
   it "bulk_create_new_samples" do

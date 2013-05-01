@@ -8,12 +8,10 @@ h[:url] = '/actions/bulk_update_sample'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
-module Lims::ManagementApp::Sample::SangerSampleID
-  def self.generate
-    @count ||= 0
-    @count += 1
-    "S2-test" << @count.to_s << "-ID"
-  end
+Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+  @count ||= 0
+  @count += 1
+  "S2-test" << @count.to_s << "-ID"
 end
 end
 EOD
@@ -93,7 +91,7 @@ h[:response]=<<EOD
             "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
           },
           "uuid": "11111111-2222-3333-4444-555555555555",
-          "sanger_sample_id": "S2-test4-ID",
+          "sanger_sample_id": "S2-test1-ID",
           "gender": "Male",
           "sample_type": "RNA",
           "hmdmc_number": "number",
@@ -122,7 +120,7 @@ h[:response]=<<EOD
             "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
           },
           "uuid": "11111111-2222-3333-4444-666666666666",
-          "sanger_sample_id": "S2-test5-ID",
+          "sanger_sample_id": "S2-test2-ID",
           "gender": "Male",
           "sample_type": "RNA",
           "hmdmc_number": "number",

@@ -2,10 +2,8 @@ require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "create_a_new_sample", :sample => true do
   include_context "use core context service"
   before do
-  module Lims::ManagementApp::Sample::SangerSampleID
-    def self.generate
-      "S2-test-ID"
-    end
+  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+    "S2-test-ID"
   end
   end
   it "create_a_new_sample" do

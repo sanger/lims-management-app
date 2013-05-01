@@ -4,7 +4,7 @@ h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
 h[:method] = "POST"
-h[:url] = '/actions/bulk_update_sample'
+h[:url] = '/actions/bulk_delete_sample'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
@@ -34,6 +34,7 @@ sample = Lims::ManagementApp::Sample.new({
     "gc_content" => "content",
     "public_name" => "name",
     "cohort" => "cohort",
+    "volume" => 5000,
     "storage_conditions" => "conditions"
 })
 sample.generate_sanger_sample_id
@@ -56,6 +57,7 @@ sample2 = Lims::ManagementApp::Sample.new({
     "gc_content" => "content",
     "public_name" => "name",
     "cohort" => "cohort",
+    "volume" => 5000,
     "storage_conditions" => "conditions"
 })
 sample2.generate_sanger_sample_id
@@ -64,19 +66,16 @@ save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
 EOD
 
 h[:parameters] = <<EOD
-{ 
-"bulk_update_sample":{
-"sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"],
-"volume": 5000 
-}
-}
+{"bulk_delete_sample": {
+  "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"]
+}}
 EOD
 
 h[:status]=200
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
 {
-  "bulk_update_sample": {
+  "bulk_delete_sample": {
     "actions": {
     },
     "user": "user",
@@ -143,32 +142,10 @@ h[:response]=<<EOD
         }
       ]
     },
-    "taxon_id": null,
-    "volume": 5000,
-    "date_of_sample_collection": null,
-    "is_sample_a_control": null,
-    "is_re_submitted_sample": null,
-    "hmdmc_number": null,
-    "supplier_sample_name": null,
-    "common_name": null,
-    "ebi_accession_number": null,
-    "sample_source": null,
-    "mother": null,
-    "father": null,
-    "sibling": null,
-    "gc_content": null,
-    "public_name": null,
-    "cohort": null,
-    "storage_conditions": null,
-    "dna": null,
-    "rna": null,
-    "cellular_material": null,
     "sample_uuids": null,
-    "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"],
-    "gender": null,
-    "sample_type": null
+    "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"]
   }
-}
+ }
 EOD
 %>
 <%= h.to_json %>

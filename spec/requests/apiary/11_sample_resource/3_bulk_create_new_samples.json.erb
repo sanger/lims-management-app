@@ -8,12 +8,10 @@ h[:url] = '/actions/bulk_create_sample'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
-module Lims::ManagementApp::Sample::SangerSampleID
-  def self.generate
-    @count ||= 0
-    @count += 1
+Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+  @count ||= 0
+  @count += 1
     "S2-test" << @count.to_s << "-ID"
-  end
 end
 end
 EOD

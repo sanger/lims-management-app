@@ -2,12 +2,10 @@ require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
   include_context "use core context service"
   before do
-  module Lims::ManagementApp::Sample::SangerSampleID
-    def self.generate
-      @count ||= 5
-      @count += 1
-      "S2-test" << @count.to_s << "-ID"
-    end
+  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+    @count ||= 0
+    @count += 1
+    "S2-test" << @count.to_s << "-ID"
   end
   end
   it "bulk_update_samples_by_sanger_sample_id" do
@@ -64,8 +62,8 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     {
     "bulk_update_sample": {
         "sanger_sample_ids": [
-            "S2-test6-ID",
-            "S2-test7-ID"
+            "S2-test1-ID",
+            "S2-test2-ID"
         ],
         "volume": 5000
     }
@@ -89,7 +87,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
                     },
                     "uuid": "11111111-2222-3333-4444-555555555555",
-                    "sanger_sample_id": "S2-test6-ID",
+                    "sanger_sample_id": "S2-test1-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
@@ -118,7 +116,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
                     },
                     "uuid": "11111111-2222-3333-4444-666666666666",
-                    "sanger_sample_id": "S2-test7-ID",
+                    "sanger_sample_id": "S2-test2-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
@@ -163,8 +161,8 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
         "cellular_material": null,
         "sample_uuids": null,
         "sanger_sample_ids": [
-            "S2-test6-ID",
-            "S2-test7-ID"
+            "S2-test1-ID",
+            "S2-test2-ID"
         ],
         "gender": null,
         "sample_type": null
