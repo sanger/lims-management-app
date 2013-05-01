@@ -13,25 +13,32 @@ module Lims::ManagementApp
       attribute :sanger_sample_ids, Array, :required => false
       attribute :gender, String, :required => false
       attribute :sample_type, String, :required => false
-
       validates_with_method :ensure_sample_references
 
       def _call_in_session(session)
-        samples = [].tap do |s|
-          if sanger_sample_ids
-            sanger_sample_ids.each do |id|
-              s << session.sample[{:sanger_sample_id => id}]
-            end
-          else
-            sample_uuids.each do |uuid|
-              s << session[uuid]
-            end
-          end
-        end
+        samples = load_samples(session)
         _update(samples, session)
       end
 
       private
+
+      def load_samples(session)
+        [].tap do |s|
+          if sanger_sample_ids
+            sanger_sample_ids.each do |id|
+              sample_object = session.sample[{:sanger_sample_id => id}]
+              raise SangerSampleIdNotFound, "Sanger sample id '#{id}' is invalid" unless sample_object
+              s << sample_object
+            end
+          else
+            sample_uuids.each do |uuid|
+              sample_object = session[uuid]
+              raise SampleUuidNotFound, "Sample uuid '#{uuid}' is invalid" unless sample_object
+              s << sample_object
+            end
+          end
+        end
+      end
 
       def ensure_sample_references
         sample_uuids || sanger_sample_ids
