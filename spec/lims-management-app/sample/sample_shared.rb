@@ -86,5 +86,23 @@ module Lims::ManagementApp
     def full_sample_parameters(parameters = {})
       common_sample_parameters.merge({:dna => dna_parameters}).merge({:rna => rna_parameters}).merge({:cellular_material => cellular_material_parameters})
     end
+
+    def update_parameters(parameters)
+      parameters.mash do |k,v|
+        case v
+        when DateTime then [k, DateTime.now.to_s]
+        when TrueClass then [k, false]
+        when FalseClass then [k, true]
+        when Fixnum then [k, v + 1]
+        when Hash then [k, update_parameters(v)]
+        else 
+          case k
+          when :gender then [k, "Hermaphrodite"]
+          when :sample_type then [k, "Blood"]
+          else [k, "new #{v}"]
+          end
+        end
+      end
+    end
   end
 end

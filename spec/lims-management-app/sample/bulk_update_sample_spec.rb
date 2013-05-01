@@ -14,12 +14,17 @@ module Lims::ManagementApp
         samples.size.should == 2
         samples.each do |sample|
           sample.should be_a(Sample)
-          sample.supplier_sample_name.should == "new sample name"
+          updated_parameters.each do |k,v|
+            v = DateTime.parse(v) if k.to_s =~ /date/
+            if [:dna, :rna, :cellular_material].include?(k)
+              v.each do |k2,v2|
+                sample.send(k).send(k2).to_s.should == v2.to_s
+              end
+            else
+              sample.send(k).to_s.should == v.to_s
+            end
+          end
         end
-      end
-
-      it do
-        pending "needs to be improved"
       end
     end
 
@@ -45,12 +50,15 @@ module Lims::ManagementApp
 
     context "valid action" do
       let(:result) { subject.call }
+      let(:updated_parameters) { update_parameters(full_sample_parameters) }
 
       context "with sample uuids" do
        subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.sample_uuids = sample_uuids
-            a.supplier_sample_name = "new sample name"
+            updated_parameters.each do |k,v|
+              a.send("#{k}=", v)
+            end
           end
         }
 
@@ -95,7 +103,9 @@ module Lims::ManagementApp
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.sanger_sample_ids = sanger_sample_ids
-            a.supplier_sample_name = "new sample name"
+            updated_parameters.each do |k,v|
+              a.send("#{k}=", v)
+            end
           end
         }
 

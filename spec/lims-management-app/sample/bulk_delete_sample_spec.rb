@@ -16,10 +16,6 @@ module Lims::ManagementApp
           sample.should be_a(Sample)
         end
       end
-
-      it do
-        pending "needs to be improved"
-      end
     end
 
     include_context "sample factory"
