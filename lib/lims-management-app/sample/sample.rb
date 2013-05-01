@@ -44,7 +44,7 @@ module Lims::ManagementApp
       # unique identifier in parameter.
       # @example S2-521-ID
       def self.generate
-        "S2-#{unique_identifier.to_s}-ID"
+        "S2-#{unique_identifier.to_s}"
       end
 
       def self.unique_identifier
