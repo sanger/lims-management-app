@@ -4,6 +4,10 @@ require 'lims-api/struct_stream'
 module Lims::ManagementApp
   class Sample
     module BulkSampleResource
+      # Override object to stream to display correctly 
+      # the samples in the JSON.
+      # Remove the keys "sample" in front of the sample
+      # objects.
       def object_to_stream(object, s, mime_type, in_hash = true)
         case object
         when Hash

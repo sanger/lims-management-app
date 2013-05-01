@@ -111,6 +111,30 @@ module Lims::ManagementApp
           end
         end
       end
+
+      # @param [Session] session
+      # @return [Array]
+      # If sanger sample ids is set, load the sample objects
+      # associated to the sample ids. Otherwise, load
+      # the sample objects according to the sample uuids attribute.
+      # If one sample id/uuid is invalid, the action fails.
+      def load_samples(session)
+        [].tap do |s|
+          if sanger_sample_ids
+            sanger_sample_ids.each do |id|
+              sample_object = session.sample[{:sanger_sample_id => id}]
+              raise SangerSampleIdNotFound, "Sanger sample id '#{id}' is invalid" unless sample_object
+              s << sample_object 
+            end
+          else
+            sample_uuids.each do |uuid|
+              sample_object = session[uuid]
+              raise SampleUuidNotFound, "Sample uuid '#{uuid}' is invalid" unless sample_object
+              s << sample_object 
+            end
+          end
+        end
+      end
     end
   end
 end
