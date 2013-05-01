@@ -18,13 +18,15 @@ module Lims::ManagementApp
       end
 
       def self.included(klass)
-        ATTRIBUTES.each do |name, type|
-          klass.class_eval do
-            attribute :"#{name}", type, :required => false
+        unless klass.to_s.downcase =~ /delete/
+          ATTRIBUTES.each do |name, type|
+            klass.class_eval do
+              attribute :"#{name}", type, :required => false
+            end
           end
         end
       end
-    
+
       # @param [Integer] sample_quantity
       # @param [Session] session
       # @return [Hash]
