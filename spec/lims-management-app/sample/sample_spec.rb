@@ -42,12 +42,17 @@ module Lims::ManagementApp
         subject.valid?.should == true
       end
 
-      %w(hmdmc_number supplier_sample_name common_name ebi_accession_number sample_source
+      %w(hmdmc_number ebi_accession_number sample_source
     mother father sibling gc_content public_name cohort storage_conditions).each do |name|
         it_has_a name
       end
 
+      it_has_a :supplier_sample_name
+      it_needs_a :supplier_sample_name
+      it_has_a :common_name
+      it_needs_a :common_name
       it_has_a :taxon_id
+      it_needs_a :taxon_id
       it_has_a :gender
       it_needs_a :gender
       it_has_a :sanger_sample_id
