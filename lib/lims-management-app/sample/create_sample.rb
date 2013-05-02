@@ -10,9 +10,12 @@ module Lims::ManagementApp
       include ActionShared
       include ValidationShared
 
-      # gender and sample_type are required in create actions 
+      # required attributes
       attribute :gender, String, :required => true
       attribute :sample_type, String, :required => true
+      attribute :taxon_id, Numeric, :required => true
+      attribute :supplier_sample_name, String, :required => true
+      attribute :common_name, String, :required => true
 
       def _call_in_session(session)
         _create(1, session)

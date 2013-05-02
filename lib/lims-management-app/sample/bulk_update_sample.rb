@@ -15,6 +15,9 @@ module Lims::ManagementApp
       attribute :sanger_sample_ids, Array, :required => false
       attribute :gender, String, :required => false
       attribute :sample_type, String, :required => false
+      attribute :taxon_id, Numeric, :required => false
+      attribute :supplier_sample_name, String, :required => false
+      attribute :common_name, String, :required => false
       validates_with_method :ensure_samples_presence
 
       def _call_in_session(session)

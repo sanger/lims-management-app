@@ -4,12 +4,11 @@ module Lims::ManagementApp
   class Sample
     module ActionShared
 
-      ATTRIBUTES = {:taxon_id => Numeric, :volume => Integer, :date_of_sample_collection => String,
+      ATTRIBUTES = {:volume => Integer, :date_of_sample_collection => String,
       :is_sample_a_control => Integer, :is_re_submitted_sample => Integer, :hmdmc_number => String,
-      :supplier_sample_name => String, :common_name => String, :ebi_accession_number => String,
-      :sample_source => String, :mother => String, :father => String, :sibling => String,
-      :gc_content => String, :public_name => String, :cohort => String, :storage_conditions => String,
-      :dna => Hash, :rna => Hash, :cellular_material => Hash}
+      :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String, 
+      :sibling => String, :gc_content => String, :public_name => String, :cohort => String, 
+      :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash}
 
       class SampleUuidNotFound < StandardError
       end
@@ -100,7 +99,7 @@ module Lims::ManagementApp
       # @return [Bool]
       # Return true if name is a specific parameter for a sample
       def is_a_sample_attribute(name)
-        attributes = ATTRIBUTES.keys | [:gender, :sample_type]
+        attributes = ATTRIBUTES.keys | [:gender, :sample_type, :taxon_id, :supplier_sample_name, :common_name]
         attributes.include?(name)
       end
 
