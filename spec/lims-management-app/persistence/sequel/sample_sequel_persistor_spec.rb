@@ -1,5 +1,6 @@
 require 'lims-management-app/persistence/sequel/spec_helper'
 require 'lims-management-app/sample/sample_sequel_persistor'
+require 'lims-management-app/sample/sample_shared'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
@@ -38,35 +39,15 @@ module Lims::ManagementApp
 
   describe Sample::SampleSequelPersistor do
     include_context "use core context service"
-
-    let(:parameters) { {:hmdmc_number => "test", :supplier_sample_name => "test", :common_name => "test",
-                        :ebi_accession_number => "test", :sample_source => "test", :mother => "test", :father => "test",
-                        :sibling => "test", :gc_content => "test", :public_name => "test", :cohort => "test", 
-                        :storage_conditions => "test", :taxon_id => 1, :gender => "male", 
-                        :sample_type => "RNA", :volume => 1, :date_of_sample_collection => Time.now, 
-                        :is_sample_a_control => true, :is_re_submitted_sample => false} }
-    let(:cellular_material_parameters) { {:lysed => true} }
-    let(:dna_rna_parameters) { {:pre_amplified => true, :date_of_sample_extraction => Time.now,
-                                :extraction_method => "method", :concentration => 10, :sample_purified => false,
-                                :concentration_determined_by_which_method => "method"} }
-
-    let(:dna) { Sample::Dna.new(dna_rna_parameters) }
-    let(:rna) { Sample::Rna.new(dna_rna_parameters) }
-    let(:cellular_material) { Sample::CellularMaterial.new(cellular_material_parameters) }
-
+    include_context "sample factory"
 
     context "common sample" do
-      let(:sample) { Sample.new(parameters).generate_sanger_sample_id } 
+      let(:sample) { new_common_sample.generate_sanger_sample_id } 
       it_behaves_like "a sample"
     end
-
 
     context "sample with dna" do
-      let(:sample) do
-        s = Sample.new(parameters).generate_sanger_sample_id 
-        s.dna = dna
-        s
-      end
+      let(:sample) { new_sample_with_dna.generate_sanger_sample_id } 
       it_behaves_like "a sample"
 
       it "should modify the dna table" do
@@ -77,14 +58,9 @@ module Lims::ManagementApp
         end.to change { db[:dna].count }.by(1)
       end
     end
-
 
     context "sample with rna" do
-      let(:sample) do
-        s = Sample.new(parameters).generate_sanger_sample_id 
-        s.rna = rna
-        s
-      end
+      let(:sample) { new_sample_with_rna.generate_sanger_sample_id } 
       it_behaves_like "a sample"
 
       it "should modify the rna table" do
@@ -96,13 +72,8 @@ module Lims::ManagementApp
       end
     end
 
-
     context "sample with cellular material" do
-      let(:sample) do
-        s = Sample.new(parameters).generate_sanger_sample_id
-        s.cellular_material = cellular_material
-        s
-      end
+      let(:sample) { new_sample_with_cellular_material.generate_sanger_sample_id } 
       it_behaves_like "a sample"
 
       it "should modify the cellular material table" do
@@ -114,15 +85,21 @@ module Lims::ManagementApp
       end
     end
 
+    context "sample with genotyping" do
+      let(:sample) { new_sample_with_genotyping.generate_sanger_sample_id } 
+      it_behaves_like "a sample"
 
-    context "sample with dna, rna, cellular material" do
-      let(:sample) do
-        s = Sample.new(parameters).generate_sanger_sample_id
-        s.dna = dna
-        s.rna = rna
-        s.cellular_material = cellular_material
-        s
+      it "should modify the genotyping table" do
+        expect do
+          store.with_session do |session|
+            session << sample
+          end
+        end.to change { db[:genotyping].count }.by(1)
       end
+    end
+
+    context "sample with everything" do
+      let(:sample) { new_full_sample.generate_sanger_sample_id } 
       it_behaves_like "a sample"
 
       it "should modify the dna table" do
@@ -147,6 +124,14 @@ module Lims::ManagementApp
             session << sample
           end
         end.to change { db[:cellular_material].count }.by(1)
+      end
+
+      it "should modify the genotyping table" do
+        expect do
+          store.with_session do |session|
+            session << sample
+          end
+        end.to change { db[:genotyping].count }.by(1)
       end
     end
   end

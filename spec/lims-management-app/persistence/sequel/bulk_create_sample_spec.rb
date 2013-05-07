@@ -12,54 +12,21 @@ module Lims::ManagementApp
 
     shared_examples_for "sequel bulk creating samples" do
       context "common samples" do
-        it "modify the samples table" do
-          expect do
-            subject.call
-          end.to change { db[:samples].count }.by(quantity)
-        end
+        it_behaves_like "changing the table", :samples, 3
       end
 
       context "samples with dna" do
-        it "modify the samples table" do
-          expect do
-            subject.call
-          end.to change { db[:samples].count }.by(quantity)
-        end
-
-        it "modify the dna table" do
-          expect do
-            subject.call
-          end.to change { db[:dna].count }.by(quantity)
-        end
+        it_behaves_like "changing the table", :samples, 3
+        it_behaves_like "changing the table", :dna, 3
       end
 
       context "samples with dna, rna and cellular material" do
-        it "modify the samples table" do
-          expect do
-            subject.call
-          end.to change { db[:samples].count }.by(quantity)
-        end
-
-        it "modify the dna table" do
-          expect do
-            subject.call
-          end.to change { db[:dna].count }.by(quantity)
-        end
-
-        it "modify the rna table" do
-          expect do
-            subject.call
-          end.to change { db[:rna].count }.by(quantity)
-        end
-
-        it "modify the cellular_material table" do
-          expect do
-            subject.call
-          end.to change { db[:cellular_material].count }.by(quantity)
-        end
+        it_behaves_like "changing the table", :samples, 3
+        it_behaves_like "changing the table", :dna, 3
+        it_behaves_like "changing the table", :rna, 3
+        it_behaves_like "changing the table", :cellular_material, 3
       end
     end
-
 
     context "samples bulk creation" do
       let(:quantity) { 3 }

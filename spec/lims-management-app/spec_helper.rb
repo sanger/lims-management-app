@@ -1,5 +1,4 @@
-require 'lims-core/persistence/store'
-require 'lims-core/persistence/session'
+require 'lims-core/persistence'
 
 shared_examples "an action" do
   context "to be valid" do

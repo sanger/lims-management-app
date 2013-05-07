@@ -24,11 +24,26 @@ module Lims::ManagementApp
       sample
     end
 
+    def new_sample_with_genotyping
+      sample = new_common_sample
+      sample.genotyping = genotyping
+      sample
+    end
+
     def new_sample_with_dna_rna_cellular
       sample = new_common_sample
       sample.dna = dna
       sample.rna = rna
       sample.cellular_material = cellular_material
+      sample
+    end
+
+    def new_full_sample
+      sample = new_common_sample
+      sample.dna = dna
+      sample.rna = rna
+      sample.cellular_material = cellular_material
+      sample.genotyping = genotyping
       sample
     end
 
@@ -42,6 +57,10 @@ module Lims::ManagementApp
 
     def cellular_material
       Sample::CellularMaterial.new(cellular_material_parameters)
+    end
+
+    def genotyping
+      Sample::Genotyping.new(genotyping_parameters)
     end
 
     def common_sample_parameters(parameters = {})
@@ -83,8 +102,16 @@ module Lims::ManagementApp
       }.merge(parameters)
     end
 
+    def genotyping_parameters(parameters = {})
+      {
+        :country_of_origin => "United Kingdom",
+        :geographical_region => "Cambridgeshire",
+        :ethnicity => "english"
+      }.merge(parameters)
+    end
+
     def full_sample_parameters(parameters = {})
-      common_sample_parameters.merge({:dna => dna_parameters}).merge({:rna => rna_parameters}).merge({:cellular_material => cellular_material_parameters})
+      common_sample_parameters.merge({:dna => dna_parameters}).merge({:rna => rna_parameters}).merge({:cellular_material => cellular_material_parameters}).merge({:genotyping => genotyping_parameters})
     end
 
     def update_parameters(parameters)

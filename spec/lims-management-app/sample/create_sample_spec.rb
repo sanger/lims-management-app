@@ -15,7 +15,7 @@ module Lims::ManagementApp
         sample = result[:sample]
         sample.should be_a(Sample)
         full_sample_parameters.each do |k,v|
-          if [:dna, :rna, :cellular_material].include?(k)
+          if [:dna, :rna, :cellular_material, :genotyping].include?(k)
             v.each do |k2,v2|
               sample.send(k).send(k2).to_s.should == v2.to_s
             end

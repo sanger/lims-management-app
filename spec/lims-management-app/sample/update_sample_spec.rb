@@ -16,7 +16,7 @@ module Lims::ManagementApp
         sample.should be_a(Sample)
         updated_parameters.each do |k,v|
           v = DateTime.parse(v) if k.to_s =~ /date/
-          if [:dna, :rna, :cellular_material].include?(k)
+          if [:dna, :rna, :cellular_material, :genotyping].include?(k)
             v.each do |k2,v2|
               sample.send(k).send(k2).to_s.should == v2.to_s
             end
@@ -30,9 +30,6 @@ module Lims::ManagementApp
     include_context "sample factory"
     include_context "for application", "sample update"
     let!(:store) { Lims::Core::Persistence::Store.new }
-    let(:new_gender) { "Female" }
-    let(:new_sample_type) { "DNA Pathogen" }
-    let(:new_dna) { {:sample_purified => false} }
     let(:parameters) { 
       {
         :store => store, 
@@ -69,7 +66,7 @@ module Lims::ManagementApp
     context "valid action given a sample" do
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
-          a.sample = new_sample_with_dna_rna_cellular
+          a.sample = new_full_sample
           updated_parameters.each do |k,v|
             a.send("#{k}=", v)
           end

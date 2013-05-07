@@ -33,7 +33,7 @@ module Lims::ManagementApp
     include_context "sample factory"
     context "valid" do
       subject { 
-        sample = new_sample_with_dna_rna_cellular 
+        sample = new_full_sample 
         sample.generate_sanger_sample_id
         sample
       }
@@ -65,6 +65,7 @@ module Lims::ManagementApp
       it_has_a :dna
       it_has_a :rna
       it_has_a :cellular_material
+      it_has_a :genotyping
     end
 
 

@@ -13,53 +13,21 @@ module Lims::ManagementApp
     shared_examples_for "sequel bulk deleting samples" do
       context "common samples" do
         let(:samples) { [new_common_sample, new_common_sample] }
-        it "modify the samples table" do
-          expect do
-            subject.call
-          end.to change { db[:samples].count }.by(-samples.size)
-        end
+        it_behaves_like "changing the table", :samples, -2
       end
 
       context "samples with dna" do
         let(:samples) { [new_sample_with_dna, new_sample_with_dna] }
-        it "modify the samples table" do
-          expect do
-            subject.call
-          end.to change { db[:samples].count }.by(-samples.size)
-        end
-
-        it "modify the dna table" do
-          expect do
-            subject.call
-          end.to change { db[:dna].count }.by(-samples.size)
-        end
+        it_behaves_like "changing the table", :samples, -2
+        it_behaves_like "changing the table", :dna, -2
       end
 
       context "samples with dna, rna and cellular material" do
         let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
-        it "modify the samples table" do
-          expect do
-            subject.call
-          end.to change { db[:samples].count }.by(-samples.size)
-        end
-
-        it "modify the dna table" do
-          expect do
-            subject.call
-          end.to change { db[:dna].count }.by(-samples.size)
-        end
-
-        it "modify the rna table" do
-          expect do
-            subject.call
-          end.to change { db[:rna].count }.by(-samples.size)
-        end
-
-        it "modify the cellular_material table" do
-          expect do
-            subject.call
-          end.to change { db[:cellular_material].count }.by(-samples.size)
-        end
+        it_behaves_like "changing the table", :samples, -2
+        it_behaves_like "changing the table", :dna, -2
+        it_behaves_like "changing the table", :rna, -2
+        it_behaves_like "changing the table", :cellular_material, -2
       end
     end
 
@@ -83,7 +51,6 @@ module Lims::ManagementApp
 
       it_behaves_like "sequel bulk deleting samples"
     end
-
 
     context "with sanger sample ids" do
       let!(:sanger_sample_ids) do

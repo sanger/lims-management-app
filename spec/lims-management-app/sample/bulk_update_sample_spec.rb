@@ -16,7 +16,7 @@ module Lims::ManagementApp
           sample.should be_a(Sample)
           updated_parameters.each do |k,v|
             v = DateTime.parse(v) if k.to_s =~ /date/
-            if [:dna, :rna, :cellular_material].include?(k)
+            if [:dna, :rna, :cellular_material, :genotyping].include?(k)
               v.each do |k2,v2|
                 sample.send(k).send(k2).to_s.should == v2.to_s
               end
