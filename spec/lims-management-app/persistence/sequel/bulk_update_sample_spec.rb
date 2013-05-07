@@ -10,11 +10,12 @@ module Lims::ManagementApp
     include_context "for application", "bulk update"
     include_context "sequel store"
 
-    shared_examples_for "sequel bulk updating samples" do |samples_quantity, dna_quantity, rna_quantity, cellular_material_quantity|
+    shared_examples_for "sequel bulk updating samples" do |samples_quantity=0, dna_quantity=0, rna_quantity=0, cellular_material_quantity=0, genotyping_quantity=0|
       it_behaves_like "changing the table", :samples, samples_quantity
       it_behaves_like "changing the table", :dna, dna_quantity
       it_behaves_like "changing the table", :rna, rna_quantity
       it_behaves_like "changing the table", :cellular_material, cellular_material_quantity
+      it_behaves_like "changing the table", :genotyping, genotyping_quantity
     end
 
     context "with sample uuids" do
@@ -36,7 +37,7 @@ module Lims::ManagementApp
             a.supplier_sample_name = "new sample name"
           end
         }
-        it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0
+        it_behaves_like "sequel bulk updating samples"
       end
 
       context "with dna, rna, cellular material attributes updating common samples" do
@@ -63,6 +64,17 @@ module Lims::ManagementApp
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0
+      end
+
+      context "with genotyping attributes updating samples with dna, rna and cellular material" do
+        let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
+        subject {
+          described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.sample_uuids = sample_uuids
+            a.genotyping = genotyping_parameters 
+          end
+        }
+        it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0, 2
       end
     end
 
@@ -113,6 +125,17 @@ module Lims::ManagementApp
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0
+      end
+
+      context "with genotyping attributes updating samples with dna, rna and cellular material" do
+        let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
+        subject {
+          described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.sanger_sample_ids = sanger_sample_ids
+            a.genotyping = genotyping_parameters 
+          end
+        }
+        it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0, 2
       end
     end
   end
