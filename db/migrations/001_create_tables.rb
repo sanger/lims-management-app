@@ -7,6 +7,7 @@ Sequel.migration do
       foreign_key :dna_id, :dna, :key => :id
       foreign_key :rna_id, :rna, :key => :id
       foreign_key :cellular_material_id, :cellular_material, :key => :id
+      foreign_key :genotyping_id, :genotyping, :key => :id
       String :hmdmc_number
       String :supplier_sample_name
       String :common_name
@@ -31,8 +32,8 @@ Sequel.migration do
       unique :sanger_sample_id
     end
 
-    # genotyping_studies
-    create_table :genotyping_studies do
+    # genotyping
+    create_table :genotyping do
       primary_key :id
       String :country_of_origin
       String :geographical_region
