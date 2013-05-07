@@ -23,7 +23,7 @@ module Lims::ManagementApp
       # the sample object to verify the constraints.
       def delete_raw(object, id, *params)
         sample_id = super
-        components = [object.dna, object.rna, object.cellular_material]
+        components = [object.dna, object.rna, object.cellular_material, object.genotyping]
         components.each do |component|
           if component
             persistor = @session.persistor_for(component)
