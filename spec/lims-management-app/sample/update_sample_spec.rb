@@ -39,13 +39,29 @@ module Lims::ManagementApp
         :user => user, 
         :application => application,
         :sample => new_common_sample
-      }
+      }.merge(common_sample_parameters)
     }
     let(:updated_parameters) { update_parameters(full_sample_parameters) }
 
     context "invalid action" do
-      it "requires a sample or a sanger sample id" do
+      it "requires a sample" do
         described_class.new(parameters - [:sample]).valid?.should == false
+      end
+
+      it "requires a valid gender" do
+        described_class.new(parameters.merge({:gender => "dummy"})).valid?.should == false
+      end
+
+      it "is invalid if a human sample has a unknown gender" do
+        described_class.new(parameters.merge({:taxon_id => 9606, :gender => "Unknown"})).valid?.should == false
+      end
+
+      it "is invalid if a human sample has a not applicable gender" do
+        described_class.new(parameters.merge({:taxon_id => 9606, :gender => "Not applicable"})).valid?.should == false
+      end
+
+      it "requires a valid sample type" do
+        described_class.new(parameters.merge({:sample_type => "dummy"})).valid?.should == false
       end
     end
 
