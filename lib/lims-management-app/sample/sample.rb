@@ -2,6 +2,7 @@ require 'lims-core/resource'
 require 'lims-management-app/sample/dna/dna'
 require 'lims-management-app/sample/rna/rna'
 require 'lims-management-app/sample/cellular_material/cellular_material'
+require 'lims-management-app/sample/genotyping/genotyping'
 require 'lims-management-app/sample/validation_shared'
 require 'securerandom'
 
@@ -29,6 +30,7 @@ module Lims::ManagementApp
     attribute :dna, Dna, :required => false, :initializable => true
     attribute :rna, Rna, :required => false, :initializable => true
     attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
+    attribute :genotyping, Genotyping, :required => false, :initializable => true
 
     def generate_sanger_sample_id
       @sanger_sample_id = SangerSampleID.generate

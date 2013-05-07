@@ -7,7 +7,7 @@ module Lims::ManagementApp
 
       def content_to_stream(s, mime_type)
         object.attributes.each do |k,v|
-          next if k.to_s == "dna" || k.to_s == "rna" || k.to_s == "cellular_material"
+          next if ["dna", "rna", "cellular_material", "genotyping"].include?(k.to_s)
           s.add_key k
           s.add_value v
         end
@@ -15,6 +15,7 @@ module Lims::ManagementApp
         component_to_stream("dna", object.dna, s, mime_type)
         component_to_stream("rna", object.rna, s, mime_type)
         component_to_stream("cellular_material", object.cellular_material, s, mime_type)
+        component_to_stream("genotyping", object.genotyping, s, mime_type)
       end
 
       private

@@ -11,6 +11,7 @@ module Lims::ManagementApp
           when :dna then [:dna_id, save_component(v)]
           when :rna then [:rna_id, save_component(v)]
           when :cellular_material then [:cellular_material_id, save_component(v)]
+          when :genotyping then [:genotyping_id, save_component(v)]
           else [k,v]
           end
         end
@@ -36,6 +37,7 @@ module Lims::ManagementApp
           when :dna_id then [:dna, @session.dna[v]]
           when :rna_id then [:rna, @session.rna[v]]
           when :cellular_material_id then [:cellular_material, @session.cellular_material[v]]
+          when :genotyping_id then [:genotyping, @session.genotyping[v]]
           else [k,v]
           end
         end

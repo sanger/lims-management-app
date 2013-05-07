@@ -8,7 +8,8 @@ module Lims::ManagementApp
       :is_sample_a_control => Integer, :is_re_submitted_sample => Integer, :hmdmc_number => String,
       :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String, 
       :sibling => String, :gc_content => String, :public_name => String, :cohort => String, 
-      :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash}
+      :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash,
+      :genotyping => Hash}
 
       class SampleUuidNotFound < StandardError
       end
@@ -42,6 +43,7 @@ module Lims::ManagementApp
           sample.dna = Dna.new(dna) if dna && dna.size > 0
           sample.rna = Rna.new(rna) if rna && rna.size > 0
           sample.cellular_material = CellularMaterial.new(cellular_material) if cellular_material && cellular_material.size > 0
+          sample.genotyping = Genotyping.new(genotyping) if genotyping && genotyping.size > 0
           session << sample
           samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
         end
@@ -68,6 +70,7 @@ module Lims::ManagementApp
                                 when :dna then Dna.new
                                 when :rna then Rna.new
                                 when :cellular_material then CellularMaterial.new
+                                when :genotyping then Genotyping.new
                                 end
                     current_sample.send("#{k}=", component)
                   end

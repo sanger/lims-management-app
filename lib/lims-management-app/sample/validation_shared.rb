@@ -18,7 +18,6 @@ module Lims::ManagementApp
       # @return [Boolean]
       # Validate if gender value belongs to the gender enumeration
       # Case insensitive
-      # TODO: for human samples, it must be something else than Not applicable and Unknown
       def ensure_gender_value
         if gender
           GENDER.map(&:downcase).include?(gender.downcase)
