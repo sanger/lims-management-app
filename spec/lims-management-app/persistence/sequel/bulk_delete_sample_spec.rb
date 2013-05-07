@@ -14,12 +14,19 @@ module Lims::ManagementApp
       context "common samples" do
         let(:samples) { [new_common_sample, new_common_sample] }
         it_behaves_like "changing the table", :samples, -2
+        it_behaves_like "changing the table", :dna, 0
+        it_behaves_like "changing the table", :rna, 0
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 0
       end
 
       context "samples with dna" do
         let(:samples) { [new_sample_with_dna, new_sample_with_dna] }
         it_behaves_like "changing the table", :samples, -2
         it_behaves_like "changing the table", :dna, -2
+        it_behaves_like "changing the table", :rna, 0
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 0
       end
 
       context "samples with dna, rna and cellular material" do
@@ -28,6 +35,16 @@ module Lims::ManagementApp
         it_behaves_like "changing the table", :dna, -2
         it_behaves_like "changing the table", :rna, -2
         it_behaves_like "changing the table", :cellular_material, -2
+        it_behaves_like "changing the table", :genotyping, 0
+      end
+
+      context "samples with everything" do
+        let(:samples) { [new_full_sample, new_full_sample] }
+        it_behaves_like "changing the table", :samples, -2
+        it_behaves_like "changing the table", :dna, -2
+        it_behaves_like "changing the table", :rna, -2
+        it_behaves_like "changing the table", :cellular_material, -2
+        it_behaves_like "changing the table", :genotyping, -2
       end
     end
 

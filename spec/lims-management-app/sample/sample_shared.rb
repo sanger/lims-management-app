@@ -111,7 +111,14 @@ module Lims::ManagementApp
     end
 
     def full_sample_parameters(parameters = {})
-      common_sample_parameters.merge({:dna => dna_parameters}).merge({:rna => rna_parameters}).merge({:cellular_material => cellular_material_parameters}).merge({:genotyping => genotyping_parameters})
+      common_sample_parameters.merge(
+        {
+          :dna => dna_parameters, 
+          :rna => rna_parameters, 
+          :cellular_material => cellular_material_parameters, 
+          :genotyping => genotyping_parameters
+        }
+      )
     end
 
     def update_parameters(parameters)

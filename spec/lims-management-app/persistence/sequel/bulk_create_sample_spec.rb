@@ -12,19 +12,39 @@ module Lims::ManagementApp
 
     shared_examples_for "sequel bulk creating samples" do
       context "common samples" do
+        let(:parameters) { common_sample_parameters }
         it_behaves_like "changing the table", :samples, 3
+        it_behaves_like "changing the table", :dna, 0
+        it_behaves_like "changing the table", :rna, 0
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 0
       end
 
       context "samples with dna" do
+        let(:parameters) { common_sample_parameters.merge(:dna => dna_parameters) } 
         it_behaves_like "changing the table", :samples, 3
         it_behaves_like "changing the table", :dna, 3
+        it_behaves_like "changing the table", :rna, 0
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 0
       end
 
-      context "samples with dna, rna and cellular material" do
+      context "samples with rna and genotyping" do
+        let(:parameters) { common_sample_parameters.merge({:rna => rna_parameters, :genotyping => genotyping_parameters}) }
+        it_behaves_like "changing the table", :samples, 3
+        it_behaves_like "changing the table", :dna, 0
+        it_behaves_like "changing the table", :rna, 3
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 3
+      end
+
+      context "samples with everything" do
+        let(:parameters) { full_sample_parameters } 
         it_behaves_like "changing the table", :samples, 3
         it_behaves_like "changing the table", :dna, 3
         it_behaves_like "changing the table", :rna, 3
         it_behaves_like "changing the table", :cellular_material, 3
+        it_behaves_like "changing the table", :genotyping, 3
       end
     end
 
@@ -33,7 +53,7 @@ module Lims::ManagementApp
 
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
-          full_sample_parameters.each do |k,v|
+          parameters.each do |k,v|
             a.send("#{k}=", v)
           end
           a.quantity = quantity
