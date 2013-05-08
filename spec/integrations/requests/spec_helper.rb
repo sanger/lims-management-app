@@ -1,5 +1,4 @@
 require 'integrations/spec_helper'
-require 'lims-management-app/sample/all'
 
 def set_uuid_start(*ids)
   $uuid_sequence = ids.inject(0) do |m,id|

@@ -3,7 +3,6 @@ require 'spec_helper'
 require 'logger'
 require 'yaml'
 require 'sequel'
-#require 'lims-core/persistence/sequel/store' 
 Sequel.extension :migration 
 
 Loggers = []

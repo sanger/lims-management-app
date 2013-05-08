@@ -160,7 +160,8 @@ describe "bulk_create_new_samples", :sample => true do
         "sample_type": "RNA",
         "dna": null,
         "rna": null,
-        "cellular_material": null
+        "cellular_material": null,
+        "genotyping": null
     }
 }
     EOD

@@ -159,6 +159,7 @@ describe "bulk_update_samples", :sample => true do
         "dna": null,
         "rna": null,
         "cellular_material": null,
+        "genotyping": null,
         "sample_uuids": [
             "11111111-2222-3333-4444-555555555555",
             "11111111-2222-3333-4444-666666666666"

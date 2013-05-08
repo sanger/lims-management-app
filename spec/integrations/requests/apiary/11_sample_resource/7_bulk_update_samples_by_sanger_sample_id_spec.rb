@@ -159,6 +159,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
         "dna": null,
         "rna": null,
         "cellular_material": null,
+        "genotyping": null,
         "sample_uuids": null,
         "sanger_sample_ids": [
             "S2-test1-ID",
