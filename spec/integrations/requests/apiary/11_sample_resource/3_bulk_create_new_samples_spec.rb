@@ -35,7 +35,31 @@ describe "bulk_create_new_samples", :sample => true do
         "gc_content": "content",
         "public_name": "name",
         "cohort": "cohort",
-        "storage_conditions": "conditions"
+        "storage_conditions": "conditions",
+        "dna": {
+            "pre_amplified": true,
+            "date_of_sample_extraction": "2013-04-25 11:10 UTC",
+            "extraction_method": "method",
+            "concentration": 20,
+            "sample_purified": false,
+            "concentration_determined_by_which_method": "method"
+        },
+        "rna": {
+            "pre_amplified": true,
+            "date_of_sample_extraction": "2013-04-25 11:10 UTC",
+            "extraction_method": "method",
+            "concentration": 20,
+            "sample_purified": false,
+            "concentration_determined_by_which_method": "method"
+        },
+        "cellular_material": {
+            "lysed": true
+        },
+        "genotyping": {
+            "country_of_origin": "England",
+            "geographical_region": "UK",
+            "ethnicity": "english"
+        }
     }
 }
     EOD
@@ -76,7 +100,31 @@ describe "bulk_create_new_samples", :sample => true do
                     "volume": 100,
                     "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
-                    "is_re_submitted_sample": false
+                    "is_re_submitted_sample": false,
+                    "dna": {
+                        "pre_amplified": true,
+                        "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                        "extraction_method": "method",
+                        "concentration": 20,
+                        "sample_purified": false,
+                        "concentration_determined_by_which_method": "method"
+                    },
+                    "rna": {
+                        "pre_amplified": true,
+                        "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                        "extraction_method": "method",
+                        "concentration": 20,
+                        "sample_purified": false,
+                        "concentration_determined_by_which_method": "method"
+                    },
+                    "cellular_material": {
+                        "lysed": true
+                    },
+                    "genotyping": {
+                        "country_of_origin": "England",
+                        "geographical_region": "UK",
+                        "ethnicity": "english"
+                    }
                 },
                 {
                     "actions": {
@@ -105,7 +153,31 @@ describe "bulk_create_new_samples", :sample => true do
                     "volume": 100,
                     "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
-                    "is_re_submitted_sample": false
+                    "is_re_submitted_sample": false,
+                    "dna": {
+                        "pre_amplified": true,
+                        "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                        "extraction_method": "method",
+                        "concentration": 20,
+                        "sample_purified": false,
+                        "concentration_determined_by_which_method": "method"
+                    },
+                    "rna": {
+                        "pre_amplified": true,
+                        "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                        "extraction_method": "method",
+                        "concentration": 20,
+                        "sample_purified": false,
+                        "concentration_determined_by_which_method": "method"
+                    },
+                    "cellular_material": {
+                        "lysed": true
+                    },
+                    "genotyping": {
+                        "country_of_origin": "England",
+                        "geographical_region": "UK",
+                        "ethnicity": "english"
+                    }
                 },
                 {
                     "actions": {
@@ -134,7 +206,31 @@ describe "bulk_create_new_samples", :sample => true do
                     "volume": 100,
                     "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
-                    "is_re_submitted_sample": false
+                    "is_re_submitted_sample": false,
+                    "dna": {
+                        "pre_amplified": true,
+                        "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                        "extraction_method": "method",
+                        "concentration": 20,
+                        "sample_purified": false,
+                        "concentration_determined_by_which_method": "method"
+                    },
+                    "rna": {
+                        "pre_amplified": true,
+                        "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                        "extraction_method": "method",
+                        "concentration": 20,
+                        "sample_purified": false,
+                        "concentration_determined_by_which_method": "method"
+                    },
+                    "cellular_material": {
+                        "lysed": true
+                    },
+                    "genotyping": {
+                        "country_of_origin": "England",
+                        "geographical_region": "UK",
+                        "ethnicity": "english"
+                    }
                 }
             ]
         },
@@ -158,10 +254,30 @@ describe "bulk_create_new_samples", :sample => true do
         "storage_conditions": "conditions",
         "gender": "Male",
         "sample_type": "RNA",
-        "dna": null,
-        "rna": null,
-        "cellular_material": null,
-        "genotyping": null
+        "dna": {
+            "pre_amplified": true,
+            "date_of_sample_extraction": "2013-04-25 11:10 UTC",
+            "extraction_method": "method",
+            "concentration": 20,
+            "sample_purified": false,
+            "concentration_determined_by_which_method": "method"
+        },
+        "rna": {
+            "pre_amplified": true,
+            "date_of_sample_extraction": "2013-04-25 11:10 UTC",
+            "extraction_method": "method",
+            "concentration": 20,
+            "sample_purified": false,
+            "concentration_determined_by_which_method": "method"
+        },
+        "cellular_material": {
+            "lysed": true
+        },
+        "genotyping": {
+            "country_of_origin": "England",
+            "geographical_region": "UK",
+            "ethnicity": "english"
+        }
     }
 }
     EOD
