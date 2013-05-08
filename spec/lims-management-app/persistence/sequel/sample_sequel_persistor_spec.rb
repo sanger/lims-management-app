@@ -42,12 +42,12 @@ module Lims::ManagementApp
     include_context "sample factory"
 
     context "common sample" do
-      let(:sample) { new_common_sample.generate_sanger_sample_id } 
+      let(:sample) { new_common_sample } 
       it_behaves_like "a sample"
     end
 
     context "sample with dna" do
-      let(:sample) { new_sample_with_dna.generate_sanger_sample_id } 
+      let(:sample) { new_sample_with_dna } 
       it_behaves_like "a sample"
 
       it "should modify the dna table" do
@@ -60,7 +60,7 @@ module Lims::ManagementApp
     end
 
     context "sample with rna" do
-      let(:sample) { new_sample_with_rna.generate_sanger_sample_id } 
+      let(:sample) { new_sample_with_rna } 
       it_behaves_like "a sample"
 
       it "should modify the rna table" do
@@ -73,7 +73,7 @@ module Lims::ManagementApp
     end
 
     context "sample with cellular material" do
-      let(:sample) { new_sample_with_cellular_material.generate_sanger_sample_id } 
+      let(:sample) { new_sample_with_cellular_material } 
       it_behaves_like "a sample"
 
       it "should modify the cellular material table" do
@@ -86,7 +86,7 @@ module Lims::ManagementApp
     end
 
     context "sample with genotyping" do
-      let(:sample) { new_sample_with_genotyping.generate_sanger_sample_id } 
+      let(:sample) { new_sample_with_genotyping } 
       it_behaves_like "a sample"
 
       it "should modify the genotyping table" do
@@ -99,7 +99,7 @@ module Lims::ManagementApp
     end
 
     context "sample with everything" do
-      let(:sample) { new_full_sample.generate_sanger_sample_id } 
+      let(:sample) { new_full_sample } 
       it_behaves_like "a sample"
 
       it "should modify the dna table" do

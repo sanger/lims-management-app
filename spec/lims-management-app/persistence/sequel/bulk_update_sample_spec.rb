@@ -84,7 +84,6 @@ module Lims::ManagementApp
         samples.map do |sample|
           store.with_session do |session|
             session << sample
-            sample.generate_sanger_sample_id
             lambda { sample.sanger_sample_id }
           end.call
         end

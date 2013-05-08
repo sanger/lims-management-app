@@ -38,7 +38,6 @@ describe "update_a_sample", :sample => true do
         "lysed" => true
       }
     })
-    sample.generate_sanger_sample_id
     
     save_with_uuid sample => [1,2,3,4,5]
 

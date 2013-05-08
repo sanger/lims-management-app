@@ -118,7 +118,6 @@ module Lims::ManagementApp
             [new_common_sample, new_common_sample].map do |sample|
               store.with_session do |session|
                 session << sample
-                sample.generate_sanger_sample_id
                 lambda { sample.sanger_sample_id }
               end.call
             end
@@ -131,7 +130,6 @@ module Lims::ManagementApp
             id1 = store.with_session do |session|
               sample = new_common_sample
               session << sample
-              sample.generate_sanger_sample_id
               lambda { sample.sanger_sample_id }
             end.call
             [id1, "dummy_id"]

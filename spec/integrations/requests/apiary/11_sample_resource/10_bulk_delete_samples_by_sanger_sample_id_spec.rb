@@ -30,7 +30,6 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
         "volume" => 5000,
         "storage_conditions" => "conditions"
     })
-    sample.generate_sanger_sample_id
     
     sample2 = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
@@ -53,7 +52,6 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
         "volume" => 5000,
         "storage_conditions" => "conditions"
     })
-    sample2.generate_sanger_sample_id
     
     save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
 

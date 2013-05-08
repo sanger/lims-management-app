@@ -34,7 +34,6 @@ module Lims::ManagementApp
     context "valid" do
       subject { 
         sample = new_full_sample 
-        sample.generate_sanger_sample_id
         sample
       }
 
