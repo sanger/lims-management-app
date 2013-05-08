@@ -8,6 +8,8 @@ require 'lims-management-app/sample/all'
 require 'lims-api/server'
 require 'lims-api/context_service'
 
+require 'hide_resources'
+
 module Lims
   module ManagementApp
 
