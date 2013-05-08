@@ -32,12 +32,18 @@ module Lims::ManagementApp
     attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
     attribute :genotyping, Genotyping, :required => false, :initializable => true
 
+    def initialize(*args, &block)
+      parameters = args.first.rekey { |k| k.to_sym }
+      generate_sanger_sample_id unless parameters[:sanger_sample_id]
+      super
+    end
+
+    private
+
     def generate_sanger_sample_id
       @sanger_sample_id = SangerSampleID.generate
       self
     end
-
-    private
 
     module SangerSampleID
       # @param [String,Integer] unique identifier

@@ -39,7 +39,6 @@ module Lims::ManagementApp
 
         sample_quantity.times do
           sample = Sample.new(attributes)
-          sample.generate_sanger_sample_id
           sample.dna = Dna.new(dna) if dna && dna.size > 0
           sample.rna = Rna.new(rna) if rna && rna.size > 0
           sample.cellular_material = CellularMaterial.new(cellular_material) if cellular_material && cellular_material.size > 0
