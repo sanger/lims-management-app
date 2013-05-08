@@ -34,7 +34,7 @@ module Lims::ManagementApp
 
     def initialize(*args, &block)
       parameters = args.first.rekey { |k| k.to_sym } if args.first
-      generate_sanger_sample_id unless parameters[:sanger_sample_id]
+      generate_sanger_sample_id unless parameters.nil? || parameters[:sanger_sample_id]
       super
     end
 
