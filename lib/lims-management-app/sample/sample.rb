@@ -33,7 +33,7 @@ module Lims::ManagementApp
     attribute :genotyping, Genotyping, :required => false, :initializable => true
 
     def initialize(*args, &block)
-      parameters = args.first.rekey { |k| k.to_sym }
+      parameters = args.first.rekey { |k| k.to_sym } if args.first
       generate_sanger_sample_id unless parameters[:sanger_sample_id]
       super
     end
