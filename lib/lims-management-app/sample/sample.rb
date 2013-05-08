@@ -50,7 +50,7 @@ module Lims::ManagementApp
       end
 
       def self.unique_identifier
-        SecureRandom.hex(10)
+        SecureRandom.uuid.gsub(/-/, "")
       end
     end
   end
