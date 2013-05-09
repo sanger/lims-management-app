@@ -10,17 +10,40 @@ require 'logger'
 require 'rubygems'
 require 'ruby-debug'
 
-DB = Sequel.sqlite('dev.db')
-  
+def db_init
+  config_environment = @config["db_environment"]
+  @db_config = YAML.load_file(File.join("config", "database.yml"))
+  db_adapter = @db_config[config_environment]["adapter"]
+  database = @db_config[config_environment]["database"]
+  case db_adapter
+  when "sqlite"
+    @db = Sequel.sqlite(database)
+  when "mysql", "mysql2"
+    db_user = @db_config[config_environment]["username"]
+    db_password = @db_config[config_environment]["password"]
+    @db = Sequel.connect(:adapter => db_adapter,
+      :user => db_user,
+      :database => database,
+      :password => db_password)
+  else
+    @logger.error("Not supported database has been configured!")
+    abort
+  end
+end
+
 def initialize_app
+  @logger = Logger.new($stdout)
+  @logger.level = Logger::DEBUG
+
   @config = YAML.load_file(File.join("config", "taxonomy.yml"))
   @url = @config["url"]
   @types_to_process = @config["types_to_process"]
   @taxdump_file_name = @config["taxdump_file_name"]
   @taxonomy_names_file_name = @config["taxonomy_names_file_name"]
   @path = Dir.mktmpdir
-  @logger = Logger.new($stdout)
-  @logger.level = Logger::DEBUG
+
+  # database initialization
+  db_init
 end
 
 def execution_completed
@@ -29,7 +52,6 @@ def execution_completed
 end
 
 def save_file(filename, url)
-#  FileUtils.mkpath(@path) unless File.exists?(@path)
   began_at = Time.now
   @logger.info("Started saving temporary file #{filename} in the following location: #{@path}")
   File.open("#{@path}/#{filename}", "wb") do |taxdump_local|
@@ -82,7 +104,7 @@ end
 def insert_data_to_tmp_taxonomy_table
   began_at = Time.now
   @logger.info("Started inserting data to tmp_taxonomy table")
-  ds = DB[:tmp_taxonomies]
+  ds = @db[:tmp_taxonomies]
   File.open("#{@path}/#{@taxonomy_names_file_name}").each_line do |line|
     element = line.gsub(/\t/,'').split('|')
     type = element[3]
@@ -99,9 +121,9 @@ def process_new_taxonomy_data
   began_at = Time.now
   @logger.info("Started processing new taxonomy data to the taxonomies table.")
 
-  ds_taxonomies = DB[:taxonomies]
-  ds_tmp = DB[:tmp_taxonomies]
-  @taxon_ids_from_db = DB.fetch("SELECT DISTINCT taxon_id FROM taxonomies").all
+  ds_taxonomies = @db[:taxonomies]
+  ds_tmp = @db[:tmp_taxonomies]
+  @taxon_ids_from_db = @db.fetch("SELECT DISTINCT taxon_id FROM taxonomies").all
 
   @taxon_ids_from_db.each do |taxon_id_db|
     # taxon_id from the taxonomy table
@@ -152,7 +174,7 @@ def process_new_taxonomy_data
 
   # moves (copy and delete) the remainder taxonomies from the tmp table to the taxonomies table as new ones
   @logger.info("Starts adding the brand new taxonomy data to the taxonomies table.")
-  remainder_taxonomies = ds_tmp.all #DB.fetch("SELECT * FROM tmp_taxonomies").all
+  remainder_taxonomies = ds_tmp.all
   remainder_taxonomies.each do |new_taxonomy|
     ds_taxonomies.insert(:taxon_id => new_taxonomy[:taxon_id], 
       :name => new_taxonomy[:name],

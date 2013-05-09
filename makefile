@@ -5,7 +5,7 @@ migrate_test_mysql:
 	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e test config/database.yml
 migrate_dev_mysql:
 	mysql -uroot -p -e "DROP DATABASE IF EXISTS development; CREATE DATABASE development DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
-	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e development config/database.yml
+	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e development_mysql config/database.yml
 migrate_test:
 	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e test config/database.yml
 migrate_dev:
