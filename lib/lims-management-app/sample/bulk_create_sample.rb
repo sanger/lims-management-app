@@ -18,7 +18,7 @@ module Lims::ManagementApp
       # required attributes
       attribute :gender, String, :required => true
       attribute :sample_type, String, :required => true
-      attribute :taxon_id, Numeric, :required => true
+      attribute :scientific_taxon_id, Numeric, :required => true
       attribute :supplier_sample_name, String, :required => true
       attribute :common_name, String, :required => true
 

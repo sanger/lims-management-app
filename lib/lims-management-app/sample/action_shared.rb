@@ -101,7 +101,7 @@ module Lims::ManagementApp
       # @return [Bool]
       # Return true if name is a specific parameter for a sample
       def is_a_sample_attribute(name)
-        attributes = ATTRIBUTES.keys | [:gender, :sample_type, :taxon_id, :supplier_sample_name, :common_name]
+        attributes = ATTRIBUTES.keys | [:gender, :sample_type, :scientific_taxon_id, :supplier_sample_name, :common_name]
         attributes.include?(name)
       end
 

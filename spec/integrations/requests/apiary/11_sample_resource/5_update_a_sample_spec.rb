@@ -10,7 +10,7 @@ describe "update_a_sample", :sample => true do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
-        "taxon_id" => 1,
+        "scientific_taxon_id" => 1,
         "date_of_sample_collection" => "2013-04-25 10:27 UTC",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
@@ -86,7 +86,7 @@ describe "update_a_sample", :sample => true do
         "public_name": "name",
         "cohort": "cohort",
         "storage_conditions": "conditions",
-        "taxon_id": 1,
+        "scientific_taxon_id": 1,
         "volume": 1000,
         "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
         "is_sample_a_control": true,

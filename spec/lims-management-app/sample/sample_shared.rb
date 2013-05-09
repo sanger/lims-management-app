@@ -68,7 +68,7 @@ module Lims::ManagementApp
         :hmdmc_number => "test", :supplier_sample_name => "test", :common_name => "test",
         :ebi_accession_number => "test", :sample_source => "test", :mother => "test", :father => "test",
         :sibling => "test", :gc_content => "test", :public_name => "test", :cohort => "test", 
-        :storage_conditions => "test", :taxon_id => 1, :gender => "male",
+        :storage_conditions => "test", :scientific_taxon_id => 1, :gender => "male",
         :sample_type => "RNA", :volume => 1, :date_of_sample_collection => DateTime.now, 
         :is_sample_a_control => true, :is_re_submitted_sample => false
       }.merge(parameters)
