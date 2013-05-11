@@ -1,7 +1,5 @@
 1|HomoSapiens||scientific name|
 1|mankind||common name|
-1|man||common name|
 2|stilton loving mouse||scientific name|
-2|mouse||common name|
 5|fish||common name|
 5|zebra fish||scientific name|

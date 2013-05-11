@@ -10,12 +10,7 @@ Sequel.migration do
       Date :deleted
     end
 
-    create_table :tmp_taxonomies do
-      primary_key :id
-      Integer :taxon_id
-      String :name
-      String :type
-    end
+    add_index :taxonomies, :taxon_id
 
     alter_table :samples do
       add_column :common_taxon_id, Integer

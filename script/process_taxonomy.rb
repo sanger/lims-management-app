@@ -10,6 +10,8 @@ require 'logger'
 require 'rubygems'
 require 'ruby-debug'
 
+$stdout.sync = true
+
 def db_init
   config_environment = @config["db_environment"]
   @db_config = YAML.load_file(File.join("config", "database.yml"))
@@ -29,6 +31,17 @@ def db_init
     @logger.error("Not supported database has been configured!")
     abort
   end
+
+  @db.create_table :tmp_taxonomies do
+    primary_key :id
+    Integer :taxon_id
+    String :name
+    String :type
+  end
+
+  @db.add_index :tmp_taxonomies, :id
+  @db.add_index :tmp_taxonomies, :taxon_id
+  @db.add_index :tmp_taxonomies, :name
 end
 
 def initialize_app
@@ -47,8 +60,8 @@ def initialize_app
 end
 
 def execution_completed
+  @db.drop_table(:tmp_taxonomies)
   FileUtils.rm_r @path
-  @logger.info("New taxonomy names has been processed and the database has been updated!")
 end
 
 def save_file(filename, url)
@@ -98,23 +111,40 @@ def download_and_unzip_taxonomy_file
   else
     false
   end
-  
+end
+
+def inserting_bulk_data(ds, data_to_process)
+  # I had to slice multi insert to several part,
+  # because MySQL has timed out with a very large amount of bulk inserts
+  while(!data_to_process.empty?) do
+    data_to_insert = data_to_process.slice!(0,200000)
+    ds.multi_insert(data_to_insert)
+    print '.'
+  end
 end
 
 def insert_data_to_tmp_taxonomy_table
   began_at = Time.now
-  @logger.info("Started inserting data to tmp_taxonomy table")
+  @logger.info("Started inserting data to tmp_taxonomies table")
   ds = @db[:tmp_taxonomies]
+  data_to_process = []
   File.open("#{@path}/#{@taxonomy_names_file_name}").each_line do |line|
     element = line.gsub(/\t/,'').split('|')
     type = element[3]
+    data = {}
 
     if @types_to_process.include?(type)
-      ds.insert(:taxon_id => element[0], :name => element[1], :type => type)
+      data[:taxon_id] = element[0]
+      data[:name] = element[1]
+      data[:type] = type
+      data_to_process << data
     end
   end
+
+  inserting_bulk_data(ds, data_to_process)
+
   spent_time = Time.now - began_at
-  @logger.info("Finished inserting data to tmp_taxonomy table in #{spent_time.to_s} seconds.")
+  @logger.info("Finished inserting data to tmp_taxonomies table in #{spent_time.to_s} seconds.")
 end
 
 def process_new_taxonomy_data
@@ -123,64 +153,103 @@ def process_new_taxonomy_data
 
   ds_taxonomies = @db[:taxonomies]
   ds_tmp = @db[:tmp_taxonomies]
-  @taxon_ids_from_db = @db.fetch("SELECT DISTINCT taxon_id FROM taxonomies").all
+  today = Date.today.to_s
+  @tmp_taxon_ids_for_deletion = []
 
-  @taxon_ids_from_db.each do |taxon_id_db|
-    # taxon_id from the taxonomy table
-    existing_taxon_id = taxon_id_db[:taxon_id]
-
-    # select all new taxonomies from the tmp_taxonomies table with the existing_taxon_id
-    new_elements = ds_tmp.where(:taxon_id => existing_taxon_id).all
-
-    # check if the element is still exist?
-    if new_elements.empty?
-      # elements with this taxon id is not existing in the new taxonomy data,
-      # so we should mark them as deleted
-      ds_taxonomies.where(:taxon_id => existing_taxon_id).update(:deleted => Date.today.to_s)
-    else
-      new_common_name_ids = []
-      new_elements.each do |new_element|
-        case new_element[:type]
-        when "scientific name"
-          old_scientific_elements = ds_taxonomies.where(:taxon_id => existing_taxon_id, :type => 'scientific name').all
-          old_scientific_element = old_scientific_elements[0]
-          if old_scientific_element[:name] != new_element[:name]
-            # update the current record
-            ds_taxonomies.where(:id => old_scientific_element[:id]).update(:deleted => Date.today.to_s)
-
-            # insert the new taxonomy
-            ds_taxonomies.insert(:overrides_id => old_scientific_element[:id], :taxon_id => new_element[:taxon_id], :name => new_element[:name], :type => new_element[:type], :created => Date.today.to_s)
-          end
-        when "common name"
-          old_common_element = 
-            ds_taxonomies.where(:taxon_id => existing_taxon_id, :type => 'common name', :name => new_element[:name]).all
-          if old_common_element.empty?
-            # add new taxonomy element to the DB
-            new_common_element_id = ds_taxonomies.insert(:taxon_id => new_element[:taxon_id], :name => new_element[:name], :type => new_element[:type], :created => Date.today.to_s)
-            new_common_name_ids << new_common_element_id
-          else
-            new_common_name_ids << old_common_element[0][:id]
-          end
-        end
-      end
-
-      # marks the old common name elements as deleted, which not exists in the new taxonomy data
-      ds_taxonomies.where(:type => 'common name', :taxon_id => existing_taxon_id).exclude(:id => new_common_name_ids).update(:deleted => Date.today.to_s)
-
-      # deletes the processed record from the temp_taxonomies table
-      ds_tmp.where(:taxon_id => existing_taxon_id).delete
-    end
+  # removed taxonomies -> mark them as deleted
+  ids_for_mark_deleted = []
+  removed_taxonomies = @db["SELECT l.id FROM taxonomies l LEFT JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id WHERE r.taxon_id IS NULL"].all
+  removed_taxonomies.each do |removed_element|
+    ids_for_mark_deleted << removed_element[:id]
+  end
+  unless ids_for_mark_deleted.empty?
+    @logger.info("Started processing removed taxonomy data.")
+    ds_taxonomies.where('id IN ?', ids_for_mark_deleted).update(:deleted => today)
+    @logger.info("Removed taxonomy data has been processed.")
   end
 
-  # moves (copy and delete) the remainder taxonomies from the tmp table to the taxonomies table as new ones
-  @logger.info("Starts adding the brand new taxonomy data to the taxonomies table.")
-  remainder_taxonomies = ds_tmp.all
-  remainder_taxonomies.each do |new_taxonomy|
-    ds_taxonomies.insert(:taxon_id => new_taxonomy[:taxon_id], 
-      :name => new_taxonomy[:name],
-      :type => new_taxonomy[:type],
-      :created => Date.today.to_s)
-    ds_tmp.where(:id => new_taxonomy[:id]).delete
+  # new taxonomies -> add them to the taxonomies table
+  new_taxonomies_to_process = []
+  new_taxonomies = @db["SELECT r.taxon_id, r.name, r.type FROM taxonomies l RIGHT JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id WHERE l.taxon_id IS NULL"].all
+  new_taxonomies.each do |new_element|
+    new_element[:created] = today
+    new_taxonomies_to_process << new_element
+    @tmp_taxon_ids_for_deletion << new_element[:taxon_id]
+  end
+  unless new_taxonomies_to_process.empty?
+    @logger.info("Started processing new taxonomy data.")
+    inserting_bulk_data(ds_taxonomies, new_taxonomies_to_process)
+    @logger.info("New taxonomy data has been processed.")
+  end
+
+  # process changed elements
+  # process changed scientific names
+  ids_for_mark_deleted = []
+  changed_scientific_elements = []
+  changed_scientific_taxonomies =
+    @db["SELECT l.id ,r.taxon_id, r.name, r.type FROM taxonomies l INNER JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id AND l.type = r.type AND l.type ='scientific name' WHERE l.name != r.name AND l.deleted IS NULL"].all
+  changed_scientific_taxonomies.each do |changed_element|
+    ids_for_mark_deleted << changed_element[:id]
+
+    # creating new element array for bulk insert
+    changed_element[:created] = today
+    changed_scientific_elements << changed_element
+  end
+  # update the removed scientific record as deleted
+  unless ids_for_mark_deleted.empty?
+    @logger.info("Started processing removed scientific names.")
+    ds_taxonomies.where('id IN ?', ids_for_mark_deleted).update(:deleted => today)
+    @logger.info("Removed scientific names has been processed.")
+  end
+  # insert the new scientific names (changed ones)
+  unless changed_scientific_elements.empty?
+    @logger.info("Started processing new (changed) scientific names.")
+    inserting_bulk_data(ds_taxonomies, changed_scientific_elements)
+    @logger.info("Finished processing new (changed) scientific names.")
+  end
+
+  # process added common names
+  added_common_names = []
+  added_common_taxonomies =
+    @db["SELECT DISTINCT r.taxon_id, r.name AS new_name, r.type FROM taxonomies l INNER JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id AND l.type = r.type AND l.type ='common name' WHERE l.name != r.name HAVING new_name NOT IN (SELECT name FROM taxonomies t2 WHERE t2.taxon_id = r.taxon_id)"].all
+  added_common_taxonomies.each do |added_element|
+    added_element[:name] = added_element.delete(:new_name)
+    added_element[:created] = today
+    added_common_names << added_element
+  end
+  # insert newly added common names
+  unless added_common_names.empty?
+    @logger.info("Started processing newly added common names.")
+    inserting_bulk_data(ds_taxonomies, added_common_names)
+    @logger.info("Finished processing newly added common names.")
+  end
+
+  # process removed common names
+  ids_for_mark_deleted = []
+  removed_common_taxonomies =
+    @db["SELECT DISTINCT l.id FROM taxonomies l INNER JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id AND l.type ='common name' AND l.name NOT IN (SELECT name from tmp_taxonomies)"].all
+  removed_common_taxonomies.each do |removed_element|
+    ids_for_mark_deleted << removed_element[:id] unless removed_element[:id].nil?
+  end
+  # update the removed common names as deleted
+  unless ids_for_mark_deleted.empty?
+    @logger.info("Started updating the removed common names as deleted.")
+    ds_taxonomies.where('id IN ?', ids_for_mark_deleted).update(:deleted => today)
+    @logger.info("Finished updating the removed common names as deleted.")
+  end
+
+  # reappeared record, which are currently marked as deleted -> set deleted to NULL
+  ids_for_unmark_as_deleted = []
+  reappeared_common_taxonomies =
+    @db["SELECT l.id FROM taxonomies l INNER JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id AND l.type = r.type AND l.type ='common name' AND l.name = r.name WHERE l.deleted IS NOT NULL"].all
+  reappeared_common_taxonomies.each do |reappeared_element|
+    ids_for_unmark_as_deleted << reappeared_element[:id] unless reappeared_element[:id].nil?
+  end
+  # update the reappered record and set the deleted flag as NULL
+  unless ids_for_unmark_as_deleted.empty?
+    @logger.info("Started updating the reappeared common names as not deleted.")
+    ds_taxonomies.where('id IN ?', ids_for_unmark_as_deleted).update(:deleted => nil)
+    @logger.info("Finished updating the reappeared common names as not deleted.")
   end
 
   spent_time = Time.now - began_at
@@ -190,6 +259,8 @@ end
 def create_update_taxonomy
   initialize_app
   valid_file = download_and_unzip_taxonomy_file
+#  valid_file = true
+#  @path = "./script/data"
 
   if valid_file
     insert_data_to_tmp_taxonomy_table
@@ -198,9 +269,13 @@ def create_update_taxonomy
     @logger.error("The downloaded #{@taxdump_file_name} MD5 checksum was invalid.")
     @logger.error("The #{@taxdump_file_name} MD5 checksum: #{@md5_taxonomy_file}.")
     @logger.error("The valid MD5 checksum: #{@md5_cheksum}.")
+    @logger.error("The new taxonomy names processing has been failed and the database has not been updated!")
+    execution_completed
+    abort
   end
 
   execution_completed
+  @logger.info("New taxonomy names has been processed and the database has been updated!")
 end
 
 create_update_taxonomy
