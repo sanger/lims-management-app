@@ -7,8 +7,6 @@ require 'zlib'
 require 'rubygems/package'
 
 require 'logger'
-require 'rubygems'
-require 'ruby-debug'
 
 $stdout.sync = true
 
@@ -39,7 +37,6 @@ def db_init
     String :type
   end
 
-  @db.add_index :tmp_taxonomies, :id
   @db.add_index :tmp_taxonomies, :taxon_id
   @db.add_index :tmp_taxonomies, :name
 end
@@ -158,7 +155,7 @@ def process_new_taxonomy_data
 
   # removed taxonomies -> mark them as deleted
   ids_for_mark_deleted = []
-  removed_taxonomies = @db["SELECT l.id FROM taxonomies l LEFT JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id WHERE r.taxon_id IS NULL"].all
+  removed_taxonomies = @db["SELECT l.id FROM taxonomies l LEFT JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id WHERE r.taxon_id IS NULL AND l.deleted IS NULL"].all
   removed_taxonomies.each do |removed_element|
     ids_for_mark_deleted << removed_element[:id]
   end
@@ -192,6 +189,7 @@ def process_new_taxonomy_data
     ids_for_mark_deleted << changed_element[:id]
 
     # creating new element array for bulk insert
+    changed_element[:overrides_id] = changed_element.delete(:id)
     changed_element[:created] = today
     changed_scientific_elements << changed_element
   end
