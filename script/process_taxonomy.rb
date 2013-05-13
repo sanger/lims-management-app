@@ -50,6 +50,7 @@ def initialize_app
   @types_to_process = @config["types_to_process"]
   @taxdump_file_name = @config["taxdump_file_name"]
   @taxonomy_names_file_name = @config["taxonomy_names_file_name"]
+  @nb_of_bulk_inserts = @config["nb_of_bulk_inserts"]
   @path = Dir.mktmpdir
 
   # database initialization
@@ -114,7 +115,7 @@ def inserting_bulk_data(ds, data_to_process)
   # I had to slice multi insert to several part,
   # because MySQL has timed out with a very large amount of bulk inserts
   while(!data_to_process.empty?) do
-    data_to_insert = data_to_process.slice!(0,200000)
+    data_to_insert = data_to_process.slice!(0, @nb_of_bulk_inserts)
     ds.multi_insert(data_to_insert)
     print '.'
   end
