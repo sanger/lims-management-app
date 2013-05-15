@@ -11,6 +11,12 @@ module Lims::ManagementApp
           :taxonomies
         end
 
+        # @param [Integer] taxon_id
+        # @param [String] name
+        # @param [String] type
+        # @return [Integer,Nil]
+        # Case insensitive lookup for the taxonomy id
+        # based on taxon_id, name and type.
         def id_by_taxon_id_and_name(taxon_id, name, type)
           self.dataset.select(primary_key).where({
             :taxon_id => taxon_id
