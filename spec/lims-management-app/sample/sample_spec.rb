@@ -49,9 +49,10 @@ module Lims::ManagementApp
       it_has_a :supplier_sample_name
       it_needs_a :supplier_sample_name
       it_has_a :common_name
-      it_needs_a :common_name
-      it_has_a :scientific_taxon_id
-      it_needs_a :scientific_taxon_id
+      it_has_a :scientific_name
+      it_needs_a :scientific_name
+      it_has_a :taxon_id
+      it_needs_a :taxon_id
       it_has_a :gender
       it_needs_a :gender
       it_has_a :sanger_sample_id
@@ -78,11 +79,11 @@ module Lims::ManagementApp
       end
 
       it "is invalid if a human sample has an unknown gender" do
-        Sample.new(full_sample_parameters.merge({:scientific_taxon_id => 9606, :gender => "Unknown"})).valid?.should == false
+        Sample.new(full_sample_parameters.merge({:taxon_id => 9606, :gender => "Unknown"})).valid?.should == false
       end
 
       it "is invalid if a human sample has a not applicable gender" do
-        Sample.new(full_sample_parameters.merge({:scientific_taxon_id => 9606, :gender => "Not applicable"})).valid?.should == false
+        Sample.new(full_sample_parameters.merge({:taxon_id => 9606, :gender => "Not applicable"})).valid?.should == false
       end
     end
   end

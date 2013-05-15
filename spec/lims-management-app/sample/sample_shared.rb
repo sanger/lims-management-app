@@ -65,11 +65,11 @@ module Lims::ManagementApp
 
     def common_sample_parameters(parameters = {})
       {
-        :hmdmc_number => "test", :supplier_sample_name => "test", :common_name => "test",
+        :hmdmc_number => "test", :supplier_sample_name => "test", :common_name => "human",
         :ebi_accession_number => "test", :sample_source => "test", :mother => "test", :father => "test",
         :sibling => "test", :gc_content => "test", :public_name => "test", :cohort => "test", 
-        :storage_conditions => "test", :scientific_taxon_id => 1, :gender => "male",
-        :sample_type => "RNA", :volume => 1, :date_of_sample_collection => DateTime.now, 
+        :storage_conditions => "test", :taxon_id => 9606, :scientific_name => "Homo sapiens",
+        :gender => "male", :sample_type => "RNA", :volume => 1, :date_of_sample_collection => DateTime.now, 
         :is_sample_a_control => true, :is_re_submitted_sample => false
       }.merge(parameters)
     end
@@ -127,12 +127,14 @@ module Lims::ManagementApp
         when DateTime then [k, DateTime.now.to_s]
         when TrueClass then [k, false]
         when FalseClass then [k, true]
-        when Fixnum then [k, v + 1]
+        when Fixnum then k.to_s == "taxon_id" ? [k, v] : [k, v+1]
         when Hash then [k, update_parameters(v)]
         else 
           case k
           when :gender then [k, "Hermaphrodite"]
           when :sample_type then [k, "Blood"]
+          when :common_name then [k, v]
+          when :scientific_name then [k, v]
           else [k, "new #{v}"]
           end
         end

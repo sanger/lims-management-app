@@ -41,7 +41,7 @@ module Lims::ManagementApp
     include_context "use core context service"
     include_context "sample factory"
 
-    context "common sample" do
+    context "common sample", :focus => true do
       let(:sample) { new_common_sample } 
       it_behaves_like "a sample"
     end
