@@ -9,7 +9,7 @@ module Lims::ManagementApp
       :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String, 
       :sibling => String, :gc_content => String, :public_name => String, :cohort => String, 
       :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash,
-      :genotyping => Hash}
+      :genotyping => Hash, :common_name => String}
 
       class SampleUuidNotFound < StandardError
       end
@@ -101,7 +101,7 @@ module Lims::ManagementApp
       # @return [Bool]
       # Return true if name is a specific parameter for a sample
       def is_a_sample_attribute(name)
-        attributes = ATTRIBUTES.keys | [:gender, :sample_type, :scientific_taxon_id, :supplier_sample_name, :common_name]
+        attributes = ATTRIBUTES.keys | [:gender, :sample_type, :scientific_name, :taxon_id, :supplier_sample_name]
         attributes.include?(name)
       end
 
