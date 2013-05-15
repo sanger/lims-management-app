@@ -1,6 +1,42 @@
 Sequel.migration do
 
   change do
+    # dna
+    create_table :dna do
+      primary_key :id
+      Bool :pre_amplified
+      DateTime :date_of_sample_extraction
+      String :extraction_method
+      Integer :concentration
+      Bool :sample_purified
+      String :concentration_determined_by_which_method
+    end
+
+    # rna
+    create_table :rna do
+      primary_key :id
+      Bool :pre_amplified
+      DateTime :date_of_sample_extraction
+      String :extraction_method
+      Integer :concentration
+      Bool :sample_purified
+      String :concentration_determined_by_which_method
+    end
+
+    # genotyping
+    create_table :genotyping do
+      primary_key :id
+      String :country_of_origin
+      String :geographical_region
+      String :ethnicity
+    end
+
+    # cellular material
+    create_table :cellular_material do
+      primary_key :id
+      Bool :lysed
+    end
+
     # Samples
     create_table :samples do
       primary_key :id
@@ -30,42 +66,6 @@ Sequel.migration do
       String :storage_conditions
 
       unique :sanger_sample_id
-    end
-
-    # genotyping
-    create_table :genotyping do
-      primary_key :id
-      String :country_of_origin
-      String :geographical_region
-      String :ethnicity
-    end
-
-    # cellular material
-    create_table :cellular_material do
-      primary_key :id
-      Bool :lysed
-    end
-
-    # dna
-    create_table :dna do
-      primary_key :id
-      Bool :pre_amplified
-      DateTime :date_of_sample_extraction
-      String :extraction_method
-      Integer :concentration
-      Bool :sample_purified
-      String :concentration_determined_by_which_method
-    end
-
-    # rna
-    create_table :rna do
-      primary_key :id
-      Bool :pre_amplified
-      DateTime :date_of_sample_extraction
-      String :extraction_method
-      Integer :concentration
-      Bool :sample_purified
-      String :concentration_determined_by_which_method
     end
 
     # uuid resources

@@ -15,7 +15,7 @@ module Lims::ManagementApp
     %w{supplier_sample_name common_name gender sanger_sample_id sample_type}.each do |name|
       attribute :"#{name}", String, :required => true, :initializable => true
     end
-    attribute :taxon_id, Numeric, :required => true, :initializable => true
+    attribute :scientific_taxon_id, Numeric, :required => true, :initializable => true
 
     # The attributes below are all strings, not required with a private writer
     %w(hmdmc_number ebi_accession_number sample_source

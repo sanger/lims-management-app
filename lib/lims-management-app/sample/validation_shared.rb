@@ -42,7 +42,7 @@ module Lims::ManagementApp
       # "not applicable" or "unkown" for human samples.
       # A human sample has a taxon id equals to 9606.
       def ensure_gender_for_human_sample
-        if taxon_id == HUMAN_SAMPLE_TAXON_ID
+        if scientific_taxon_id == HUMAN_SAMPLE_TAXON_ID
           HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase)
         else
           true

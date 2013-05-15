@@ -12,7 +12,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
-        "taxon_id" => 1,
+        "scientific_taxon_id" => 1,
         "date_of_sample_collection" => "2013-04-25 10:27 UTC",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
@@ -33,7 +33,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     sample2 = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
-        "taxon_id" => 1,
+        "scientific_taxon_id" => 1,
         "date_of_sample_collection" => "2013-04-25 10:27 UTC",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
@@ -100,7 +100,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                     "public_name": "name",
                     "cohort": "cohort",
                     "storage_conditions": "conditions",
-                    "taxon_id": 1,
+                    "scientific_taxon_id": 1,
                     "volume": 5000,
                     "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
                     "is_sample_a_control": true,
@@ -129,7 +129,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                     "public_name": "name",
                     "cohort": "cohort",
                     "storage_conditions": "conditions",
-                    "taxon_id": 1,
+                    "scientific_taxon_id": 1,
                     "volume": 5000,
                     "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
                     "is_sample_a_control": true,
@@ -137,7 +137,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                 }
             ]
         },
-        "taxon_id": null,
+        "scientific_taxon_id": null,
         "volume": 5000,
         "date_of_sample_collection": null,
         "is_sample_a_control": null,
