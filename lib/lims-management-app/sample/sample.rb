@@ -11,6 +11,8 @@ module Lims::ManagementApp
     include Lims::Core::Resource
     include ValidationShared
 
+    attr_accessor :persistence_errors
+
     # required attributes
     %w{supplier_sample_name gender sanger_sample_id sample_type}.each do |name|
       attribute :"#{name}", String, :required => true, :initializable => true
@@ -37,6 +39,7 @@ module Lims::ManagementApp
     def initialize(*args, &block)
       parameters = args.first.rekey { |k| k.to_sym } if args.first
       generate_sanger_sample_id unless parameters.nil? || parameters[:sanger_sample_id]
+      @persistence_errors = []
       super
     end
 
