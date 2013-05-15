@@ -13,8 +13,9 @@ Sequel.migration do
     add_index :taxonomies, :taxon_id
 
     alter_table :samples do
-      add_column :common_taxon_id, Integer
-      rename_column :taxon_id, :scientific_taxon_id
+      drop_column :taxon_id
+      add_foreign_key :common_taxon_id, :taxonomies, :key => :id
+      add_foreign_key :scientific_taxon_id, :taxonomies, :key => :id
     end
   end
 end
