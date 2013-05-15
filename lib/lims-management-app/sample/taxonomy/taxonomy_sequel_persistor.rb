@@ -11,6 +11,18 @@ module Lims::ManagementApp
           :taxonomies
         end
 
+        def valid_taxon_id?(taxon_id, type)
+          self.dataset.where(:taxon_id => taxon_id).where {
+            { lower(:type) => lower(type) }
+          }.count > 0
+        end
+
+        def name_by_taxon_id(taxon_id, type)
+          self.dataset.select(:name).where(:taxon_id => taxon_id).where {
+            { lower(:type) => lower(type) }
+          }.first[:name]
+        end
+
         # @param [Integer] taxon_id
         # @param [String] name
         # @param [String] type
@@ -18,13 +30,14 @@ module Lims::ManagementApp
         # Case insensitive lookup for the taxonomy id
         # based on taxon_id, name and type.
         def id_by_taxon_id_and_name(taxon_id, name, type)
-          self.dataset.select(primary_key).where({
+          record = self.dataset.select(primary_key).where({
             :taxon_id => taxon_id
           }).where {
             {lower(:name) => lower(name)}
           }.where {
             {lower(:type) => lower(type)}
-          }.first[primary_key]
+          }.first
+          record ? record[primary_key] : nil
         end
       end
     end
