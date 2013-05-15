@@ -51,6 +51,7 @@ def initialize_app
   @taxdump_file_name = @config["taxdump_file_name"]
   @taxonomy_names_file_name = @config["taxonomy_names_file_name"]
   @nb_of_bulk_inserts = @config["nb_of_bulk_inserts"]
+  @test = @config["test"]
   @path = Dir.mktmpdir
 
   # database initialization
@@ -59,7 +60,8 @@ end
 
 def execution_completed
   @db.drop_table(:tmp_taxonomies)
-  FileUtils.rm_r @path
+  @db.disconnect
+  FileUtils.rm_r @path unless @test || !@test.nil?
 end
 
 def save_file(filename, url)
@@ -257,24 +259,26 @@ end
 
 def create_update_taxonomy
   initialize_app
-  valid_file = download_and_unzip_taxonomy_file
-#  valid_file = true
-#  @path = "./script/data"
-
-  if valid_file
-    insert_data_to_tmp_taxonomy_table
-    process_new_taxonomy_data
+  if @test
+    valid_file = true
+    @path = "./script/data"
   else
+    valid_file = download_and_unzip_taxonomy_file
+  end
+
+  unless valid_file
     @logger.error("The downloaded #{@taxdump_file_name} MD5 checksum was invalid.")
     @logger.error("The #{@taxdump_file_name} MD5 checksum: #{@md5_taxonomy_file}.")
     @logger.error("The valid MD5 checksum: #{@md5_cheksum}.")
     @logger.error("The new taxonomy names processing has been failed and the database has not been updated!")
     execution_completed
     abort
+  else
+    insert_data_to_tmp_taxonomy_table
+    process_new_taxonomy_data
+    execution_completed
+    @logger.info("New taxonomy names has been processed and the database has been updated!")
   end
-
-  execution_completed
-  @logger.info("New taxonomy names has been processed and the database has been updated!")
 end
 
 create_update_taxonomy

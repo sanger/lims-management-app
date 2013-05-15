@@ -4,3 +4,4 @@ taxonomy_names_file_name: names.dmp
 types_to_process: [scientific name, common name]
 db_environment: development_mysql
 nb_of_bulk_inserts: 200000
+test: false
