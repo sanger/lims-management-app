@@ -48,10 +48,11 @@ if options[:quantity] == 1 || options[:quantity].nil?
     :sample => {
       :gender => "Male",
       :sample_type => "RNA",
-      :taxon_id => 45,
+      :taxon_id => 9606,
       :volume => 100,
       :supplier_sample_name => "supplier sample name",
-      :common_name => "common name",
+      :common_name => "human",
+      :scientific_name => "homo sapiens",
       :hmdmc_number => "123456",
       :ebi_accession_number => "accession number",
       :sample_source => "sample source",
@@ -89,9 +90,9 @@ if options[:quantity] == 1 || options[:quantity].nil?
                                parameters.to_json,
                                {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     result = JSON.parse(response)
-    sample_uuid = result["sample"]["uuid"]
     puts response
     puts
+    sample_uuid = result["sample"]["uuid"]
   end
 
   # Update a sample
