@@ -18,9 +18,9 @@ module Lims::ManagementApp
       # required attributes
       attribute :gender, String, :required => true
       attribute :sample_type, String, :required => true
-      attribute :scientific_taxon_id, Numeric, :required => true
+      attribute :taxon_id, Numeric, :required => true
       attribute :supplier_sample_name, String, :required => true
-      attribute :common_name, String, :required => true
+      attribute :scientific_name, String, :required => true
 
       def _call_in_session(session)
         _create(quantity, session)

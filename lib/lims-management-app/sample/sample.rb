@@ -12,10 +12,12 @@ module Lims::ManagementApp
     include ValidationShared
 
     # required attributes
-    %w{supplier_sample_name common_name gender sanger_sample_id sample_type}.each do |name|
+    %w{supplier_sample_name gender sanger_sample_id sample_type}.each do |name|
       attribute :"#{name}", String, :required => true, :initializable => true
     end
-    attribute :scientific_taxon_id, Numeric, :required => true, :initializable => true
+    attribute :taxon_id, Numeric, :required => true, :initializable => true
+    attribute :scientific_name, String, :required => true, :initializable => true
+    attribute :common_name, String, :required => false, :initializable => true
 
     # The attributes below are all strings, not required with a private writer
     %w(hmdmc_number ebi_accession_number sample_source
