@@ -33,6 +33,8 @@ module Lims::ManagementApp
       # @return [Integer,Nil]
       # Return the taxonomy id based on the taxon id, 
       # the name and type in parameters.
+      # If an exception is raised, it is catched in the sample sequel persistor,
+      # which cancels the save and sets the errors.
       def taxonomy_primary_id(taxon_id, name, type)
         persistor = @session.persistor_for(:taxonomy)
         raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)
