@@ -26,6 +26,12 @@ GIT
       virtus (= 0.2.0)
 
 GIT
+  remote: http://github.com/sanger/psd_logger.git
+  revision: dd2d634114df75b1d8535715c169a7fc99521389
+  specs:
+    psd_logger (0.1.6)
+
+GIT
   remote: http://github.com/sinatra/sinatra.git
   revision: 459369eb66224836f72e21bbece58c007f3422fa
   branch: 459369eb66224836f72e21bbece58c007f3422fa
@@ -107,14 +113,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 3.0.0)
   debugger
   debugger-completion
   github-markup (~> 0.7.1)
   hashdiff
+  jdbc-mysql
   lims-api (~> 2.0)!
   lims-core (~> 2.0)!
   lims-management-app!
   mysql2
+  psd_logger!
   rack-test (~> 0.6.1)
   rake (~> 0.9.2)
   redcarpet (~> 2.1.0)
@@ -123,5 +132,7 @@ DEPENDENCIES
   shotgun
   sinatra!
   sqlite3
+  trinidad
+  trinidad_daemon_extension
   yard (>= 0.7.0)
   yard-rspec (= 0.1)
