@@ -20,8 +20,8 @@ module Lims::ManagementApp
           when :rna then [:rna_id, save_component(v)]
           when :cellular_material then [:cellular_material_id, save_component(v)]
           when :genotyping then [:genotyping_id, save_component(v)]
-          when :scientific_name then [:scientific_taxon_id, taxonomy_primary_id(taxon_id, v, "scientific")]
-          when :common_name then [:common_taxon_id, taxonomy_primary_id(taxon_id, v, "common")]
+          when :scientific_name then [:scientific_taxon_id, taxonomy_primary_id(taxon_id, v, "scientific name")]
+          when :common_name then [:common_taxon_id, taxonomy_primary_id(taxon_id, v, "common name")]
           else [k,v]
           end
         end
