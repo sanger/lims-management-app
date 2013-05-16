@@ -1,6 +1,6 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: b7cc6aa6b8f4c3cc4b3f11ecea32711ed12c014d
+  revision: afe54b186b15318bf10f08a90064e9252b3486d6
   branch: development
   specs:
     lims-api (1.2.0.3.1)
