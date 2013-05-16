@@ -29,12 +29,14 @@ def update_parameters(parameters)
     when DateTime then [k, DateTime.now.to_s]
     when TrueClass then [k, false]
     when FalseClass then [k, true]
-    when Fixnum then [k, v+1]
+    when Fixnum then k.to_s == "taxon_id" ? [k, v] : [k, v+1]
     when Hash then [k, update_parameters(v)]
     else
       case k
       when :gender then [k, "Hermaphrodite"]
       when :sample_type then [k, "Blood"]
+      when :common_name then [k, v]
+      when :scientific_name then [k, v]
       else [k, "new #{v}"]
       end
     end
@@ -51,7 +53,7 @@ if options[:quantity] == 1 || options[:quantity].nil?
       :taxon_id => 9606,
       :volume => 100,
       :supplier_sample_name => "supplier sample name",
-      :common_name => "human",
+      :common_name => "man",
       :scientific_name => "homo sapiens",
       :hmdmc_number => "123456",
       :ebi_accession_number => "accession number",
@@ -121,10 +123,11 @@ else
       :quantity => options[:quantity],
       :gender => "Male",
       :sample_type => "RNA",
-      :taxon_id => 45,
+      :taxon_id => 9606,
       :volume => 100,
       :supplier_sample_name => "supplier sample name",
-      :common_name => "bulk common name",
+      :common_name => "man",
+      :scientific_name => "homo sapiens",
       :hmdmc_number => "123456",
       :ebi_accession_number => "accession number",
       :sample_source => "sample source",
