@@ -29,14 +29,14 @@ def update_parameters(parameters)
     when DateTime then [k, DateTime.now.to_s]
     when TrueClass then [k, false]
     when FalseClass then [k, true]
-    when Fixnum then k.to_s == "taxon_id" ? [k, v] : [k, v+1]
+    when Fixnum then k.to_s == "taxon_id" ? [k, 9604] : [k, v+1]
     when Hash then [k, update_parameters(v)]
     else
       case k
       when :gender then [k, "Hermaphrodite"]
       when :sample_type then [k, "Blood"]
-      when :common_name then [k, v]
-      when :scientific_name then [k, v]
+      when :common_name then [k, "great apes"]
+      when :scientific_name then [k, "Hominidae"]
       else [k, "new #{v}"]
       end
     end
