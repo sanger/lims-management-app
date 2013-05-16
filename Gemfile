@@ -18,3 +18,11 @@ group :debugger do
   gem 'debugger-completion', :platforms => :mri
   gem 'shotgun', :platforms => :mri
 end
+
+group :deployment do
+  gem "psd_logger", :git => "http://github.com/sanger/psd_logger.git"
+  gem 'trinidad', :platforms => :jruby
+  gem "trinidad_daemon_extension", :platforms => :jruby
+  gem 'activesupport', '~> 3.0.0', :platforms => :jruby
+  gem 'jdbc-mysql', :platforms => :jruby
+end
