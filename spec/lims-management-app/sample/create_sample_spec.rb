@@ -1,6 +1,7 @@
 require 'lims-management-app/sample/create_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
+require 'lims-core/persistence/store'
 require 'time'
 
 module Lims::ManagementApp

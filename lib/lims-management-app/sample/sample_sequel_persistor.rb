@@ -13,6 +13,20 @@ module Lims::ManagementApp
       private
 
       # @param [Object] object
+      # @param [Arguments] params
+      # @return [Integer,Nil]
+      # We need to override sequel/persistor#save_raw in order
+      # to catch the exception the sample persistor raises.
+      def save_raw(object, *params)
+        begin
+          super
+        rescue UnknownTaxonIdError, NameTaxonIdMismatchError => e
+          object.persistence_errors << e.message 
+          nil
+        end
+      end
+
+      # @param [Object] object
       # @param [Integer] id
       # @param [Arguments] params
       # @return [Integer]

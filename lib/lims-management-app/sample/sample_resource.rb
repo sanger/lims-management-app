@@ -18,6 +18,49 @@ module Lims::ManagementApp
         component_to_stream("genotyping", object.genotyping, s, mime_type)
       end
 
+      module Encoder
+        include Lims::Api::CoreResource::Encoder
+
+        def errors
+          object.object.persistence_errors
+        end
+          
+        def status
+          errors.empty? ? 200 : 400
+        end
+
+        def to_stream(s)
+          return to_error_stream(s) unless errors.empty?
+
+          s.tap do
+            s.with_hash do
+              s.add_key object.model_name.to_s
+              s.with_hash do
+                to_hash_stream(s)
+              end
+            end
+          end
+        end
+
+        def to_error_stream(s)
+          s.with_hash do
+            s.add_key "error"
+            s.add_value errors.first
+          end
+        end
+      end
+
+      Encoders = [
+        class JsonEncoder
+          include Encoder
+          include Lims::Api::JsonEncoder
+        end
+      ]
+
+      def self.encoder_class_map
+        Encoders.mash { |k| [k::ContentType, k] }
+      end
+
       private
 
       def component_to_stream(key, object, s, mime_type)

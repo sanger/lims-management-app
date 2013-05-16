@@ -43,7 +43,7 @@ module Lims::ManagementApp
       # A human sample has a taxon id equals to 9606.
       def ensure_gender_for_human_sample
         if taxon_id == HUMAN_SAMPLE_TAXON_ID
-          HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase)
+          HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase) if gender
         else
           true
         end

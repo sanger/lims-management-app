@@ -1,5 +1,5 @@
 <%
-    require 'json'
+require 'json'
 h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
@@ -17,13 +17,14 @@ h[:setup] = <<EOD
 sample = Lims::ManagementApp::Sample.new({
     "gender" => "Male",
     "sample_type" => "RNA",
-    "taxon_id" => 1,
+    "taxon_id" => 9606,
     "date_of_sample_collection" => "2013-04-25 10:27 UTC",
     "is_sample_a_control" => true,
     "is_re_submitted_sample" => false,
     "hmdmc_number" => "number",
     "supplier_sample_name" => "name",
-    "common_name" => "name",
+    "common_name" => "human",
+    "scientific_name" => "homo sapiens",
     "ebi_accession_number" => "number",
     "sample_source" => "source",
     "mother" => "mother",
@@ -81,7 +82,8 @@ h[:response]=<<EOD
   "sample_type": "RNA",
   "hmdmc_number": "number",
   "supplier_sample_name": "new_name",
-  "common_name": "name",
+  "common_name": "human",
+  "scientific_name": "Homo sapiens",
   "ebi_accession_number": "number",
   "sample_source": "source",
   "mother": "mother",
@@ -91,7 +93,7 @@ h[:response]=<<EOD
   "public_name": "name",
   "cohort": "cohort",
   "storage_conditions": "conditions",
-  "taxon_id": 1,
+  "taxon_id": 9606,
   "volume": 1000,
   "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
   "is_sample_a_control": true,

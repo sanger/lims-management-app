@@ -49,7 +49,8 @@ module Lims::ManagementApp
       it_has_a :supplier_sample_name
       it_needs_a :supplier_sample_name
       it_has_a :common_name
-      it_needs_a :common_name
+      it_has_a :scientific_name
+      it_needs_a :scientific_name
       it_has_a :taxon_id
       it_needs_a :taxon_id
       it_has_a :gender

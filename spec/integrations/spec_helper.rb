@@ -27,6 +27,14 @@ shared_context "sequel store" do
   let(:db) { Sequel.sqlite '' }
   let(:store) { Lims::Core::Persistence::Sequel::Store.new(db) }
   before(:each) { Sequel::Migrator.run(db, 'db/migrations') }
+  include_context "initialize taxonomies table"
+end
+
+shared_context "initialize taxonomies table" do
+  before(:each) do
+    db[:taxonomies].insert(:taxon_id => 9606, :name => "Homo sapiens", :type => "scientific")
+    db[:taxonomies].insert(:taxon_id => 9606, :name => "human", :type => "common")
+  end
 end
 
 shared_context 'use core context service' do
@@ -34,6 +42,7 @@ shared_context 'use core context service' do
   let(:store) { Lims::Core::Persistence::Sequel::Store.new(db) }
   let(:message_bus) { mock(:message_bus).tap { |m| m.stub(:publish) } } 
   let(:context_service) { Lims::Api::ContextService.new(store, message_bus) }
+  include_context "initialize taxonomies table"
 
   before(:each) do
     app.set(:context_service, context_service)
@@ -41,7 +50,7 @@ shared_context 'use core context service' do
   #This code is cleaning up the DB after each test case execution
   after(:each) do
     # list of all the tables in our DB
-    %w{samples dna rna cellular_material genotyping uuid_resources}.each do |table|
+    %w{samples taxonomies dna rna cellular_material genotyping uuid_resources}.each do |table|
       db[table.to_sym].delete
     end
     db.disconnect

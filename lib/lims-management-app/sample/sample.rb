@@ -11,11 +11,17 @@ module Lims::ManagementApp
     include Lims::Core::Resource
     include ValidationShared
 
+    # Store the errors raised in the persistence level
+    # (currently unknown taxon id, and taxon id/name mismatch)
+    attr_accessor :persistence_errors
+
     # required attributes
-    %w{supplier_sample_name common_name gender sanger_sample_id sample_type}.each do |name|
+    %w{supplier_sample_name gender sanger_sample_id sample_type}.each do |name|
       attribute :"#{name}", String, :required => true, :initializable => true
     end
     attribute :taxon_id, Numeric, :required => true, :initializable => true
+    attribute :scientific_name, String, :required => true, :initializable => true
+    attribute :common_name, String, :required => false, :initializable => true
 
     # The attributes below are all strings, not required with a private writer
     %w(hmdmc_number ebi_accession_number sample_source
@@ -32,9 +38,12 @@ module Lims::ManagementApp
     attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
     attribute :genotyping, Genotyping, :required => false, :initializable => true
 
+    # A sanger sample id is generated only if we create a new sample (then
+    # there are no parameters) or if the sanger sample id is not already present.
     def initialize(*args, &block)
       parameters = args.first.rekey { |k| k.to_sym } if args.first
       generate_sanger_sample_id unless parameters.nil? || parameters[:sanger_sample_id]
+      @persistence_errors = []
       super
     end
 
