@@ -14,6 +14,7 @@ Sequel.migration do
 
     alter_table :samples do
       drop_column :taxon_id
+      drop_column :common_name
       add_foreign_key :common_taxon_id, :taxonomies, :key => :id
       add_foreign_key :scientific_taxon_id, :taxonomies, :key => :id
     end
