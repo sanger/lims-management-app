@@ -46,6 +46,24 @@ module Lims::ManagementApp
         it_behaves_like "changing the table", :cellular_material, 3
         it_behaves_like "changing the table", :genotyping, 3
       end
+
+      context "samples with unknown taxon_id" do
+        let(:parameters) { full_sample_parameters.merge({:taxon_id => 9600}) }
+        it_behaves_like "changing the table", :samples, 0
+        it_behaves_like "changing the table", :dna, 0
+        it_behaves_like "changing the table", :rna, 0
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 0
+      end
+
+      context "samples with taxon_id and scientific name which don't match", :focus => true do
+        let(:parameters) { full_sample_parameters.merge({:taxon_id => 9606, :scientific_name => "dummy"}) }
+        it_behaves_like "changing the table", :samples, 0
+        it_behaves_like "changing the table", :dna, 0
+        it_behaves_like "changing the table", :rna, 0
+        it_behaves_like "changing the table", :cellular_material, 0
+        it_behaves_like "changing the table", :genotyping, 0
+      end
     end
 
     context "samples bulk creation" do
