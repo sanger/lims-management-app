@@ -11,16 +11,26 @@ module Lims::ManagementApp
           :taxonomies
         end
 
+        # @param [Integer] taxon_id
+        # @param [String] type
+        # @return [Boolean]
+        # Return true if the couple (taxon_id, type) has been 
+        # found in the taxonomies table.
         def valid_taxon_id?(taxon_id, type)
           self.dataset.where(:taxon_id => taxon_id).where {
             { lower(:type) => lower(type) }
-          }.count > 0
+          }.where(:deleted => nil).count > 0
         end
 
+        # @param [Integer] taxon_id
+        # @param [String] type
+        # @return [String]
+        # Return either the scientific name or the common name
+        # associated to the taxon_id.
         def name_by_taxon_id(taxon_id, type)
           self.dataset.select(:name).where(:taxon_id => taxon_id).where {
             { lower(:type) => lower(type) }
-          }.first[:name]
+          }.where(:deleted => nil).first[:name]
         end
 
         # @param [Integer] taxon_id
@@ -36,7 +46,7 @@ module Lims::ManagementApp
             {lower(:name) => lower(name)}
           }.where {
             {lower(:type) => lower(type)}
-          }.first
+          }.where(:deleted => nil).first
           record ? record[primary_key] : nil
         end
       end

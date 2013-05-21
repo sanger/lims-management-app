@@ -37,6 +37,14 @@ describe "root" do
             "last": "http://example.org/uuid_resources/page=-1"
         }
     },
+    "searches": {
+        "actions": {
+            "create": "http://example.org/searches",
+            "read": "http://example.org/searches",
+            "first": "http://example.org/searches/page=1",
+            "last": "http://example.org/searches/page=-1"
+        }
+    },
     "bulk_create_samples": {
         "actions": {
             "create": "http://example.org/actions/bulk_create_sample"

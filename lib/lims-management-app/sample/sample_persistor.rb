@@ -20,8 +20,8 @@ module Lims::ManagementApp
           when :rna then [:rna_id, save_component(v)]
           when :cellular_material then [:cellular_material_id, save_component(v)]
           when :genotyping then [:genotyping_id, save_component(v)]
-          when :scientific_name then [:scientific_taxon_id, taxonomy_primary_id(taxon_id, v, "scientific")]
-          when :common_name then [:common_taxon_id, taxonomy_primary_id(taxon_id, v, "common")]
+          when :scientific_name then [:scientific_taxon_id, taxonomy_primary_id(taxon_id, v, "scientific name")]
+          when :common_name then [:common_taxon_id, taxonomy_primary_id(taxon_id, v, "common name")]
           else [k,v]
           end
         end
@@ -33,6 +33,8 @@ module Lims::ManagementApp
       # @return [Integer,Nil]
       # Return the taxonomy id based on the taxon id, 
       # the name and type in parameters.
+      # If an exception is raised, it is catched in the sample sequel persistor,
+      # which cancels the save and sets the errors.
       def taxonomy_primary_id(taxon_id, name, type)
         persistor = @session.persistor_for(:taxonomy)
         raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)

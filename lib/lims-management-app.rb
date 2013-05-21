@@ -7,8 +7,7 @@ require 'lims-management-app/sample/all'
 
 require 'lims-api/server'
 require 'lims-api/context_service'
-
-require 'hide_resources'
+require 'lims-api/message_bus'
 
 module Lims
   module ManagementApp
