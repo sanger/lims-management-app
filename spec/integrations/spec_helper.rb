@@ -32,8 +32,8 @@ end
 
 shared_context "initialize taxonomies table" do
   before(:each) do
-    db[:taxonomies].insert(:taxon_id => 9606, :name => "Homo sapiens", :type => "scientific")
-    db[:taxonomies].insert(:taxon_id => 9606, :name => "human", :type => "common")
+    db[:taxonomies].insert(:taxon_id => 9606, :name => "Homo sapiens", :type => "scientific name")
+    db[:taxonomies].insert(:taxon_id => 9606, :name => "human", :type => "common name")
   end
 end
 
