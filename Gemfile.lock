@@ -44,9 +44,10 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (1.0.0)
+    lims-management-app (1.0.1)
       bunny (= 0.9.0.pre10)
       json
+      mysql2
 
 GEM
   remote: http://rubygems.org/
