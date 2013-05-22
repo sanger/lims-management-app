@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency('json')
-  s.add_dependency('mysql2')
   s.add_dependency('bunny', '0.9.0.pre10')
 
   s.add_development_dependency('rake', '~> 0.9.2')

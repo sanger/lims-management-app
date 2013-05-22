@@ -8,7 +8,7 @@ gem 'lims-api', '~>2.0', :git => 'http://github.com/sanger/lims-api.git' , :bran
 group :development do
   gem 'redcarpet', '~> 2.1.0', :platforms => :mri
   gem 'sqlite3', :platforms => :mri
-  gem 'mysql2'
+  gem 'mysql2', :platforms => :mri
 end
 
 group :debugger do
