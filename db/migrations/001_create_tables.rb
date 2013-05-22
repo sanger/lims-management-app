@@ -67,13 +67,5 @@ Sequel.migration do
 
       unique :sanger_sample_id
     end
-
-    # uuid resources
-    create_table :uuid_resources do
-      primary_key :id
-      String :uuid, :fixed => true, :size => 64
-      String :model_class
-      Integer :key
-    end
   end
 end
