@@ -4,7 +4,7 @@ h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
 h[:method] = "POST"
-h[:url] = '/actions/bulk_update_sample'
+h[:url] = '/actions/bulk_update_samples'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
@@ -65,7 +65,7 @@ EOD
 
 h[:parameters] = <<EOD
 { 
-"bulk_update_sample":{
+"bulk_update_samples":{
 "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"],
 "volume": 5000 
 }
@@ -76,7 +76,7 @@ h[:status]=200
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
 {
-  "bulk_update_sample": {
+  "bulk_update_samples": {
     "actions": {
     },
     "user": "user",

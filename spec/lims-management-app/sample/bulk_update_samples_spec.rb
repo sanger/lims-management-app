@@ -1,10 +1,10 @@
-require 'lims-management-app/sample/bulk_update_sample'
+require 'lims-management-app/sample/bulk_update_samples'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkUpdateSample do
+  describe Sample::BulkUpdateSamples do
     shared_examples_for "bulk updating samples" do
       it_behaves_like "an action"
 
@@ -93,7 +93,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkUpdateSample::SampleUuidNotFound)
+            }.to raise_error(Sample::BulkUpdateSamples::SampleUuidNotFound)
           end
         end
       end
@@ -138,7 +138,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkUpdateSample::SangerSampleIdNotFound)
+            }.to raise_error(Sample::BulkUpdateSamples::SangerSampleIdNotFound)
           end
         end
       end

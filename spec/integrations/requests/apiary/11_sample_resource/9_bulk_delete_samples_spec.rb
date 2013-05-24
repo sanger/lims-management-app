@@ -60,9 +60,9 @@ describe "bulk_delete_samples", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_delete_sample", <<-EOD
+    response = post "/actions/bulk_delete_samples", <<-EOD
     {
-    "bulk_delete_sample": {
+    "bulk_delete_samples": {
         "sample_uuids": [
             "11111111-2222-3333-4444-555555555555",
             "11111111-2222-3333-4444-666666666666"
@@ -73,7 +73,7 @@ describe "bulk_delete_samples", :sample => true do
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_delete_sample": {
+    "bulk_delete_samples": {
         "actions": {
         },
         "user": "user",
