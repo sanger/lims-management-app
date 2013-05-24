@@ -58,9 +58,9 @@ describe "bulk_update_samples", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_update_sample", <<-EOD
+    response = post "/actions/bulk_update_samples", <<-EOD
     {
-    "bulk_update_sample": {
+    "bulk_update_samples": {
         "sample_uuids": [
             "11111111-2222-3333-4444-555555555555",
             "11111111-2222-3333-4444-666666666666"
@@ -72,7 +72,7 @@ describe "bulk_update_samples", :sample => true do
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_update_sample": {
+    "bulk_update_samples": {
         "actions": {
         },
         "user": "user",

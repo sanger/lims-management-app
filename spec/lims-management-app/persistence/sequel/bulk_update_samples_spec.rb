@@ -1,11 +1,11 @@
 require 'lims-management-app/persistence/sequel/spec_helper'
-require 'lims-management-app/sample/bulk_update_sample'
+require 'lims-management-app/sample/bulk_update_samples'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkUpdateSample do
+  describe Sample::BulkUpdateSamples do
     include_context "sample factory"
     include_context "for application", "bulk update"
     include_context "sequel store"

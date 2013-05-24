@@ -1,10 +1,10 @@
-require 'lims-management-app/sample/bulk_delete_sample'
+require 'lims-management-app/sample/bulk_delete_samples'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkDeleteSample do
+  describe Sample::BulkDeleteSamples do
     shared_examples_for "bulk deleting samples" do
       it_behaves_like "an action"
 
@@ -79,7 +79,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkDeleteSample::SampleUuidNotFound)
+            }.to raise_error(Sample::BulkDeleteSamples::SampleUuidNotFound)
           end
         end
       end
@@ -130,7 +130,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkDeleteSample::SangerSampleIdNotFound)
+            }.to raise_error(Sample::BulkDeleteSamples::SangerSampleIdNotFound)
           end
         end
       end
