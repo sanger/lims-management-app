@@ -1,0 +1,76 @@
+<%
+require 'json'
+h = {:header => [], :response_header => [] }
+h[:description] = <<EOD
+EOD
+h[:method] = "POST"
+h[:url] = '/samples'
+h[:header] << 'Accept: application/json'
+h[:global_setup] = <<EOD
+before do
+Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+  "S2-test-ID"
+end
+end
+EOD
+h[:parameters] = <<EOD
+{ "sample": {
+    "gender": "Male",
+    "sample_type": "RNA",
+    "taxon_id": 9606,
+    "volume": 100,
+    "date_of_sample_collection": "2013-04-25 10:27 UTC",
+    "is_sample_a_control": true,
+    "is_re_submitted_sample": false,
+    "hmdmc_number": "number",
+    "supplier_sample_name": "name",
+    "common_name": "human",
+    "scientific_name": "homo sapiens",
+    "ebi_accession_number": "number",
+    "sample_source": "source",
+    "mother": "mother",
+    "father": "father",
+    "sibling": "sibling",
+    "gc_content": "content",
+    "public_name": "name",
+    "cohort": "cohort",
+    "storage_conditions": "conditions"
+}}
+EOD
+h[:status]=200
+h[:response_header] << 'Content-Type: application/json'
+h[:response]=<<EOD
+{
+"sample": {
+"actions": {
+  "read": "http://example.org/11111111-2222-3333-4444-555555555555",
+  "create": "http://example.org/11111111-2222-3333-4444-555555555555",
+  "update": "http://example.org/11111111-2222-3333-4444-555555555555",
+  "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
+},
+  "uuid": "11111111-2222-3333-4444-555555555555",
+  "sanger_sample_id": "S2-test-ID",
+  "gender": "Male",
+  "sample_type": "RNA",
+  "hmdmc_number": "number",
+  "supplier_sample_name": "name",
+  "common_name": "human",
+  "scientific_name": "homo sapiens",
+  "ebi_accession_number": "number",
+  "sample_source": "source",
+  "mother": "mother",
+  "father": "father",
+  "sibling": "sibling",
+  "gc_content": "content",
+  "public_name": "name",
+  "cohort": "cohort",
+  "storage_conditions": "conditions",
+  "taxon_id": 9606,
+  "volume": 100,
+  "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
+  "is_sample_a_control": true,
+  "is_re_submitted_sample": false
+}}
+EOD
+%>
+<%= h.to_json %>
