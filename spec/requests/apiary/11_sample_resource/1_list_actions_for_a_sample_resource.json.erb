@@ -1,0 +1,28 @@
+<%
+require 'json'
+h={:header => [], :response_header => [] }
+h[:description]=<<EOD
+**List actions for a barcode resource.**
+
+* `create` creates a new barcode via HTTP POST request
+* `read` currently returns the list of actions for a barcode resource via HTTP GET request
+* `first` lists the first barcode resources in a page browsing system
+* `last` lists the last barcode resources in a page browsing system
+EOD
+h[:method] = "GET"
+h[:url]='/samples'
+h[:header] << 'Accept: application/json'
+h[:status]=200
+h[:response_header] << 'Content-Type: application/json'
+h[:response]=<<EOD
+{ "samples": {
+    "actions": {
+        "create": "/samples",
+        "read": "/samples",
+        "first": "/samples/page=1",
+        "last": "/samples/page=-1"
+    }
+} }
+EOD
+%>
+<%= h.to_json %>

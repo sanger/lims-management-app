@@ -1,0 +1,46 @@
+<%
+require 'json'
+h = {:header => [], :response_header => [] }
+h[:description] = <<EOD
+EOD
+h[:method] = "POST"
+h[:url] = '/samples'
+h[:header] << 'Accept: application/json'
+h[:global_setup] = <<EOD
+before do
+Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
+  "S2-test-ID"
+end
+end
+EOD
+h[:parameters] = <<EOD
+{ "sample": {
+    "gender": "Male",
+    "sample_type": "RNA",
+    "taxon_id": 1234,
+    "volume": 100,
+    "date_of_sample_collection": "2013-04-25 10:27 UTC",
+    "is_sample_a_control": true,
+    "is_re_submitted_sample": false,
+    "hmdmc_number": "number",
+    "supplier_sample_name": "name",
+    "common_name": "human",
+    "scientific_name": "homo sapiens",
+    "ebi_accession_number": "number",
+    "sample_source": "source",
+    "mother": "mother",
+    "father": "father",
+    "sibling": "sibling",
+    "gc_content": "content",
+    "public_name": "name",
+    "cohort": "cohort",
+    "storage_conditions": "conditions"
+}}
+EOD
+h[:status]=400
+h[:response_header] << 'Content-Type: application/json'
+h[:response]=<<EOD
+{"error": "Taxon ID 1234 unknown"}
+EOD
+%>
+<%= h.to_json %>
