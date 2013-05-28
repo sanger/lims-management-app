@@ -4,6 +4,7 @@ module Lims::ManagementApp
   class Sample
     module ActionShared
 
+      # Only the attributes which are common to all actions and NOT required
       ATTRIBUTES = {:volume => Integer, :date_of_sample_collection => String,
       :is_sample_a_control => Integer, :is_re_submitted_sample => Integer, :hmdmc_number => String,
       :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String, 
@@ -17,8 +18,9 @@ module Lims::ManagementApp
       class SangerSampleIdNotFound < StandardError
       end
 
+      # Only for create, bulk create and update actions
       def self.included(klass)
-        unless klass.to_s.downcase =~ /delete/
+        if klass.to_s.downcase =~ /^create|bulkcreate|update/
           ATTRIBUTES.each do |name, type|
             klass.class_eval do
               attribute :"#{name}", type, :required => false
@@ -57,32 +59,30 @@ module Lims::ManagementApp
       # If we want to update a sample with dna/rna/cellular data
       # and if the sample doesn't have a Dna/Rna/CellularMaterial 
       # object associated, we need to create it first.
-      def _update(samples, session)
-        samples.each do |current_sample|
-          filtered_attributes.each do |k,v|
-            if is_a_sample_attribute(k)
-              next if v.nil? # test nil on v otherwise bug with boolean value
-              if v.is_a?(Hash)
-                v.each do |component_key, component_value|
-                  unless current_sample.send(k)
-                    component = case k
-                                when :dna then Dna.new
-                                when :rna then Rna.new
-                                when :cellular_material then CellularMaterial.new
-                                when :genotyping then Genotyping.new
-                                end
-                    current_sample.send("#{k}=", component)
-                  end
-                  current_sample.send(k).send("#{component_key}=", component_value) 
+      def _update(sample, parameters = nil, session)
+        filtered_attributes(parameters).each do |k,v|
+          if is_a_sample_attribute(k)
+            next if v.nil? # using nil? and not only v otherwise bug when boolean
+            if v.is_a?(Hash)
+              v.each do |component_key, component_value|
+                unless sample.send(k)
+                  component = case k
+                              when :dna then Dna.new
+                              when :rna then Rna.new
+                              when :cellular_material then CellularMaterial.new
+                              when :genotyping then Genotyping.new
+                              end
+                  sample.send("#{k}=", component)
                 end
-              else
-                current_sample.send("#{k}=", v)
+                sample.send(k).send("#{component_key}=", component_value) 
               end
+            else
+              sample.send("#{k}=", v)
             end
           end
         end
 
-        (samples.size == 1) ? {:sample => samples.first} : {:samples => samples}
+        {:sample => sample}
       end
 
       # @param [Array] samples
@@ -105,37 +105,15 @@ module Lims::ManagementApp
         attributes.include?(name)
       end
 
+      # @param [Hash] unfiltered_attributes 
       # @return [Hash]
-      def filtered_attributes
-        self.attributes.mash do |k,v|
+      def filtered_attributes(unfiltered_attributes = nil)
+        unfiltered_attributes = self.attributes unless unfiltered_attributes
+        unfiltered_attributes.mash do |k,v|
           case k
           when :date_of_sample_collection then [k, Time.parse(v)] if v
           when :quantity then [k, v ? v : 1]
           else [k,v]
-          end
-        end
-      end
-
-      # @param [Session] session
-      # @return [Array]
-      # If sanger sample ids is set, load the sample objects
-      # associated to the sample ids. Otherwise, load
-      # the sample objects according to the sample uuids attribute.
-      # If one sample id/uuid is invalid, the action fails.
-      def load_samples(session)
-        [].tap do |s|
-          if sanger_sample_ids
-            sanger_sample_ids.each do |id|
-              sample_object = session.sample[{:sanger_sample_id => id}]
-              raise SangerSampleIdNotFound, "Sanger sample id '#{id}' is invalid" unless sample_object
-              s << sample_object 
-            end
-          else
-            sample_uuids.each do |uuid|
-              sample_object = session[uuid]
-              raise SampleUuidNotFound, "Sample uuid '#{uuid}' is invalid" unless sample_object
-              s << sample_object 
-            end
           end
         end
       end
