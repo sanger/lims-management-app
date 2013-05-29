@@ -1,5 +1,5 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
+describe "bulk_update_sample", :sample => true do
   include_context "use core context service"
   before do
   Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
@@ -8,7 +8,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     "S2-test" << @count.to_s << "-ID"
   end
   end
-  it "bulk_update_samples_by_sanger_sample_id" do
+  it "bulk_update_sample" do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
@@ -58,21 +58,24 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_update_samples", <<-EOD
+    response = post "/actions/bulk_update_sample", <<-EOD
     {
-    "bulk_update_samples": {
-        "sanger_sample_ids": [
-            "S2-test1-ID",
-            "S2-test2-ID"
-        ],
-        "volume": 5000
+    "bulk_update_sample": {
+        "updates": {
+            "11111111-2222-3333-4444-555555555555": {
+                "volume": 5000
+            },
+            "11111111-2222-3333-4444-666666666666": {
+                "volume": 4000
+            }
+        }
     }
 }
     EOD
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_update_samples": {
+    "bulk_update_sample": {
         "actions": {
         },
         "user": "user",
@@ -134,42 +137,22 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                     "cohort": "cohort",
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
-                    "volume": 5000,
+                    "volume": 4000,
                     "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 }
             ]
         },
-        "taxon_id": null,
-        "volume": 5000,
-        "date_of_sample_collection": null,
-        "is_sample_a_control": null,
-        "is_re_submitted_sample": null,
-        "hmdmc_number": null,
-        "supplier_sample_name": null,
-        "common_name": null,
-        "scientific_name": null,
-        "ebi_accession_number": null,
-        "sample_source": null,
-        "mother": null,
-        "father": null,
-        "sibling": null,
-        "gc_content": null,
-        "public_name": null,
-        "cohort": null,
-        "storage_conditions": null,
-        "dna": null,
-        "rna": null,
-        "cellular_material": null,
-        "genotyping": null,
-        "sample_uuids": null,
-        "sanger_sample_ids": [
-            "S2-test1-ID",
-            "S2-test2-ID"
-        ],
-        "gender": null,
-        "sample_type": null
+        "by": null,
+        "updates": {
+            "11111111-2222-3333-4444-555555555555": {
+                "volume": 5000
+            },
+            "11111111-2222-3333-4444-666666666666": {
+                "volume": 4000
+            }
+        }
     }
 }
     EOD

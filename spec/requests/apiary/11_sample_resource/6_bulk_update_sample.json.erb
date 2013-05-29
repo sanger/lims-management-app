@@ -1,10 +1,10 @@
 <%
-require 'json'
+    require 'json'
 h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
 h[:method] = "POST"
-h[:url] = '/actions/bulk_delete_samples'
+h[:url] = '/actions/bulk_update_sample'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
@@ -35,7 +35,6 @@ sample = Lims::ManagementApp::Sample.new({
     "gc_content" => "content",
     "public_name" => "name",
     "cohort" => "cohort",
-    "volume" => 5000,
     "storage_conditions" => "conditions"
 })
 
@@ -58,7 +57,6 @@ sample2 = Lims::ManagementApp::Sample.new({
     "gc_content" => "content",
     "public_name" => "name",
     "cohort" => "cohort",
-    "volume" => 5000,
     "storage_conditions" => "conditions"
 })
 
@@ -66,16 +64,21 @@ save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
 EOD
 
 h[:parameters] = <<EOD
-{"bulk_delete_samples": {
-  "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"]
-}}
+{ 
+"bulk_update_sample":{
+  "updates": {
+  "11111111-2222-3333-4444-555555555555":{"volume": 5000},
+  "11111111-2222-3333-4444-666666666666":{"volume": 4000}
+  }
+}
+}
 EOD
 
 h[:status]=200
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
 {
-  "bulk_delete_samples": {
+  "bulk_update_sample": {
     "actions": {
     },
     "user": "user",
@@ -137,16 +140,22 @@ h[:response]=<<EOD
           "cohort": "cohort",
           "storage_conditions": "conditions",
           "taxon_id": 9606,
-          "volume": 5000,
+          "volume": 4000,
           "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
           "is_sample_a_control": true,
           "is_re_submitted_sample": false
         }
       ]
     },
-    "sample_uuids": null,
-    "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"]
-  }
+    "by": null,
+    "updates": { 
+    "11111111-2222-3333-4444-555555555555": {
+      "volume": 5000
+      },
+      "11111111-2222-3333-4444-666666666666": {
+      "volume": 4000
+      }}
+ }
  }
 EOD
 %>
