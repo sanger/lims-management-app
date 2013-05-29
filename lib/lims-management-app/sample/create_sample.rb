@@ -9,6 +9,7 @@ module Lims::ManagementApp
       include Lims::Core::Actions::Action
       include ActionShared
       include ValidationShared
+      include ValidationShared::CommonValidator
 
       # required attributes
       attribute :gender, String, :required => true

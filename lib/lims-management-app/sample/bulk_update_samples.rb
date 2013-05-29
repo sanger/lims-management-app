@@ -15,7 +15,7 @@ module Lims::ManagementApp
         :supplier_sample_name => String, :scientific_name => String
       })
 
-      attribute :by, String, :required => true
+      attribute :by, String, :required => false
       attribute :updates, Hash, :required => true
       validates_with_method :ensure_by_value
       validates_with_method :ensure_updates_parameter
@@ -33,8 +33,9 @@ module Lims::ManagementApp
       private
 
       # @return [Bool]
+      # If by is not nil, we check its value, otherwise returns true
       def ensure_by_value
-        BY_ATTRIBUTE_VALUES.include?(by.downcase) 
+        by ? BY_ATTRIBUTE_VALUES.include?(by.downcase) : true 
       end
 
       # @return [Bool]
@@ -54,7 +55,7 @@ module Lims::ManagementApp
       # sample object.
       def load_samples(session)
         sample_loader = lambda do |key|
-          if by.downcase == "sanger_sample_id"
+          if by && by.downcase == "sanger_sample_id"
             sample_object = session.sample[{:sanger_sample_id => key}]
             raise SangerSampleIdNotFound, "Sanger sample id '#{key}' is invalid" unless sample_object
             sample_object
