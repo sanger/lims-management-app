@@ -1,5 +1,8 @@
 require 'common'
 
+Lims::Core::NO_AUTOLOAD = true
+#require 'lims-core/persistence/sequel'
+
 require 'lims-management-app/version'
 require 'lims-management-app/sample/all'
 
