@@ -16,7 +16,7 @@ module Lims::ManagementApp
       })
 
       attribute :by, String, :required => false
-      attribute :updates, Hash, :required => true
+      attribute :updates, Hash, :default => {}, :required => true
       validates_with_method :ensure_by_value
       validates_with_method :ensure_updates_parameter
 
@@ -24,7 +24,7 @@ module Lims::ManagementApp
         samples_data = load_samples(session)
         updated_samples = []
         samples_data.each do |sample, parameters|
-          updated_samples << _update(sample, parameters, session)
+          updated_samples << _update(sample, parameters, session)[:sample]
         end
 
         {:samples => updated_samples}
@@ -66,7 +66,7 @@ module Lims::ManagementApp
           end
         end
 
-        updates.mash { |key, value| [sample_loader(key), value] }
+        updates.mash { |key, value| [sample_loader[key], value] }
       end
     end
   end
