@@ -1,7 +1,5 @@
 require 'common'
 
-Lims::Core::NO_AUTOLOAD = true
-
 require 'lims-management-app/version'
 require 'lims-management-app/sample/all'
 
