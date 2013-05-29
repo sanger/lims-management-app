@@ -1,5 +1,11 @@
 require 'common'
 
+module Lims
+  module Core
+    NO_AUTOLOAD = true
+  end
+end
+
 require 'lims-management-app/version'
 require 'lims-management-app/sample/all'
 

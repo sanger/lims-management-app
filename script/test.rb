@@ -118,8 +118,9 @@ if options[:quantity] == 1 || options[:quantity].nil?
 else
 
   # Sample bulk create
+  sample_uuids = []
   parameters = {
-    :bulk_create_samples => {
+    :bulk_create_sample => {
       :quantity => options[:quantity],
       :gender => "Male",
       :sample_type => "RNA",
@@ -161,12 +162,12 @@ else
   }
 
   if options[:create]
-    response = RestClient.post("http://localhost:9292/actions/bulk_create_samples",
+    response = RestClient.post("http://localhost:9292/actions/bulk_create_sample",
                                parameters.to_json,
                                {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     result = JSON.parse(response)
     sample_uuids = [].tap do |uuids|
-      result["bulk_create_samples"]["result"]["samples"].each do |sample|
+      result["bulk_create_sample"]["result"]["samples"].each do |sample|
         uuids << sample["uuid"]
       end
     end
@@ -176,11 +177,14 @@ else
 
   # Sample bulk update
   if options[:update]
-    updated_parameters = {:bulk_update_samples => update_parameters(parameters[:bulk_create_samples] - [:quantity]).merge({
-      "sample_uuids" => sample_uuids      
-    })}
-    response = RestClient.post("http://localhost:9292/actions/bulk_update_samples",
-                              updated_parameters.to_json,
+    updated_parameters = {}.tap do |h|
+      sample_uuids.each do |uuid|
+        h[uuid] = update_parameters(parameters[:bulk_create_sample] - [:quantity])
+      end
+    end
+
+    response = RestClient.post("http://localhost:9292/actions/bulk_update_sample",
+                               {:bulk_update_sample => {:updates => updated_parameters}}.to_json,
                               {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     puts response
     puts
@@ -188,8 +192,8 @@ else
 
   # Bulk Delete samples
   if options[:delete]
-    parameters = {:bulk_delete_samples => {:sample_uuids => sample_uuids}} 
-    response = RestClient.post("http://localhost:9292/actions/bulk_delete_samples",
+    parameters = {:bulk_delete_sample => {:sample_uuids => sample_uuids}} 
+    response = RestClient.post("http://localhost:9292/actions/bulk_delete_sample",
                                parameters.to_json,
                                  {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     puts response

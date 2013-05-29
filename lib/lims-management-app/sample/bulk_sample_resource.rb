@@ -3,7 +3,7 @@ require 'lims-api/struct_stream'
 
 module Lims::ManagementApp
   class Sample
-    module BulkSamplesResource
+    module BulkSampleResource
       # Override object to stream to display correctly 
       # the samples in the JSON.
       # Remove the keys "sample" in front of the sample
@@ -99,16 +99,16 @@ module Lims::ManagementApp
       end
     end
 
-    class BulkCreateSamplesResource < Lims::Api::CoreActionResource
-      include BulkSamplesResource
+    class BulkCreateSampleResource < Lims::Api::CoreActionResource
+      include BulkSampleResource
     end
 
-    class BulkUpdateSamplesResource < Lims::Api::CoreActionResource
-      include BulkSamplesResource
+    class BulkUpdateSampleResource < Lims::Api::CoreActionResource
+      include BulkSampleResource
     end
 
-    class BulkDeleteSamplesResource < Lims::Api::CoreActionResource
-      include BulkSamplesResource
+    class BulkDeleteSampleResource < Lims::Api::CoreActionResource
+      include BulkSampleResource
     end
   end
 end
