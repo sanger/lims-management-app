@@ -3,7 +3,7 @@ require 'lims-management-app/sample/action_shared'
 
 module Lims::ManagementApp
   class Sample
-    class BulkDeleteSamples
+    class BulkDeleteSample
       include Lims::Core::Actions::Action
       include ActionShared
 

@@ -1,9 +1,9 @@
-require 'lims-management-app/sample/bulk_create_samples'
+require 'lims-management-app/sample/bulk_create_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkCreateSamples do
+  describe Sample::BulkCreateSample do
     shared_examples_for "bulk creating samples" do
       include_context "create object"
       it_behaves_like "an action"

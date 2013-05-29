@@ -4,7 +4,7 @@ require 'lims-management-app/sample/validation_shared'
 
 module Lims::ManagementApp
   class Sample
-    class BulkUpdateSamples
+    class BulkUpdateSample
       include Lims::Core::Actions::Action
       include ActionShared
       include ValidationShared

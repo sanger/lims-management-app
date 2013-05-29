@@ -1,11 +1,11 @@
 require 'lims-management-app/persistence/sequel/spec_helper'
-require 'lims-management-app/sample/bulk_delete_samples'
+require 'lims-management-app/sample/bulk_delete_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkDeleteSamples do
+  describe Sample::BulkDeleteSample do
     include_context "sample factory"
     include_context "for application", "bulk delete"
     include_context "sequel store"
