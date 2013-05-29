@@ -14,14 +14,16 @@ module Lims::ManagementApp
         samples.size.should == 2
         samples.each do |sample|
           sample.should be_a(Sample)
-          updated_parameters.each do |k,v|
-            v = DateTime.parse(v) if k.to_s =~ /date/
-            if [:dna, :rna, :cellular_material, :genotyping].include?(k)
-              v.each do |k2,v2|
-                sample.send(k).send(k2).to_s.should == v2.to_s
+          updated_parameters.each do |uuid, parameters|
+            parameters.each do |k,v|
+              v = DateTime.parse(v) if k.to_s =~ /date/
+              if [:dna, :rna, :cellular_material, :genotyping].include?(k)
+                v.each do |k2,v2|
+                  sample.send(k).send(k2).to_s.should == v2.to_s
+                end
+              else
+                sample.send(k).to_s.should == v.to_s
               end
-            else
-              sample.send(k).to_s.should == v.to_s
             end
           end
         end
@@ -37,7 +39,7 @@ module Lims::ManagementApp
         :user => user, 
         :application => application,
         :by => "sanger_sample_id",
-        :updates => {}
+        :updates => {mock(:uuid1) => {}}
       }
     }
 
@@ -47,7 +49,7 @@ module Lims::ManagementApp
       end
 
       it "requires a updates hash" do
-        described_class.new(parameters - [:udpates]).valid?.should == false
+        described_class.new(parameters - [:updates]).valid?.should == false
       end
     end
 
@@ -56,8 +58,8 @@ module Lims::ManagementApp
       let(:result) { subject.call }
       let(:updated_parameters) do
         {}.tap do |updates|
-          sample_uuids.each do |uuid|
-            updates[uuid] = full_sample_parameters
+          sample_refs.each do |uuid|
+            updates[uuid] = update_parameters(full_sample_parameters)
           end
         end
       end
@@ -65,19 +67,16 @@ module Lims::ManagementApp
       context "with sample uuids" do
        subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sample_uuids = sample_uuids
-            updated_parameters.each do |k,v|
-              a.send("#{k}=", v)
-            end
+            a.updates = updated_parameters
           end
         }
 
         it "has valid parameters" do
-          described_class.new(parameters - [:sanger_sample_ids]).valid?.should == true
+          described_class.new(parameters - [:by]).valid?.should == true
         end
 
         context "with valid sample uuids" do
-          let!(:sample_uuids) do
+          let!(:sample_refs) do
             [new_common_sample, new_common_sample].map do |sample|
               store.with_session do |session|
                 session << sample
@@ -90,7 +89,7 @@ module Lims::ManagementApp
         end
 
         context "with invalid sample uuids" do
-          let!(:sample_uuids) do
+          let!(:sample_refs) do
             uuid1 = store.with_session do |session|
               sample = new_common_sample
               session << sample
@@ -112,19 +111,17 @@ module Lims::ManagementApp
       context "with sanger sample ids" do
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sanger_sample_ids = sanger_sample_ids
-            updated_parameters.each do |k,v|
-              a.send("#{k}=", v)
-            end
+            a.by = "sanger_sample_id"
+            a.updates = updated_parameters
           end
         }
 
         it "has valid parameters" do
-          described_class.new(parameters - [:sample_uuids]).valid?.should == true
+          described_class.new(parameters).valid?.should == true
         end
 
         context "with valid sanger sample ids" do
-          let!(:sanger_sample_ids) do
+          let!(:sample_refs) do
             [new_common_sample, new_common_sample].map do |sample|
               store.with_session do |session|
                 session << sample
@@ -136,7 +133,7 @@ module Lims::ManagementApp
         end
 
         context "with invalid sanger sample ids" do
-          let!(:sanger_sample_ids) do
+          let!(:sample_refs) do
             id1 = store.with_session do |session|
               sample = new_common_sample
               session << sample

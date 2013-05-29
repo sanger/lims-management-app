@@ -33,8 +33,11 @@ module Lims::ManagementApp
         let(:samples) { [new_common_sample, new_common_sample] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sample_uuids = sample_uuids
-            a.supplier_sample_name = "new sample name"
+            a.updates = {}.tap do |h|
+              sample_uuids.each do |uuid|
+                h[uuid] = {:supplier_sample_name => "new sample name"}
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples"
@@ -44,10 +47,13 @@ module Lims::ManagementApp
         let(:samples) { [new_common_sample, new_common_sample] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sample_uuids = sample_uuids
-            a.dna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.rna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.cellular_material = {:lysed => true}
+            a.updates = {}.tap do |h|
+              sample_uuids.each do |uuid|
+                h[uuid] = {:dna => {:pre_amplified => true, :extraction_method => "method"},
+                           :rna => {:pre_amplified => true, :extraction_method => "method"},
+                           :cellular_material => {:lysed => true}}
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 2, 2, 2
@@ -57,10 +63,13 @@ module Lims::ManagementApp
         let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sample_uuids = sample_uuids
-            a.dna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.rna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.cellular_material = {:lysed => true}
+            a.updates = {}.tap do |h|
+              sample_uuids.each do |uuid|
+                h[uuid] = {:dna => {:pre_amplified => true, :extraction_method => "method"},
+                           :rna => {:pre_amplified => true, :extraction_method => "method"},
+                           :cellular_material => {:lysed => true}}
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0
@@ -70,8 +79,11 @@ module Lims::ManagementApp
         let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sample_uuids = sample_uuids
-            a.genotyping = genotyping_parameters 
+            a.updates = {}.tap do |h|
+              sample_uuids.each do |uuid|
+                h[uuid] = {:genotyping => genotyping_parameters}
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0, 2
@@ -93,8 +105,12 @@ module Lims::ManagementApp
         let(:samples) { [new_common_sample, new_common_sample] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sanger_sample_ids = sanger_sample_ids
-            a.supplier_sample_name = "new sample name"
+            a.by = "sanger_sample_id"
+            a.updates = {}.tap do |h|
+              sanger_sample_ids.each do |uuid|
+                h[uuid] = {:supplier_sample_name => "new sample name"}
+              end
+            end           
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0
@@ -104,10 +120,14 @@ module Lims::ManagementApp
         let(:samples) { [new_common_sample, new_common_sample] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sanger_sample_ids = sanger_sample_ids
-            a.dna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.rna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.cellular_material = {:lysed => true}
+            a.by = "sanger_sample_id"
+            a.updates = {}.tap do |h|
+              sanger_sample_ids.each do |uuid|
+                h[uuid] = {:dna => {:pre_amplified => true, :extraction_method => "method"},
+                           :rna => {:pre_amplified => true, :extraction_method => "method"},
+                           :cellular_material => {:lysed => true}}
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 2, 2, 2
@@ -117,10 +137,14 @@ module Lims::ManagementApp
         let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sanger_sample_ids = sanger_sample_ids
-            a.dna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.rna = {:pre_amplified => true, :extraction_method => "method"} 
-            a.cellular_material = {:lysed => true}
+            a.by = "sanger_sample_id"
+            a.updates = {}.tap do |h|
+              sanger_sample_ids.each do |uuid|
+                h[uuid] = {:dna => {:pre_amplified => true, :extraction_method => "method"},
+                           :rna => {:pre_amplified => true, :extraction_method => "method"},
+                           :cellular_material => {:lysed => true}}
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0
@@ -130,8 +154,12 @@ module Lims::ManagementApp
         let(:samples) { [new_sample_with_dna_rna_cellular, new_sample_with_dna_rna_cellular] }
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
-            a.sanger_sample_ids = sanger_sample_ids
-            a.genotyping = genotyping_parameters 
+            a.by = "sanger_sample_id"
+            a.updates = {}.tap do |h|
+              sanger_sample_ids.each do |uuid|
+                h[uuid] = {:genotyping => genotyping_parameters} 
+              end
+            end
           end
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0, 2
