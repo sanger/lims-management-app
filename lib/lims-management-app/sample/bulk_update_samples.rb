@@ -42,16 +42,12 @@ module Lims::ManagementApp
       # Return false if one of the parameters is invalid.
       def ensure_updates_parameter
         updates.each do |_, parameters|
-          parameters_sym = parameters.rekey { |k| k.to_sym }
-          parameters_sym.each do |key, value|
-            return false unless UPDATE_ATTRIBUTES.include?(key.downcase)
-            case key
-            when :gender then
-              return false unless validate_gender(value)
-            when :sample_type then
-              return false unless validate_sample_type(value)
-            when :taxon_id then
-              return false unless validate_gender_for_human_sample(value, parameters_sym[:gender])
+          parameters.each do |key, value|
+            return false unless UPDATE_ATTRIBUTES.include?(key.to_sym.downcase)
+            case key.to_sym
+            when :gender then return false unless validate_gender(value)
+            when :sample_type then return false unless validate_sample_type(value)
+            when :taxon_id then return false unless validate_gender_for_human_sample(value, parameters[:gender] || parameters["gender"])
             end
           end
         end
