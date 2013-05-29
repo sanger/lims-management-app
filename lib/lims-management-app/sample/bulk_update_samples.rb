@@ -43,7 +43,7 @@ module Lims::ManagementApp
       def ensure_updates_parameter
         updates.each do |_, parameters|
           parameters.each do |key, _|
-            return false unless UPDATE_ATTRIBUTES.include?(key.downcase)
+            return false unless UPDATE_ATTRIBUTES.include?(key.to_sym.downcase)
           end
         end
         true
