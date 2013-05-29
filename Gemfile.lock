@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: fd62ee43b2e946c4dda48ccd1540e19210031de7
+  revision: c638b5c6e43faff36740fafa5a88b4dc72b973d2
   branch: development
   specs:
-    lims-api (2.1.0.1.0)
+    lims-api (2.1.0.1.1)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -45,7 +45,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (1.0.2)
+    lims-management-app (1.1.0)
       bunny (= 0.9.0.pre10)
       json
 
