@@ -36,21 +36,31 @@ module Lims::ManagementApp
         :store => store, 
         :user => user, 
         :application => application,
-        :sample_uuids => [mock(:sample_uuid1), mock(:sample_uuid2)],
-        :sanger_sample_ids => [mock(:id1), mock(:id2)]
+        :by => "sanger_sample_id",
+        :updates => {}
       }
     }
 
     context "invalid action" do
-      it "requires sample uuids or sanger sample ids" do
-        described_class.new(parameters - [:sample_uuids, :sanger_sample_ids]).valid?.should == false
+      it "requires a valid by attribute" do
+        described_class.new(parameters.merge({:by => "dummy"})).valid?.should == false
+      end
+
+      it "requires a updates hash" do
+        described_class.new(parameters - [:udpates]).valid?.should == false
       end
     end
 
 
     context "valid action" do
       let(:result) { subject.call }
-      let(:updated_parameters) { update_parameters(full_sample_parameters) }
+      let(:updated_parameters) do
+        {}.tap do |updates|
+          sample_uuids.each do |uuid|
+            updates[uuid] = full_sample_parameters
+          end
+        end
+      end
 
       context "with sample uuids" do
        subject {
