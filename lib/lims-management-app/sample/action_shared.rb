@@ -20,7 +20,7 @@ module Lims::ManagementApp
 
       # Only for create, bulk create and update actions
       def self.included(klass)
-        if klass.to_s.downcase =~ /::create|bulkcreate|update/
+        if klass.to_s.downcase =~ /::create|::bulkcreate|::update/
           ATTRIBUTES.each do |name, type|
             klass.class_eval do
               attribute :"#{name}", type, :required => false
@@ -109,6 +109,7 @@ module Lims::ManagementApp
       # @return [Hash]
       def filtered_attributes(unfiltered_attributes = nil)
         unfiltered_attributes = self.attributes unless unfiltered_attributes
+        unfiltered_attributes.rekey! { |k| k.to_sym }
         unfiltered_attributes.mash do |k,v|
           case k
           when :date_of_sample_collection then [k, Time.parse(v)] if v
