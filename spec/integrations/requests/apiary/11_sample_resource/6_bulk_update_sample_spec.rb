@@ -1,5 +1,5 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
+describe "bulk_update_sample", :sample => true do
   include_context "use core context service"
   before do
   Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
@@ -8,7 +8,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     "S2-test" << @count.to_s << "-ID"
   end
   end
-  it "bulk_update_samples_by_sanger_sample_id" do
+  it "bulk_update_sample" do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
@@ -58,15 +58,14 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_update_samples", <<-EOD
+    response = post "/actions/bulk_update_sample", <<-EOD
     {
-    "bulk_update_samples": {
-        "by": "sanger_sample_id",
+    "bulk_update_sample": {
         "updates": {
-            "S2-test1-ID": {
+            "11111111-2222-3333-4444-555555555555": {
                 "volume": 5000
             },
-            "S2-test2-ID": {
+            "11111111-2222-3333-4444-666666666666": {
                 "volume": 4000
             }
         }
@@ -76,7 +75,7 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_update_samples": {
+    "bulk_update_sample": {
         "actions": {
         },
         "user": "user",
@@ -145,12 +144,12 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                 }
             ]
         },
-        "by": "sanger_sample_id",
+        "by": null,
         "updates": {
-            "S2-test1-ID": {
+            "11111111-2222-3333-4444-555555555555": {
                 "volume": 5000
             },
-            "S2-test2-ID": {
+            "11111111-2222-3333-4444-666666666666": {
                 "volume": 4000
             }
         }

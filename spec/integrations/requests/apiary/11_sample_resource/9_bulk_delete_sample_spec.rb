@@ -1,5 +1,5 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_update_samples", :sample => true do
+describe "bulk_delete_sample", :sample => true do
   include_context "use core context service"
   before do
   Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
@@ -8,7 +8,7 @@ describe "bulk_update_samples", :sample => true do
     "S2-test" << @count.to_s << "-ID"
   end
   end
-  it "bulk_update_samples" do
+  it "bulk_delete_sample" do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
@@ -28,6 +28,7 @@ describe "bulk_update_samples", :sample => true do
         "gc_content" => "content",
         "public_name" => "name",
         "cohort" => "cohort",
+        "volume" => 5000,
         "storage_conditions" => "conditions"
     })
     
@@ -41,7 +42,7 @@ describe "bulk_update_samples", :sample => true do
         "hmdmc_number" => "number",
         "supplier_sample_name" => "name",
         "common_name" => "human",
-        "scientific_name" => "homo sapiens",
+        "scientific_name" => "Homo Sapiens",
         "ebi_accession_number" => "number",
         "sample_source" => "source",
         "mother" => "mother",
@@ -50,6 +51,7 @@ describe "bulk_update_samples", :sample => true do
         "gc_content" => "content",
         "public_name" => "name",
         "cohort" => "cohort",
+        "volume" => 5000,
         "storage_conditions" => "conditions"
     })
     
@@ -58,24 +60,20 @@ describe "bulk_update_samples", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_update_samples", <<-EOD
+    response = post "/actions/bulk_delete_sample", <<-EOD
     {
-    "bulk_update_samples": {
-        "updates": {
-            "11111111-2222-3333-4444-555555555555": {
-                "volume": 5000
-            },
-            "11111111-2222-3333-4444-666666666666": {
-                "volume": 4000
-            }
-        }
+    "bulk_delete_sample": {
+        "sample_uuids": [
+            "11111111-2222-3333-4444-555555555555",
+            "11111111-2222-3333-4444-666666666666"
+        ]
     }
 }
     EOD
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_update_samples": {
+    "bulk_delete_sample": {
         "actions": {
         },
         "user": "user",
@@ -137,22 +135,18 @@ describe "bulk_update_samples", :sample => true do
                     "cohort": "cohort",
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
-                    "volume": 4000,
+                    "volume": 5000,
                     "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 }
             ]
         },
-        "by": null,
-        "updates": {
-            "11111111-2222-3333-4444-555555555555": {
-                "volume": 5000
-            },
-            "11111111-2222-3333-4444-666666666666": {
-                "volume": 4000
-            }
-        }
+        "sample_uuids": [
+            "11111111-2222-3333-4444-555555555555",
+            "11111111-2222-3333-4444-666666666666"
+        ],
+        "sanger_sample_ids": null
     }
 }
     EOD
