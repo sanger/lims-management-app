@@ -4,7 +4,7 @@ h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
 h[:method] = "POST"
-h[:url] = '/actions/bulk_delete_samples'
+h[:url] = '/actions/bulk_delete_sample'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
@@ -49,7 +49,7 @@ sample2 = Lims::ManagementApp::Sample.new({
     "hmdmc_number" => "number",
     "supplier_sample_name" => "name",
     "common_name" => "human",
-    "scientific_name" => "Homo Sapiens",
+    "scientific_name" => "homo sapiens",
     "ebi_accession_number" => "number",
     "sample_source" => "source",
     "mother" => "mother",
@@ -66,8 +66,8 @@ save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
 EOD
 
 h[:parameters] = <<EOD
-{"bulk_delete_samples": {
-  "sample_uuids": ["11111111-2222-3333-4444-555555555555", "11111111-2222-3333-4444-666666666666"]
+{"bulk_delete_sample": {
+  "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"]
 }}
 EOD
 
@@ -75,7 +75,7 @@ h[:status]=200
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
 {
-  "bulk_delete_samples": {
+  "bulk_delete_sample": {
     "actions": {
     },
     "user": "user",
@@ -144,12 +144,9 @@ h[:response]=<<EOD
         }
       ]
     },
-    "sample_uuids": [
-      "11111111-2222-3333-4444-555555555555",
-      "11111111-2222-3333-4444-666666666666"
-    ],
-      "sanger_sample_ids": null
- }
+    "sample_uuids": null,
+    "sanger_sample_ids": ["S2-test1-ID", "S2-test2-ID"]
+  }
  }
 EOD
 %>

@@ -1,29 +1,19 @@
-require 'lims-management-app/sample/bulk_update_samples'
+require 'lims-management-app/sample/bulk_delete_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkUpdateSamples do
-    shared_examples_for "bulk updating samples" do
+  describe Sample::BulkDeleteSample do
+    shared_examples_for "bulk deleting samples" do
       it_behaves_like "an action"
 
-      it "updates sample objects" do
+      it "deletes sample objects" do
         samples = result[:samples]
         samples.should be_a(Array)
         samples.size.should == 2
         samples.each do |sample|
           sample.should be_a(Sample)
-          updated_parameters.each do |k,v|
-            v = DateTime.parse(v) if k.to_s =~ /date/
-            if [:dna, :rna, :cellular_material, :genotyping].include?(k)
-              v.each do |k2,v2|
-                sample.send(k).send(k2).to_s.should == v2.to_s
-              end
-            else
-              sample.send(k).to_s.should == v.to_s
-            end
-          end
         end
       end
     end
@@ -50,15 +40,11 @@ module Lims::ManagementApp
 
     context "valid action" do
       let(:result) { subject.call }
-      let(:updated_parameters) { update_parameters(full_sample_parameters) }
 
       context "with sample uuids" do
        subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.sample_uuids = sample_uuids
-            updated_parameters.each do |k,v|
-              a.send("#{k}=", v)
-            end
           end
         }
 
@@ -76,7 +62,7 @@ module Lims::ManagementApp
               end.call
             end
           end
-          it_behaves_like "bulk updating samples"
+          it_behaves_like "bulk deleting samples"
         end
 
         context "with invalid sample uuids" do
@@ -93,19 +79,25 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkUpdateSamples::SampleUuidNotFound)
+            }.to raise_error(Sample::BulkDeleteSample::SampleUuidNotFound)
           end
         end
       end
 
 
       context "with sanger sample ids" do
+        let!(:sanger_sample_ids) do
+          [new_common_sample, new_common_sample].map do |sample|
+            store.with_session do |session|
+              session << sample
+              lambda { sample.sanger_sample_id }
+            end.call
+          end
+        end
+
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.sanger_sample_ids = sanger_sample_ids
-            updated_parameters.each do |k,v|
-              a.send("#{k}=", v)
-            end
           end
         }
 
@@ -122,7 +114,7 @@ module Lims::ManagementApp
               end.call
             end
           end
-          it_behaves_like "bulk updating samples"
+          it_behaves_like "bulk deleting samples"
         end
 
         context "with invalid sanger sample ids" do
@@ -138,7 +130,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkUpdateSamples::SangerSampleIdNotFound)
+            }.to raise_error(Sample::BulkDeleteSample::SangerSampleIdNotFound)
           end
         end
       end

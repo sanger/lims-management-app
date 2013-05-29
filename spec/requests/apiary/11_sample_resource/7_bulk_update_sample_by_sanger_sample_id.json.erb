@@ -1,10 +1,10 @@
 <%
-    require 'json'
+require 'json'
 h = {:header => [], :response_header => [] }
 h[:description] = <<EOD
 EOD
 h[:method] = "POST"
-h[:url] = '/actions/bulk_update_samples'
+h[:url] = '/actions/bulk_update_sample'
 h[:header] << 'Accept: application/json'
 h[:global_setup] = <<EOD
 before do
@@ -65,9 +65,11 @@ EOD
 
 h[:parameters] = <<EOD
 { 
-"bulk_update_samples":{
-"sample_uuids": ["11111111-2222-3333-4444-555555555555", "11111111-2222-3333-4444-666666666666"],
-"volume": 5000 
+"bulk_update_sample":{
+"by": "sanger_sample_id",
+"updates": {"S2-test1-ID": {"volume": 5000},
+"S2-test2-ID": {"volume": 4000}
+}
 }
 }
 EOD
@@ -76,7 +78,7 @@ h[:status]=200
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
 {
-  "bulk_update_samples": {
+  "bulk_update_sample": {
     "actions": {
     },
     "user": "user",
@@ -138,44 +140,19 @@ h[:response]=<<EOD
           "cohort": "cohort",
           "storage_conditions": "conditions",
           "taxon_id": 9606,
-          "volume": 5000,
+          "volume": 4000,
           "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
           "is_sample_a_control": true,
           "is_re_submitted_sample": false
         }
       ]
     },
-    "taxon_id": null,
-    "volume": 5000,
-    "date_of_sample_collection": null,
-    "is_sample_a_control": null,
-    "is_re_submitted_sample": null,
-    "hmdmc_number": null,
-    "supplier_sample_name": null,
-    "common_name": null,
-    "scientific_name": null,
-    "ebi_accession_number": null,
-    "sample_source": null,
-    "mother": null,
-    "father": null,
-    "sibling": null,
-    "gc_content": null,
-    "public_name": null,
-    "cohort": null,
-    "storage_conditions": null,
-    "dna": null,
-    "rna": null,
-    "cellular_material": null,
-    "genotyping": null,
-    "sample_uuids": [
-      "11111111-2222-3333-4444-555555555555",
-      "11111111-2222-3333-4444-666666666666"
-    ],
-      "sanger_sample_ids": null,
-      "gender": null,
-      "sample_type": null
- }
- }
+    "by": "sanger_sample_id",
+    "updates": {"S2-test1-ID": {"volume": 5000},
+                "S2-test2-ID": {"volume": 4000}
+     }
+  }
+}
 EOD
 %>
 <%= h.to_json %>
