@@ -61,11 +61,15 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
     response = post "/actions/bulk_update_samples", <<-EOD
     {
     "bulk_update_samples": {
-        "sanger_sample_ids": [
-            "S2-test1-ID",
-            "S2-test2-ID"
-        ],
-        "volume": 5000
+        "by": "sanger_sample_id",
+        "updates": {
+            "S2-test1-ID": {
+                "volume": 5000
+            },
+            "S2-test2-ID": {
+                "volume": 4000
+            }
+        }
     }
 }
     EOD
@@ -134,42 +138,22 @@ describe "bulk_update_samples_by_sanger_sample_id", :sample => true do
                     "cohort": "cohort",
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
-                    "volume": 5000,
+                    "volume": 4000,
                     "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 }
             ]
         },
-        "taxon_id": null,
-        "volume": 5000,
-        "date_of_sample_collection": null,
-        "is_sample_a_control": null,
-        "is_re_submitted_sample": null,
-        "hmdmc_number": null,
-        "supplier_sample_name": null,
-        "common_name": null,
-        "scientific_name": null,
-        "ebi_accession_number": null,
-        "sample_source": null,
-        "mother": null,
-        "father": null,
-        "sibling": null,
-        "gc_content": null,
-        "public_name": null,
-        "cohort": null,
-        "storage_conditions": null,
-        "dna": null,
-        "rna": null,
-        "cellular_material": null,
-        "genotyping": null,
-        "sample_uuids": null,
-        "sanger_sample_ids": [
-            "S2-test1-ID",
-            "S2-test2-ID"
-        ],
-        "gender": null,
-        "sample_type": null
+        "by": "sanger_sample_id",
+        "updates": {
+            "S2-test1-ID": {
+                "volume": 5000
+            },
+            "S2-test2-ID": {
+                "volume": 4000
+            }
+        }
     }
 }
     EOD

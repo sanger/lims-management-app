@@ -9,6 +9,7 @@ module Lims::ManagementApp
       include Lims::Core::Actions::Action
       include ActionShared
       include ValidationShared
+      include ValidationShared::CommonValidator
 
       # If quantity is set to x, it creates x identical samples 
       # based on the given parameters.
