@@ -10,6 +10,7 @@ module Lims::ManagementApp
   class Sample
     include Lims::Core::Resource
     include ValidationShared
+    include ValidationShared::CommonValidator
 
     # Store the errors raised in the persistence level
     # (currently unknown taxon id, and taxon id/name mismatch)

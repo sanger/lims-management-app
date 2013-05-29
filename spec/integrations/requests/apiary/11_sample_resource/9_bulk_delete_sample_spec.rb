@@ -1,5 +1,5 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
+describe "bulk_delete_sample", :sample => true do
   include_context "use core context service"
   before do
   Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
@@ -8,7 +8,7 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
     "S2-test" << @count.to_s << "-ID"
   end
   end
-  it "bulk_delete_samples_by_sanger_sample_id" do
+  it "bulk_delete_sample" do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
@@ -42,7 +42,7 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
         "hmdmc_number" => "number",
         "supplier_sample_name" => "name",
         "common_name" => "human",
-        "scientific_name" => "homo sapiens",
+        "scientific_name" => "Homo Sapiens",
         "ebi_accession_number" => "number",
         "sample_source" => "source",
         "mother" => "mother",
@@ -60,12 +60,12 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_delete_samples", <<-EOD
+    response = post "/actions/bulk_delete_sample", <<-EOD
     {
-    "bulk_delete_samples": {
-        "sanger_sample_ids": [
-            "S2-test1-ID",
-            "S2-test2-ID"
+    "bulk_delete_sample": {
+        "sample_uuids": [
+            "11111111-2222-3333-4444-555555555555",
+            "11111111-2222-3333-4444-666666666666"
         ]
     }
 }
@@ -73,7 +73,7 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_delete_samples": {
+    "bulk_delete_sample": {
         "actions": {
         },
         "user": "user",
@@ -142,11 +142,11 @@ describe "bulk_delete_samples_by_sanger_sample_id", :sample => true do
                 }
             ]
         },
-        "sample_uuids": null,
-        "sanger_sample_ids": [
-            "S2-test1-ID",
-            "S2-test2-ID"
-        ]
+        "sample_uuids": [
+            "11111111-2222-3333-4444-555555555555",
+            "11111111-2222-3333-4444-666666666666"
+        ],
+        "sanger_sample_ids": null
     }
 }
     EOD

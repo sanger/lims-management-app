@@ -8,6 +8,7 @@ module Lims::ManagementApp
       include Lims::Core::Actions::Action
       include ActionShared
       include ValidationShared
+      include ValidationShared::CommonValidator
 
       attribute :sample, Sample, :required => true
       attribute :gender, String, :required => false
@@ -17,7 +18,7 @@ module Lims::ManagementApp
       attribute :scientific_name, String, :required => false
 
       def _call_in_session(session)
-        _update([sample], session)
+        _update(sample, session)
       end
     end
 
