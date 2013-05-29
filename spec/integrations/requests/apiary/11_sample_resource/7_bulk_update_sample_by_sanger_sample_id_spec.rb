@@ -1,5 +1,5 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_delete_samples", :sample => true do
+describe "bulk_update_sample_by_sanger_sample_id", :sample => true do
   include_context "use core context service"
   before do
   Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
@@ -8,7 +8,7 @@ describe "bulk_delete_samples", :sample => true do
     "S2-test" << @count.to_s << "-ID"
   end
   end
-  it "bulk_delete_samples" do
+  it "bulk_update_sample_by_sanger_sample_id" do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
         "sample_type" => "RNA",
@@ -28,7 +28,6 @@ describe "bulk_delete_samples", :sample => true do
         "gc_content" => "content",
         "public_name" => "name",
         "cohort" => "cohort",
-        "volume" => 5000,
         "storage_conditions" => "conditions"
     })
     
@@ -42,7 +41,7 @@ describe "bulk_delete_samples", :sample => true do
         "hmdmc_number" => "number",
         "supplier_sample_name" => "name",
         "common_name" => "human",
-        "scientific_name" => "Homo Sapiens",
+        "scientific_name" => "homo sapiens",
         "ebi_accession_number" => "number",
         "sample_source" => "source",
         "mother" => "mother",
@@ -51,7 +50,6 @@ describe "bulk_delete_samples", :sample => true do
         "gc_content" => "content",
         "public_name" => "name",
         "cohort" => "cohort",
-        "volume" => 5000,
         "storage_conditions" => "conditions"
     })
     
@@ -60,20 +58,25 @@ describe "bulk_delete_samples", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_delete_samples", <<-EOD
+    response = post "/actions/bulk_update_sample", <<-EOD
     {
-    "bulk_delete_samples": {
-        "sample_uuids": [
-            "11111111-2222-3333-4444-555555555555",
-            "11111111-2222-3333-4444-666666666666"
-        ]
+    "bulk_update_sample": {
+        "by": "sanger_sample_id",
+        "updates": {
+            "S2-test1-ID": {
+                "volume": 5000
+            },
+            "S2-test2-ID": {
+                "volume": 4000
+            }
+        }
     }
 }
     EOD
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_delete_samples": {
+    "bulk_update_sample": {
         "actions": {
         },
         "user": "user",
@@ -135,18 +138,22 @@ describe "bulk_delete_samples", :sample => true do
                     "cohort": "cohort",
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
-                    "volume": 5000,
+                    "volume": 4000,
                     "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 }
             ]
         },
-        "sample_uuids": [
-            "11111111-2222-3333-4444-555555555555",
-            "11111111-2222-3333-4444-666666666666"
-        ],
-        "sanger_sample_ids": null
+        "by": "sanger_sample_id",
+        "updates": {
+            "S2-test1-ID": {
+                "volume": 5000
+            },
+            "S2-test2-ID": {
+                "volume": 4000
+            }
+        }
     }
 }
     EOD

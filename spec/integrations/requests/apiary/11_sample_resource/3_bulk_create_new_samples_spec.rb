@@ -13,9 +13,9 @@ describe "bulk_create_new_samples", :sample => true do
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
 
-    response = post "/actions/bulk_create_samples", <<-EOD
+    response = post "/actions/bulk_create_sample", <<-EOD
     {
-    "bulk_create_samples": {
+    "bulk_create_sample": {
         "quantity": 3,
         "gender": "Male",
         "sample_type": "RNA",
@@ -67,7 +67,7 @@ describe "bulk_create_new_samples", :sample => true do
     response.status.should == 200
     response.body.should match_json <<-EOD
     {
-    "bulk_create_samples": {
+    "bulk_create_sample": {
         "actions": {
         },
         "user": "user",

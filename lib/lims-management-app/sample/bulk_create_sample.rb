@@ -5,10 +5,11 @@ require 'lims-management-app/sample/validation_shared'
 
 module Lims::ManagementApp
   class Sample
-    class BulkCreateSamples
+    class BulkCreateSample
       include Lims::Core::Actions::Action
       include ActionShared
       include ValidationShared
+      include ValidationShared::CommonValidator
 
       # If quantity is set to x, it creates x identical samples 
       # based on the given parameters.
