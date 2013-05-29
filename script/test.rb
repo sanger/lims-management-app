@@ -118,6 +118,7 @@ if options[:quantity] == 1 || options[:quantity].nil?
 else
 
   # Sample bulk create
+  sample_uuids = []
   parameters = {
     :bulk_create_samples => {
       :quantity => options[:quantity],
@@ -176,11 +177,14 @@ else
 
   # Sample bulk update
   if options[:update]
-    updated_parameters = {:bulk_update_samples => update_parameters(parameters[:bulk_create_samples] - [:quantity]).merge({
-      "sample_uuids" => sample_uuids      
-    })}
+    updated_parameters = {}.tap do |h|
+      sample_uuids.each do |uuid|
+        h[uuid] = update_parameters(parameters[:bulk_create_samples] - [:quantity])
+      end
+    end
+
     response = RestClient.post("http://localhost:9292/actions/bulk_update_samples",
-                              updated_parameters.to_json,
+                               {:bulk_update_samples => {:updates => updated_parameters}}.to_json,
                               {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     puts response
     puts
