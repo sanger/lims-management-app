@@ -13,24 +13,6 @@ module Lims::ManagementApp
       private
 
       # @param [Object] object
-      # @param [Arguments] params
-      # @return [Integer,Nil]
-      # We need to override sequel/persistor#save_raw in order
-      # to catch the exception the sample persistor raises.
-      # We reraise a Sequel::Rollback exception then to exit the
-      # current transaction (started in lims-core/session#save_all.
-      # The exception Sequel::Rollback is not raised outside the
-      # transaction block, no need to catch it.
-      def save_raw(object, *params)
-        begin
-          super
-        rescue UnknownTaxonIdError, NameTaxonIdMismatchError => e
-          object.persistence_errors << e.message 
-          raise Sequel::Rollback
-        end
-      end
-
-      # @param [Object] object
       # @param [Integer] id
       # @param [Arguments] params
       # @return [Integer]
