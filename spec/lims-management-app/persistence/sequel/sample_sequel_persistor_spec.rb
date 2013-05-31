@@ -47,7 +47,7 @@ module Lims::ManagementApp
         it "raises an exception" do
           expect do
             save(sample)
-          end.to change { sample.persistence_errors.count }.by(1)
+          end.to raise_error(Sample::UnknownTaxonIdError)
         end
       end
 
@@ -56,7 +56,7 @@ module Lims::ManagementApp
         it "raises an exception" do
           expect do
             save(sample)
-          end.to change { sample.persistence_errors.count }.by(1)
+          end.to raise_error(Sample::NameTaxonIdMismatchError)
         end
       end
     end
