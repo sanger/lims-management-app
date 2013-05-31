@@ -1,13 +1,11 @@
 require 'lims-core/persistence/persistor'
+require 'lims-core/actions/action'
 
 module Lims::ManagementApp
   class Sample
 
-    class UnknownTaxonIdError < StandardError
-    end
-
-    class NameTaxonIdMismatchError < StandardError
-    end
+    UnknownTaxonIdError = Class.new(Lims::Core::Actions::Action::InvalidParameters)
+    NameTaxonIdMismatchError = Class.new(Lims::Core::Actions::Action::InvalidParameters)
 
     class SamplePersistor < Lims::Core::Persistence::Persistor
       Model = Sample
@@ -33,8 +31,8 @@ module Lims::ManagementApp
       # @return [Integer,Nil]
       # Return the taxonomy id based on the taxon id, 
       # the name and type in parameters.
-      # If an exception is raised, it is catched in the sample sequel persistor,
-      # which cancels the save and sets the errors.
+      # If an exception is raised, the save is cancelled
+      # and the transaction rollbacked.
       def taxonomy_primary_id(taxon_id, name, type)
         persistor = @session.persistor_for(:taxonomy)
         raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)

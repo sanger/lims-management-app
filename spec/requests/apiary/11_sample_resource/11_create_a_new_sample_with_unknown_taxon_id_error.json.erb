@@ -37,10 +37,10 @@ h[:parameters] = <<EOD
     "storage_conditions": "conditions"
 }}
 EOD
-h[:status]=400
+h[:status]=422
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
-{"error": "Taxon ID 1234 unknown"}
+{"errors": "Taxon ID 1234 unknown"}
 EOD
 %>
 <%= h.to_json %>

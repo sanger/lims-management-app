@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: 9839b17f777d89742bd16c7ac41b4e0efd6a2092
+  revision: 966a0f6bf2aa0b4f7eda54f3a98c115bab5a7b54
   branch: master
   specs:
-    lims-api (2.1.1)
+    lims-api (2.2.0)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -45,7 +45,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (1.1.1)
+    lims-management-app (1.2.0)
       bunny (= 0.9.0.pre10)
       json
 
@@ -57,7 +57,7 @@ GEM
     activesupport (3.0.0)
     addressable (2.2.8)
     aequitas (0.0.2)
-    amq-protocol (1.5.0)
+    amq-protocol (1.6.0)
     bond (0.4.3)
     bunny (0.9.0.pre10)
       amq-protocol (>= 1.4.0)
@@ -81,8 +81,8 @@ GEM
     hashdiff (0.0.6)
     jdbc-mysql (5.1.24)
     jruby-rack (1.1.13.2)
-    json (1.7.7)
-    json (1.7.7-java)
+    json (1.8.0)
+    json (1.8.0-java)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mime-types (1.23)
@@ -135,7 +135,7 @@ DEPENDENCIES
   github-markup (~> 0.7.1)
   hashdiff
   jdbc-mysql
-  lims-api (~> 2.1)!
+  lims-api (~> 2.2)!
   lims-core (~> 2.1)!
   lims-management-app!
   mysql2
