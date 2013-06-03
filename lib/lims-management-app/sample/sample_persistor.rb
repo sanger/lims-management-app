@@ -39,7 +39,7 @@ module Lims::ManagementApp
           raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)
 
           id = persistor.id_by_taxon_id_and_name(taxon_id, name, type)
-          raise NameTaxonIdMismatchError, "Taxon ID #{taxon_id} does not match '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?" unless id 
+          raise NameTaxonIdMismatchError, "Taxon ID #{taxon_id} does not match the #{type} '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?" unless id 
           id
         end
       end
