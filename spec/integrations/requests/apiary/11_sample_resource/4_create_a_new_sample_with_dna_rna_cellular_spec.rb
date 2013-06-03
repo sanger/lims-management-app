@@ -15,6 +15,7 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
     {
     "sample": {
         "gender": "Male",
+        "state": "published",
         "sample_type": "RNA",
         "taxon_id": 9606,
         "volume": 100,
@@ -67,6 +68,7 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
             "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
         },
         "uuid": "11111111-2222-3333-4444-555555555555",
+        "state": "published",
         "sanger_sample_id": "S2-test-ID",
         "gender": "Male",
         "sample_type": "RNA",

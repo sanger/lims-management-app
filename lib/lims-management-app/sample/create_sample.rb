@@ -11,12 +11,8 @@ module Lims::ManagementApp
       include ValidationShared
       include ValidationShared::CommonValidator
 
-      # required attributes
-      attribute :gender, String, :required => true
-      attribute :sample_type, String, :required => true
-      attribute :taxon_id, Numeric, :required => true
-      attribute :supplier_sample_name, String, :required => true
-      attribute :scientific_name, String, :required => true
+      attribute :state, String, :default => Sample::DRAFT_STATE, :required => false
+      validates_with_method :ensure_published_data
 
       def _call_in_session(session)
         _create(1, session)
