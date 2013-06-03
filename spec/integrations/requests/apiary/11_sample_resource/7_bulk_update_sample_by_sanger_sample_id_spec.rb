@@ -11,6 +11,7 @@ describe "bulk_update_sample_by_sanger_sample_id", :sample => true do
   it "bulk_update_sample_by_sanger_sample_id" do
     sample = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
+        "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
         "date_of_sample_collection" => "2013-04-25 10:27 UTC",
@@ -33,6 +34,7 @@ describe "bulk_update_sample_by_sanger_sample_id", :sample => true do
     
     sample2 = Lims::ManagementApp::Sample.new({
         "gender" => "Male",
+        "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
         "date_of_sample_collection" => "2013-04-25 10:27 UTC",
@@ -91,6 +93,7 @@ describe "bulk_update_sample_by_sanger_sample_id", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
                     },
                     "uuid": "11111111-2222-3333-4444-555555555555",
+                    "state": "draft",
                     "sanger_sample_id": "S2-test1-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
@@ -121,6 +124,7 @@ describe "bulk_update_sample_by_sanger_sample_id", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
                     },
                     "uuid": "11111111-2222-3333-4444-666666666666",
+                    "state": "draft",
                     "sanger_sample_id": "S2-test2-ID",
                     "gender": "Male",
                     "sample_type": "RNA",

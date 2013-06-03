@@ -2,6 +2,8 @@ require 'lims-management-app/sample/sample'
 
 module Lims::ManagementApp
   shared_context "sample factory" do
+    include_context "timecop"
+
     def new_common_sample
       Sample.new(common_sample_parameters)
     end

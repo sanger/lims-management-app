@@ -1,3 +1,10 @@
+module Lims::ManagementApp
+  class Sample
+    DRAFT_STATE = "draft"
+    PUBLISHED_STATE = "published"
+  end
+end
+
 require 'lims-core/resource'
 require 'lims-management-app/sample/dna/dna'
 require 'lims-management-app/sample/rna/rna'
@@ -12,20 +19,14 @@ module Lims::ManagementApp
     include ValidationShared
     include ValidationShared::CommonValidator
 
-    # required attributes
-    %w{supplier_sample_name gender sanger_sample_id sample_type}.each do |name|
-      attribute :"#{name}", String, :required => true, :initializable => true
-    end
-    attribute :taxon_id, Numeric, :required => true, :initializable => true
-    attribute :scientific_name, String, :required => true, :initializable => true
-    attribute :common_name, String, :required => false, :initializable => true
-
-    # The attributes below are all strings, not required with a private writer
-    %w(hmdmc_number ebi_accession_number sample_source
+    # The attributes below are all strings and not required
+    %w(state supplier_sample_name gender sanger_sample_id sample_type 
+    scientific_name common_name hmdmc_number ebi_accession_number sample_source
     mother father sibling gc_content public_name cohort storage_conditions).each do |name|
       attribute :"#{name}", String, :required => false, :initializable => true
     end
 
+    attribute :taxon_id, Numeric, :required => false, :initializable => true
     attribute :volume, Integer, :required => false, :initializable => true
     attribute :date_of_sample_collection, DateTime, :required => false, :initializable => true
     attribute :is_sample_a_control, Boolean, :required => false, :initializable => true

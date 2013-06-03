@@ -10,13 +10,11 @@ module Lims::ManagementApp
       :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String, 
       :sibling => String, :gc_content => String, :public_name => String, :cohort => String, 
       :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash,
-      :genotyping => Hash, :common_name => String}
+      :genotyping => Hash, :common_name => String, :gender => String, :sample_type => String,
+      :taxon_id => Numeric, :supplier_sample_name => String, :scientific_name => String}
 
-      class SampleUuidNotFound < StandardError
-      end
-
-      class SangerSampleIdNotFound < StandardError
-      end
+      SampleUuidNotFound = Class.new(StandardError)
+      SangerSampleIdNotFound = Class.new(StandardError)
 
       # Only for create, bulk create and update actions
       def self.included(klass)
@@ -82,6 +80,12 @@ module Lims::ManagementApp
           end
         end
 
+        # If the sample state is updated to published, we need to
+        # be sure that the sample data are valid. So, we validate
+        # the sample here one more time, after it has been updated 
+        # with the new parameter.
+        validate_published_data(sample)
+
         {:sample => sample}
       end
 
@@ -101,7 +105,7 @@ module Lims::ManagementApp
       # @return [Bool]
       # Return true if name is a specific parameter for a sample
       def is_a_sample_attribute(name)
-        attributes = ATTRIBUTES.keys | [:gender, :sample_type, :scientific_name, :taxon_id, :supplier_sample_name]
+        attributes = ATTRIBUTES.keys | [:state]
         attributes.include?(name)
       end
 
@@ -112,7 +116,7 @@ module Lims::ManagementApp
         unfiltered_attributes.rekey! { |k| k.to_sym }
         unfiltered_attributes.mash do |k,v|
           case k
-          when :date_of_sample_collection then [k, Time.parse(v)] if v
+          when :date_of_sample_collection then v ? [k, Time.parse(v)] : [k, v] 
           when :quantity then [k, v ? v : 1]
           else [k,v]
           end
