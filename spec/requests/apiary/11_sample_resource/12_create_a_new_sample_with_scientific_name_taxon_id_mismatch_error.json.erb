@@ -40,7 +40,7 @@ EOD
 h[:status]=422
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
-{"errors": "Taxon ID 9606 does not match 'hoomo sapiens'. Do you mean 'Homo sapiens'?"}
+{"errors": "Taxon ID 9606 does not match the scientific name 'hoomo sapiens'. Do you mean 'Homo sapiens'?"}
 EOD
 %>
 <%= h.to_json %>
