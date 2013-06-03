@@ -56,9 +56,9 @@ module Lims::ManagementApp
         end
       end
 
-      context "samples with taxon_id and scientific name which don't match", :focus => true do
+      context "samples with taxon_id and scientific name which don't match" do
         let(:parameters) { full_sample_parameters.merge({:taxon_id => 9606, :scientific_name => "dummy"}) }
-        it "raises en error" do
+        it "raises an error" do
           expect do
             subject.call
           end.to raise_error(Sample::NameTaxonIdMismatchError)

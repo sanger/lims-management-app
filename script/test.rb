@@ -11,6 +11,7 @@ options = {}
 OptionParser.new do |opt|
   opt.on('-q', '--quantity QUANTITY') { |qty| options[:quantity] = qty.to_i }
   opt.on('-c', '--create') { |o| options[:create] = true }
+  opt.on('-w', '--workflow') { |o| options[:workflow] = true }
   opt.on('-u', '--update') do |o| 
     options[:create] = true
     options[:update] = true
@@ -43,7 +44,46 @@ def update_parameters(parameters)
   end
 end
 
-if options[:quantity] == 1 || options[:quantity].nil?
+# Workflow example
+# 1 - bulk create 2 empty samples - draft
+# 2 - bulk update 2 samples - draft
+# 3 - finalize bulk update 2 samples - published
+if options[:workflow]
+  parameters = {:bulk_create_sample => {:user => "username", :quantity => 2}}
+  response = RestClient.post("http://localhost:9292/actions/bulk_create_sample",
+                             parameters.to_json,
+                             {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
+  result = JSON.parse(response)
+  sample_uuids = [].tap do |uuids|
+    result["bulk_create_sample"]["result"]["samples"].each do |sample|
+      uuids << sample["uuid"]
+    end
+  end
+  puts response
+
+  updated_parameters = {}.tap do |h|
+    sample_uuids.each do |uuid|
+      h[uuid] = {:gender => "Male", :sample_type => "RNA", :taxon_id => 9606, :common_name => "man", :scientific_name => "homo sapiens"}
+    end
+  end
+  response = RestClient.post("http://localhost:9292/actions/bulk_update_sample",
+                             {:bulk_update_sample => {:updates => updated_parameters}}.to_json,
+                             {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
+  puts
+  puts response
+
+  updated_parameters = {}.tap do |h|
+    sample_uuids.each do |uuid|
+      h[uuid] = {:state => "published"}
+    end
+  end
+  response = RestClient.post("http://localhost:9292/actions/bulk_update_sample",
+                             {:bulk_update_sample => {:updates => updated_parameters}}.to_json,
+                             {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
+  puts
+  puts response
+
+elsif options[:quantity] == 0 || options[:quantity].nil?
 
   # Create a sample
   parameters = {
