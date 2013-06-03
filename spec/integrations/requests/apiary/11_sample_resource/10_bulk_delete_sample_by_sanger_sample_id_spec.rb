@@ -88,6 +88,7 @@ describe "bulk_delete_sample_by_sanger_sample_id", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
                     },
                     "uuid": "11111111-2222-3333-4444-555555555555",
+                    "state": null,
                     "sanger_sample_id": "S2-test1-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
@@ -118,6 +119,7 @@ describe "bulk_delete_sample_by_sanger_sample_id", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
                     },
                     "uuid": "11111111-2222-3333-4444-666666666666",
+                    "state": null,
                     "sanger_sample_id": "S2-test2-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
