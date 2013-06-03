@@ -3,9 +3,11 @@ module Lims::ManagementApp
     module ValidationShared
 
       GENDER = ["Not applicable", "Male", "Female", "Mixed", "Hermaphrodite", "Unknown"]
-      SAMPLE_TYPE = ["DNA Human", "DNA Pathogen", "RNA", "Blood", "Saliva", "Tissue Non-Tumour", "Tissue Tumour", "Pathogen"]
+      SAMPLE_TYPE = ["DNA Human", "DNA Pathogen", "RNA", "Blood", "Saliva", "Tissue Non-Tumour", "Tissue Tumour", "Pathogen", "Cell Lysate", "Cell Pellet"]
       HUMAN_SAMPLE_TAXON_ID = 9606
       HUMAN_SAMPLE_GENDER = GENDER - ["Not applicable", "Unknown"]
+      STATES = [Sample::DRAFT_STATE, Sample::PUBLISHED_STATE]
+
 
       private
 
@@ -18,8 +20,25 @@ module Lims::ManagementApp
       end
 
       def validate_gender_for_human_sample(taxon_id, gender)
-        if taxon_id == HUMAN_SAMPLE_TAXON_ID
-          HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase) if gender
+        if taxon_id == HUMAN_SAMPLE_TAXON_ID && gender
+          HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase)
+        else
+          true
+        end
+      end
+  
+      def validate_state(state)
+        STATES.include?(state)
+      end
+
+      def validate_published_data(sample)
+        if sample.state == PUBLISHED_STATE
+          valid = sample.gender && validate_gender(sample.gender) &&
+            sample.sample_type && validate_sample_type(sample.sample_type) &&
+            sample.taxon_id && validate_gender_for_human_sample(sample.taxon_id, sample.gender)
+
+          raise Lims::Core::Actions::Action::InvalidParameters, "The sample to be published is not valid. Check the gender, the sample type or/and the taxon id." unless valid
+          true
         else
           true
         end
@@ -31,6 +50,7 @@ module Lims::ManagementApp
             validates_with_method :ensure_gender_value
             validates_with_method :ensure_sample_type_value
             validates_with_method :ensure_gender_for_human_sample
+            validates_with_method :ensure_state
           end
         end
 
@@ -54,6 +74,14 @@ module Lims::ManagementApp
         # A human sample has a taxon id equals to 9606.
         def ensure_gender_for_human_sample
           validate_gender_for_human_sample(taxon_id, gender)
+        end
+
+        def ensure_state
+          state ? validate_state(state) : true
+        end
+
+        def ensure_published_data
+          validate_published_data(self)
         end
       end
     end
