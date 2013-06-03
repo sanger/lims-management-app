@@ -14,6 +14,7 @@ module Lims::ManagementApp
         samples.size.should == 2
         samples.each do |sample|
           sample.should be_a(Sample)
+          sample.state.should == state
           updated_parameters.each do |uuid, parameters|
             parameters.each do |k,v|
               v = DateTime.parse(v) if k.to_s =~ /date/
@@ -66,15 +67,20 @@ module Lims::ManagementApp
         end
         described_class.new(wrong_parameters).valid?.should == false
       end
+
+      it "requires a correct state" do
+        described_class.new(parameters[:updates].merge({'dummy_uuid' => {:state => 'dummy'}})).valid?.should == false
+      end
     end
 
 
     context "valid action" do
       let(:result) { subject.call }
+      let(:state) { "published" }
       let(:updated_parameters) do
         {}.tap do |updates|
           sample_refs.each do |uuid|
-            updates[uuid] = update_parameters(full_sample_parameters)
+            updates[uuid] = update_parameters(full_sample_parameters).merge({:state => state})
           end
         end
       end

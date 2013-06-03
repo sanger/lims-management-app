@@ -88,7 +88,26 @@ module Lims::ManagementApp
         }
         it_behaves_like "sequel bulk updating samples", 0, 0, 0, 0, 2
       end
+
+      context "with empty samples and published state" do
+        let(:samples) { [Sample.new, Sample.new] }
+        subject {
+          described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.updates = {}.tap do |h|
+              sample_uuids.each do |uuid|
+                h[uuid] = {:state => "published"}
+              end
+            end
+          end
+        }
+        it "raises an error" do 
+          expect do
+            subject.call
+          end.to raise_error(Lims::Core::Actions::Action::InvalidParameters)
+        end
+      end
     end
+
 
 
     context "with sanger sample ids" do

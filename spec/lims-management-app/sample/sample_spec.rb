@@ -1,3 +1,4 @@
+require 'lims-management-app/spec_helper'
 require 'lims-management-app/sample/sample_shared'
 
 module Lims::ManagementApp
@@ -46,18 +47,14 @@ module Lims::ManagementApp
         it_has_a name
       end
 
+      it_has_a :state
       it_has_a :supplier_sample_name
-      it_needs_a :supplier_sample_name
       it_has_a :common_name
       it_has_a :scientific_name
-      it_needs_a :scientific_name
       it_has_a :taxon_id
-      it_needs_a :taxon_id
       it_has_a :gender
-      it_needs_a :gender
       it_has_a :sanger_sample_id
       it_has_a :sample_type
-      it_needs_a :sample_type
       it_has_a :volume
       it_has_a :date_of_sample_collection
       it_has_a :is_sample_a_control
