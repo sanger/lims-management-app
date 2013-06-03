@@ -34,12 +34,14 @@ module Lims::ManagementApp
       # If an exception is raised, the save is cancelled
       # and the transaction rollbacked.
       def taxonomy_primary_id(taxon_id, name, type)
-        persistor = @session.persistor_for(:taxonomy)
-        raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)
+        if taxon_id
+          persistor = @session.persistor_for(:taxonomy)
+          raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)
 
-        id = persistor.id_by_taxon_id_and_name(taxon_id, name, type)
-        raise NameTaxonIdMismatchError, "Taxon ID #{taxon_id} does not match '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?" unless id 
-        id
+          id = persistor.id_by_taxon_id_and_name(taxon_id, name, type)
+          raise NameTaxonIdMismatchError, "Taxon ID #{taxon_id} does not match '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?" unless id 
+          id
+        end
       end
 
       # @param [Object] object
@@ -63,13 +65,13 @@ module Lims::ManagementApp
           when :rna_id then [:rna, @session.rna[v]]
           when :cellular_material_id then [:cellular_material, @session.cellular_material[v]]
           when :genotyping_id then [:genotyping, @session.genotyping[v]]
-          when :scientific_taxon_id then [:scientific_name, @session.taxonomy[v].name]
-          when :common_taxon_id then [:common_name, @session.taxonomy[v].name]
+          when :scientific_taxon_id then v ? [:scientific_name, @session.taxonomy[v].name] : [:scientific_name, nil]
+          when :common_taxon_id then v ? [:common_name, @session.taxonomy[v].name] : [:common_name, nil]
           else [k,v]
           end
         end.tap do |a|
           id = attributes[:scientific_taxon_id]
-          a[:taxon_id] = @session.taxonomy[id].taxon_id 
+          a[:taxon_id] = @session.taxonomy[id].taxon_id if id 
         end
       end
     end
