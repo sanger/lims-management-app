@@ -1,4 +1,5 @@
 require 'lims-core/actions/action'
+require 'lims-management-app/sample/sample'
 require 'lims-management-app/sample/action_shared'
 require 'lims-management-app/sample/validation_shared'
 
@@ -10,10 +11,7 @@ module Lims::ManagementApp
       include ValidationShared
 
       BY_ATTRIBUTE_VALUES = ["sanger_sample_id", "uuid"]
-      UPDATE_ATTRIBUTES = ATTRIBUTES.merge({
-        :gender => String, :sample_type => String, :taxon_id => Numeric,
-        :supplier_sample_name => String, :scientific_name => String
-      })
+      UPDATE_ATTRIBUTES = ATTRIBUTES.merge({:state => String})
 
       attribute :by, String, :required => false
       attribute :updates, Hash, :default => {}, :required => true
@@ -48,6 +46,7 @@ module Lims::ManagementApp
             when :gender then return false unless validate_gender(value)
             when :sample_type then return false unless validate_sample_type(value)
             when :taxon_id then return false unless validate_gender_for_human_sample(value, parameters[:gender] || parameters["gender"])
+            when :state then return false unless validate_state(value)
             end
           end
         end

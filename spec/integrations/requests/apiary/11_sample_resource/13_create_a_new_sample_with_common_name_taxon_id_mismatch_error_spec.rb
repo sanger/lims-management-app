@@ -40,7 +40,7 @@ describe "create_a_new_sample_with_common_name_taxon_id_mismatch_error", :sample
     response.status.should == 422
     response.body.should match_json <<-EOD
     {
-    "errors": "Taxon ID 9606 does not match 'humannn'. Do you mean 'human'?"
+    "errors": "Taxon ID 9606 does not match the common name 'humannn'. Do you mean 'human'?"
 }
     EOD
 

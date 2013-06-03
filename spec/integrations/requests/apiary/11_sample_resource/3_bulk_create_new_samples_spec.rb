@@ -82,6 +82,7 @@ describe "bulk_create_new_samples", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
                     },
                     "uuid": "11111111-2222-3333-4444-555555555555",
+                    "state": "draft",
                     "sanger_sample_id": "S2-test1-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
@@ -136,6 +137,7 @@ describe "bulk_create_new_samples", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
                     },
                     "uuid": "11111111-2222-3333-4444-666666666666",
+                    "state": "draft",
                     "sanger_sample_id": "S2-test2-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
@@ -190,6 +192,7 @@ describe "bulk_create_new_samples", :sample => true do
                         "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
                     },
                     "uuid": "11111111-2222-3333-4444-777777777777",
+                    "state": "draft",
                     "sanger_sample_id": "S2-test3-ID",
                     "gender": "Male",
                     "sample_type": "RNA",
@@ -258,6 +261,7 @@ describe "bulk_create_new_samples", :sample => true do
         "cohort": "cohort",
         "storage_conditions": "conditions",
         "gender": "Male",
+        "state": "draft",
         "sample_type": "RNA",
         "dna": {
             "pre_amplified": true,

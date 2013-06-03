@@ -14,6 +14,7 @@ module Lims::ManagementApp
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
+        sample.state.should == state
         updated_parameters.each do |k,v|
           v = DateTime.parse(v) if k.to_s =~ /date/
           if [:dna, :rna, :cellular_material, :genotyping].include?(k)
@@ -60,24 +61,60 @@ module Lims::ManagementApp
       it "requires a valid sample type" do
         described_class.new(parameters.merge({:sample_type => "dummy"})).valid?.should == false
       end
+
+      it "requires a valid state" do
+        described_class.new(parameters.merge({:state => "dummy"})).valid?.should == false
+      end
+
+      it "raises an exception with invalid values and published state" do
+        expect do
+          described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.sample = new_full_sample.tap { |s| s.gender = nil }
+            a.state = "published"
+          end.call
+        end.to raise_error(Lims::Core::Actions::Action::InvalidParameters)
+      end
     end
 
 
     context "valid action given a sample" do
-      subject {
-        described_class.new(:store => store, :user => user, :application => application) do |a,s|
-          a.sample = new_full_sample
-          updated_parameters.each do |k,v|
-            a.send("#{k}=", v)
+      context "with a draft state" do
+        let(:state) { "draft" }
+        subject {
+          described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.sample = new_full_sample
+            a.state = state
+            updated_parameters.each do |k,v|
+              a.send("#{k}=", v)
+            end
           end
-        end
-      }
+        }
 
-      it "is valid" do
-        described_class.new(parameters).valid?.should == true
+        it "is valid" do
+          described_class.new(parameters).valid?.should == true
+        end
+
+        it_behaves_like "updating a sample"
       end
 
-      it_behaves_like "updating a sample"
+      context "with a published state" do
+        let(:state) { "published" }
+        subject {
+          described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.sample = new_full_sample
+            a.state = state
+            updated_parameters.each do |k,v|
+              a.send("#{k}=", v)
+            end
+          end
+        }
+
+        it "is valid" do
+          described_class.new(parameters).valid?.should == true
+        end
+
+        it_behaves_like "updating a sample"       
+      end
     end
   end
 end
