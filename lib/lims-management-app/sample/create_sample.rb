@@ -15,7 +15,7 @@ module Lims::ManagementApp
       validates_with_method :ensure_published_data
 
       def _call_in_session(session)
-        _create(1, session)
+        _create(session)
       end
     end
 
