@@ -3,7 +3,7 @@ module Lims::ManagementApp
     module ValidationShared
 
       GENDER = ["Not applicable", "Male", "Female", "Mixed", "Hermaphrodite", "Unknown"]
-      SAMPLE_TYPE = ["DNA Human", "DNA Pathogen", "RNA", "Blood", "Saliva", "Tissue Non-Tumour", "Tissue Tumour", "Pathogen", "Cell Lysate", "Cell Pellet"]
+      SAMPLE_TYPE = ["DNA Human", "DNA Pathogen", "RNA", "Blood", "Saliva", "Tissue Non-Tumour", "Tissue Tumour", "Pathogen", "Cell Pellet"]
       HUMAN_SAMPLE_TAXON_ID = 9606
       HUMAN_SAMPLE_GENDER = GENDER - ["Not applicable", "Unknown"]
       STATES = [Sample::DRAFT_STATE, Sample::PUBLISHED_STATE]
