@@ -94,10 +94,13 @@ module Lims::ManagementApp
       # @param [Session] session
       # @return [Hash]
       def _delete(samples, session)
-        samples.each do |current_sample|
-          session.delete(current_sample)
+        if samples.is_a?(Array)
+          samples.each { |current_sample| session.delete(current_sample) }
+        else
+          session.delete(samples)
         end
-        (samples.size == 1) ? {:sample => samples.first} : {:samples => samples}
+
+        samples.is_a?(Array) ? {:samples => samples} : {:sample => samples}
       end
 
       private
