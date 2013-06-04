@@ -10,7 +10,7 @@ module Lims::ManagementApp
       attribute :sample, Sample, :required => true
 
       def _call_in_session(session)
-        _delete([sample], session)
+        _delete(sample, session)
       end
     end
 
