@@ -33,11 +33,12 @@ module Lims::ManagementApp
       # Shared method for sample creation and bulk creation
       # Generate the sanger sample id, set the dna/rna/cellular material data
       # if requested.
-      def _create(sample_quantity, session)
+      def _create(sample_quantity = nil, session)
         attributes = filtered_attributes
         samples = []
+        quantity = sample_quantity || 1
 
-        sample_quantity.times do
+        quantity.times do
           sample = Sample.new(attributes)
           sample.dna = Dna.new(dna) if dna && dna.size > 0
           sample.rna = Rna.new(rna) if rna && rna.size > 0
@@ -47,7 +48,7 @@ module Lims::ManagementApp
           samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
         end
 
-        (sample_quantity == 1) ? samples.first : {:samples => samples.map { |e| e[:sample] }}
+        sample_quantity ? {:samples => samples.map { |e| e[:sample] }} : samples.first
       end
 
       # @param [Array] samples
