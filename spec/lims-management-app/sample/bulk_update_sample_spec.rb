@@ -143,9 +143,10 @@ module Lims::ManagementApp
 
         context "with valid sanger sample ids" do
           let!(:sample_refs) do
-            [new_common_sample, new_common_sample].map do |sample|
+            [new_common_sample, new_common_sample].each_with_index.map do |sample, i|
               store.with_session do |session|
                 session << sample
+                sample.sanger_sample_id = "s2-#{i}"
                 lambda { sample.sanger_sample_id }
               end.call
             end
@@ -158,6 +159,7 @@ module Lims::ManagementApp
             id1 = store.with_session do |session|
               sample = new_common_sample
               session << sample
+              sample.sanger_sample_id = "s2-1"
               lambda { sample.sanger_sample_id }
             end.call
             [id1, "dummy_id"]

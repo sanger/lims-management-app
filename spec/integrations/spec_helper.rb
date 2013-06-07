@@ -53,6 +53,7 @@ shared_context 'use core context service' do
     %w{samples taxonomies dna rna cellular_material genotyping uuid_resources}.each do |table|
       db[table.to_sym].delete
     end
+    db[:sanger_sample_id_number].where(:id => 1).update(:number => 0)
     db.disconnect
   end
 end

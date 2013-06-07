@@ -1,11 +1,6 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
   include_context "use core context service"
-  before do
-  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-   "S2-test-ID"
-  end
-  end
   it "create_a_new_sample_with_dna_rna_cellular" do
 
     header('Accept', 'application/json')
@@ -14,6 +9,7 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
     response = post "/samples", <<-EOD
     {
     "sample": {
+        "sanger_sample_id_core": "S2",
         "gender": "Male",
         "state": "published",
         "sample_type": "RNA",
@@ -69,7 +65,7 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
         },
         "uuid": "11111111-2222-3333-4444-555555555555",
         "state": "published",
-        "sanger_sample_id": "S2-test-ID",
+        "sanger_sample_id": "S2-1",
         "gender": "Male",
         "sample_type": "RNA",
         "hmdmc_number": "number",
