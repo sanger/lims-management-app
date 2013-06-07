@@ -1,15 +1,9 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_update_sample", :sample => true do
   include_context "use core context service"
-  before do
-  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-    @count ||= 0
-    @count += 1
-    "S2-test" << @count.to_s << "-ID"
-  end
-  end
   it "bulk_update_sample" do
     sample = Lims::ManagementApp::Sample.new({
+        "sanger_sample_id" => "S2-1",
         "gender" => "Male",
         "state" => "draft",
         "sample_type" => "RNA",
@@ -33,6 +27,7 @@ describe "bulk_update_sample", :sample => true do
     })
     
     sample2 = Lims::ManagementApp::Sample.new({
+        "sanger_sample_id" => "S2-2",
         "gender" => "Male",
         "state" => "draft",
         "sample_type" => "RNA",
@@ -93,7 +88,7 @@ describe "bulk_update_sample", :sample => true do
                     },
                     "uuid": "11111111-2222-3333-4444-555555555555",
                     "state": "draft",
-                    "sanger_sample_id": "S2-test1-ID",
+                    "sanger_sample_id": "S2-1",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
@@ -124,7 +119,7 @@ describe "bulk_update_sample", :sample => true do
                     },
                     "uuid": "11111111-2222-3333-4444-666666666666",
                     "state": "draft",
-                    "sanger_sample_id": "S2-test2-ID",
+                    "sanger_sample_id": "S2-2",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",

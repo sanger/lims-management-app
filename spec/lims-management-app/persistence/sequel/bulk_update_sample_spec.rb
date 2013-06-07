@@ -112,9 +112,10 @@ module Lims::ManagementApp
 
     context "with sanger sample ids" do
       let!(:sanger_sample_ids) do
-        samples.map do |sample|
+        samples.each_with_index.map do |sample, i|
           store.with_session do |session|
             session << sample
+            sample.sanger_sample_id = "s2-#{i}"
             lambda { sample.sanger_sample_id }
           end.call
         end
