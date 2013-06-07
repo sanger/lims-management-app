@@ -6,15 +6,9 @@ EOD
 h[:method] = "POST"
 h[:url] = '/samples'
 h[:header] << 'Accept: application/json'
-h[:global_setup] = <<EOD
-before do
-Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-  "S2-test-ID"
-end
-end
-EOD
 h[:parameters] = <<EOD
 { "sample": {
+    "sanger_sample_id_core": "S2",
     "gender": "Male",
     "sample_type": "RNA",
     "taxon_id": 9606,
@@ -50,7 +44,7 @@ h[:response]=<<EOD
 },
   "uuid": "11111111-2222-3333-4444-555555555555",
   "state": "draft",
-  "sanger_sample_id": "S2-test-ID",
+  "sanger_sample_id": "S2-1",
   "gender": "Male",
   "sample_type": "RNA",
   "hmdmc_number": "number",

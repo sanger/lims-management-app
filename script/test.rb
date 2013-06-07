@@ -49,7 +49,7 @@ end
 # 2 - bulk update 2 samples - draft
 # 3 - finalize bulk update 2 samples - published
 if options[:workflow]
-  parameters = {:bulk_create_sample => {:user => "username", :quantity => 2}}
+  parameters = {:bulk_create_sample => {:user => "username", :sanger_sample_id_core => "S2",  :quantity => 1}}
   response = RestClient.post("http://localhost:9292/actions/bulk_create_sample",
                              parameters.to_json,
                              {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
@@ -59,6 +59,19 @@ if options[:workflow]
       uuids << sample["uuid"]
     end
   end
+  puts response
+  sanger_sample_ids = [].tap do |ids|
+    result["bulk_create_sample"]["result"]["samples"].each do |sample|
+      ids << sample["sanger_sample_id"]
+    end
+  end
+
+  parameters = {"bulk_update_sample"=>{"user"=>"username","by"=>"sanger_sample_id","updates"=>{sanger_sample_ids.first=>{"gender"=>"Male","sample_type"=>"Tissue Non-Tumour","supplier_sample_name"=>"TEST_SAMPLE_1","volume"=>1,"is_sample_a_control"=>false,"is_re_submitted_sample"=>false,"cellular_material"=>{"lysed"=>false}}}}}
+  puts parameters.to_json
+  response = RestClient.post("http://localhost:9292/actions/bulk_update_sample",
+                             parameters.to_json,
+                             {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
+  puts
   puts response
 
   updated_parameters = {}.tap do |h|
@@ -88,8 +101,9 @@ elsif options[:quantity] == 0 || options[:quantity].nil?
   # Create a sample
   parameters = {
     :sample => {
+      :sanger_sample_id_core => "StudyX",
       :gender => "Male",
-      :sample_type => "RNA",
+      :sample_type => "Cell Pellet",
       :taxon_id => 9606,
       :volume => 100,
       :supplier_sample_name => "supplier sample name",
@@ -116,8 +130,16 @@ elsif options[:quantity] == 0 || options[:quantity].nil?
         :sample_purified => false,
         :concentration_determined_by_which_method => "method"
       },
+      :rna => {
+        :pre_amplified => true,
+        :date_of_sample_extraction => "2013-06-02",
+        :extraction_method => "extraction method",
+        :concentration => 120,
+        :sample_purified => true,
+        :concentration_determined_by_which_method => "method"
+      },
       :cellular_material => {
-        :lysed => false
+        :lysed => true
       },
       :genotyping => {
         :country_of_origin => "england",
@@ -141,7 +163,7 @@ elsif options[:quantity] == 0 || options[:quantity].nil?
   if options[:update]
     updated_parameters = update_parameters(parameters) 
     response = RestClient.put("http://localhost:9292/#{sample_uuid}",
-                              updated_parameters[:sample].to_json,
+                              (updated_parameters[:sample] - [:sanger_sample_id_core]).to_json,
                               {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     puts response
     puts
@@ -162,6 +184,7 @@ else
   parameters = {
     :bulk_create_sample => {
       :quantity => options[:quantity],
+      :sanger_sample_id_core => "S2",
       :gender => "Male",
       :sample_type => "RNA",
       :taxon_id => 9606,
@@ -219,7 +242,7 @@ else
   if options[:update]
     updated_parameters = {}.tap do |h|
       sample_uuids.each do |uuid|
-        h[uuid] = update_parameters(parameters[:bulk_create_sample] - [:quantity])
+        h[uuid] = update_parameters(parameters[:bulk_create_sample] - [:quantity, :sanger_sample_id_core])
       end
     end
 

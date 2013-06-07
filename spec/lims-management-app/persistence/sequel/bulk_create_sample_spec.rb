@@ -71,6 +71,7 @@ module Lims::ManagementApp
 
       subject {
         described_class.new(:store => store, :user => user, :application => application) do |a,s|
+          a.sanger_sample_id_core = "s2"
           parameters.each do |k,v|
             a.send("#{k}=", v)
           end

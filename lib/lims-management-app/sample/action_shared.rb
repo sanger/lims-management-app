@@ -44,11 +44,21 @@ module Lims::ManagementApp
           sample.rna = Rna.new(rna) if rna && rna.size > 0
           sample.cellular_material = CellularMaterial.new(cellular_material) if cellular_material && cellular_material.size > 0
           sample.genotyping = Genotyping.new(genotyping) if genotyping && genotyping.size > 0
+          sample.sanger_sample_id = generate_sanger_sample_id(sanger_sample_id_core, session)
           session << sample
           samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
         end
 
         sample_quantity ? {:samples => samples.map { |e| e[:sample] }} : samples.first
+      end
+
+      # @param [String] Sanger sample id core
+      # @param [Session] session
+      # @return [String]
+      def generate_sanger_sample_id(core, session)
+        persistor = session.persistor_for(:sanger_sample_id_number)
+        number = persistor.generate_new_number
+        "#{core}-#{number.to_s}"
       end
 
       # @param [Array] samples

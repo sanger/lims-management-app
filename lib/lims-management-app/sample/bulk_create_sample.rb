@@ -17,6 +17,7 @@ module Lims::ManagementApp
       validates_with_method :ensure_quantity_value
       attribute :state, String, :default => Sample::DRAFT_STATE, :required => false
       validates_with_method :ensure_published_data
+      attribute :sanger_sample_id_core, String, :required => true
 
       def _call_in_session(session)
         _create(quantity, session)
