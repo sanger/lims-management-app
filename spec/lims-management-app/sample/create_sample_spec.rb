@@ -1,3 +1,4 @@
+require 'lims-management-app/sample/sanger_sample_id/all'
 require 'lims-management-app/sample/create_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
@@ -57,7 +58,8 @@ module Lims::ManagementApp
       {
         :store => store, 
         :user => user, 
-        :application => application
+        :application => application,
+        :sanger_sample_id_core => "s2"
       }.merge(common_sample_parameters) 
     }
 
@@ -82,6 +84,10 @@ module Lims::ManagementApp
         described_class.new(parameters.merge({:state => "dummy"})).valid?.should == false
       end
 
+      it "requires a sanger_sample_id_core" do
+        described_class.new(parameters - [:sanger_sample_id_core]).valid?.should == false
+      end
+
       it "raises an exception with empty sample and published state" do
         expect do
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
@@ -103,10 +109,15 @@ module Lims::ManagementApp
       end
     end
 
+    before do
+      Lims::ManagementApp::Sample::SangerSampleIdNumber::SangerSampleIdNumberPersistor.any_instance.stub(:generate_new_number) { 1 }
+    end
+
     context "valid action" do
       context "empty sample" do
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
+            a.sanger_sample_id_core = "s2"
           end
         }
 
@@ -118,6 +129,7 @@ module Lims::ManagementApp
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.state = state 
+            a.sanger_sample_id_core = "s2"
             full_sample_parameters.each do |k,v|
               a.send("#{k}=", v)
             end
@@ -131,6 +143,7 @@ module Lims::ManagementApp
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.state = state
+            a.sanger_sample_id_core = "s2"
             full_sample_parameters.each do |k,v|
               a.send("#{k}=", v)
             end

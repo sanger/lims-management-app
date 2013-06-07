@@ -1,13 +1,6 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_create_new_samples", :sample => true do
   include_context "use core context service"
-  before do
-  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-    @count ||= 0
-    @count += 1
-      "S2-test" << @count.to_s << "-ID"
-  end
-  end
   it "bulk_create_new_samples" do
 
     header('Accept', 'application/json')
@@ -16,6 +9,7 @@ describe "bulk_create_new_samples", :sample => true do
     response = post "/actions/bulk_create_sample", <<-EOD
     {
     "bulk_create_sample": {
+        "sanger_sample_id_core": "S2",
         "quantity": 3,
         "gender": "Male",
         "sample_type": "RNA",
@@ -83,7 +77,7 @@ describe "bulk_create_new_samples", :sample => true do
                     },
                     "uuid": "11111111-2222-3333-4444-555555555555",
                     "state": "draft",
-                    "sanger_sample_id": "S2-test1-ID",
+                    "sanger_sample_id": "S2-1",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
@@ -138,7 +132,7 @@ describe "bulk_create_new_samples", :sample => true do
                     },
                     "uuid": "11111111-2222-3333-4444-666666666666",
                     "state": "draft",
-                    "sanger_sample_id": "S2-test2-ID",
+                    "sanger_sample_id": "S2-2",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
@@ -193,7 +187,7 @@ describe "bulk_create_new_samples", :sample => true do
                     },
                     "uuid": "11111111-2222-3333-4444-777777777777",
                     "state": "draft",
-                    "sanger_sample_id": "S2-test3-ID",
+                    "sanger_sample_id": "S2-3",
                     "gender": "Male",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
@@ -241,6 +235,7 @@ describe "bulk_create_new_samples", :sample => true do
                 }
             ]
         },
+        "sanger_sample_id_core": "S2",
         "quantity": 3,
         "taxon_id": 9606,
         "volume": 100,

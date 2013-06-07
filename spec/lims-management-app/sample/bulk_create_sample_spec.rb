@@ -34,9 +34,14 @@ module Lims::ManagementApp
         :store => store, 
         :user => user, 
         :application => application,
-        :quantity => quantity
+        :quantity => quantity,
+        :sanger_sample_id_core => "prefix"
       }.merge(full_sample_parameters) 
     }
+
+    before do
+      Lims::ManagementApp::Sample::SangerSampleIdNumber::SangerSampleIdNumberPersistor.any_instance.stub(:generate_new_number) { 1 }
+    end
 
     context "invalid action" do
       it "requires a valid quantity" do
@@ -83,6 +88,7 @@ module Lims::ManagementApp
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.quantity = quantity
+            a.sanger_sample_id_core = "prefix"
           end
         }
 
@@ -94,6 +100,7 @@ module Lims::ManagementApp
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.state = state 
+            a.sanger_sample_id_core = "prefix"
             a.quantity = quantity
             full_sample_parameters.each do |k,v|
               a.send("#{k}=", v)
@@ -108,6 +115,7 @@ module Lims::ManagementApp
         subject {
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
             a.state = state
+            a.sanger_sample_id_core = "prefix"
             a.quantity = quantity
             full_sample_parameters.each do |k,v|
               a.send("#{k}=", v)

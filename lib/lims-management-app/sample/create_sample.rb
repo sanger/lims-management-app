@@ -11,6 +11,7 @@ module Lims::ManagementApp
       include ValidationShared
       include ValidationShared::CommonValidator
 
+      attribute :sanger_sample_id_core, String, :required => true
       attribute :state, String, :default => Sample::DRAFT_STATE, :required => false
       validates_with_method :ensure_published_data
 

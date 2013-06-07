@@ -5,14 +5,8 @@ require 'integrations/spec_helper'
 
 module Lims::ManagementApp
   shared_examples "a sample" do
-    before do
-      Sample::SangerSampleID.stub!(:generate) do
-        "S2-test-ID"
-      end
-    end
-
     let(:sample_id) { save(sample) }
-    let(:expected_sanger_sample_id) { "S2-test-ID" }
+    let(:expected_sanger_sample_id) { "s2-1" }
 
     it "should modify the sample table" do
       expect do 
@@ -26,12 +20,6 @@ module Lims::ManagementApp
       store.with_session do |session|
         sample = session.sample[sample_id]
         sample.should == session.sample[sample_id]
-      end
-    end
-
-    it "should generate a sanger sample id on save" do
-      store.with_session do |session|
-        session.sample[sample_id].sanger_sample_id.should == expected_sanger_sample_id
       end
     end
   end
