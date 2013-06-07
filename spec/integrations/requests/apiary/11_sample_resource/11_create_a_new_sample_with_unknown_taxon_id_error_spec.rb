@@ -1,11 +1,6 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "create_a_new_sample_with_unknown_taxon_id_error", :sample => true do
   include_context "use core context service"
-  before do
-  Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-    "S2-test-ID"
-  end
-  end
   it "create_a_new_sample_with_unknown_taxon_id_error" do
 
     header('Accept', 'application/json')
@@ -14,6 +9,7 @@ describe "create_a_new_sample_with_unknown_taxon_id_error", :sample => true do
     response = post "/samples", <<-EOD
     {
     "sample": {
+        "sanger_sample_id_core": "s2",
         "gender": "Male",
         "sample_type": "RNA",
         "taxon_id": 1234,

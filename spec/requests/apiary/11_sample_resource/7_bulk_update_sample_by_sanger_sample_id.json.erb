@@ -6,17 +6,9 @@ EOD
 h[:method] = "POST"
 h[:url] = '/actions/bulk_update_sample'
 h[:header] << 'Accept: application/json'
-h[:global_setup] = <<EOD
-before do
-Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-  @count ||= 0
-  @count += 1
-  "S2-test" << @count.to_s << "-ID"
-end
-end
-EOD
 h[:setup] = <<EOD
 sample = Lims::ManagementApp::Sample.new({
+    "sanger_sample_id" => "S2-1",
     "gender" => "Male",
     "state" => "draft",
     "sample_type" => "RNA",
@@ -40,6 +32,7 @@ sample = Lims::ManagementApp::Sample.new({
 })
 
 sample2 = Lims::ManagementApp::Sample.new({
+    "sanger_sample_id" => "S2-2",
     "gender" => "Male",
     "state" => "draft",
     "sample_type" => "RNA",
@@ -69,8 +62,8 @@ h[:parameters] = <<EOD
 { 
 "bulk_update_sample":{
 "by": "sanger_sample_id",
-"updates": {"S2-test1-ID": {"volume": 5000},
-"S2-test2-ID": {"volume": 4000}
+"updates": {"S2-1": {"volume": 5000},
+"S2-2": {"volume": 4000}
 }
 }
 }
@@ -96,7 +89,7 @@ h[:response]=<<EOD
           },
           "uuid": "11111111-2222-3333-4444-555555555555",
           "state": "draft",
-          "sanger_sample_id": "S2-test1-ID",
+          "sanger_sample_id": "S2-1",
           "gender": "Male",
           "sample_type": "RNA",
           "hmdmc_number": "number",
@@ -127,7 +120,7 @@ h[:response]=<<EOD
           },
           "uuid": "11111111-2222-3333-4444-666666666666",
           "state": "draft",
-          "sanger_sample_id": "S2-test2-ID",
+          "sanger_sample_id": "S2-2",
           "gender": "Male",
           "sample_type": "RNA",
           "hmdmc_number": "number",
@@ -152,8 +145,8 @@ h[:response]=<<EOD
       ]
     },
     "by": "sanger_sample_id",
-    "updates": {"S2-test1-ID": {"volume": 5000},
-                "S2-test2-ID": {"volume": 4000}
+    "updates": {"S2-1": {"volume": 5000},
+                "S2-2": {"volume": 4000}
      }
   }
 }
