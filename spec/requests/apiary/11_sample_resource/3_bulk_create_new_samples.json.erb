@@ -6,17 +6,9 @@ EOD
 h[:method] = "POST"
 h[:url] = '/actions/bulk_create_sample'
 h[:header] << 'Accept: application/json'
-h[:global_setup] = <<EOD
-before do
-Lims::ManagementApp::Sample::SangerSampleID.stub(:generate) do |a|
-  @count ||= 0
-  @count += 1
-    "S2-test" << @count.to_s << "-ID"
-end
-end
-EOD
 h[:parameters] = <<EOD
 { "bulk_create_sample": {
+    "sanger_sample_id_core": "S2",
     "quantity": 3,
     "gender": "Male",
     "sample_type": "RNA",
@@ -84,7 +76,7 @@ h[:response]=<<EOD
                 },
                 "uuid": "11111111-2222-3333-4444-555555555555",
                 "state": "draft",
-"sanger_sample_id": "S2-test1-ID",
+"sanger_sample_id": "S2-1",
   "gender": "Male",
   "sample_type": "RNA",
   "hmdmc_number": "number",
@@ -139,7 +131,7 @@ h[:response]=<<EOD
             },
 "uuid": "11111111-2222-3333-4444-666666666666",
 "state": "draft",
-  "sanger_sample_id": "S2-test2-ID",
+  "sanger_sample_id": "S2-2",
   "gender": "Male",
   "sample_type": "RNA",
   "hmdmc_number": "number",
@@ -194,7 +186,7 @@ h[:response]=<<EOD
             },
 "uuid": "11111111-2222-3333-4444-777777777777",
 "state": "draft",
-  "sanger_sample_id": "S2-test3-ID",
+  "sanger_sample_id": "S2-3",
   "gender": "Male",
   "sample_type": "RNA",
   "hmdmc_number": "number",
@@ -242,6 +234,7 @@ h[:response]=<<EOD
 }
 ]
   },
+  "sanger_sample_id_core": "S2",
   "quantity": 3,
   "taxon_id": 9606,
   "volume": 100,

@@ -36,34 +36,8 @@ module Lims::ManagementApp
     attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
     attribute :genotyping, Genotyping, :required => false, :initializable => true
 
-    # A sanger sample id is generated only if we create a new sample (then
-    # there are no parameters) or if the sanger sample id is not already present.
     def initialize(*args, &block)
-      parameters = args.first.rekey { |k| k.to_sym } if args.first
-      generate_sanger_sample_id unless parameters.nil? || parameters[:sanger_sample_id]
       super
-    end
-
-    private
-
-    def generate_sanger_sample_id
-      @sanger_sample_id = SangerSampleID.generate
-      self
-    end
-
-    module SangerSampleID
-      # @param [String,Integer] unique identifier
-      # @return [String]
-      # Generate a new sanger sample id using the
-      # unique identifier in parameter.
-      # @example S2-521-ID
-      def self.generate
-        "S2-#{unique_identifier.to_s}"
-      end
-
-      def self.unique_identifier
-        SecureRandom.uuid.gsub(/-/, "")
-      end
     end
   end
 end

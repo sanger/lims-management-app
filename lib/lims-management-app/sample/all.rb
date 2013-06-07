@@ -3,6 +3,7 @@ require 'lims-management-app/sample/rna/all'
 require 'lims-management-app/sample/cellular_material/all'
 require 'lims-management-app/sample/genotyping/all'
 require 'lims-management-app/sample/taxonomy/all'
+require 'lims-management-app/sample/sanger_sample_id/all'
 
 require 'lims-management-app/sample/sample'
 require 'lims-management-app/sample/sample_persistor'

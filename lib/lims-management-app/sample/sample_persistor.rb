@@ -10,6 +10,8 @@ module Lims::ManagementApp
     class SamplePersistor < Lims::Core::Persistence::Persistor
       Model = Sample
 
+      # TODO : should be in the sample sequel persistor !
+
       def filter_attributes_on_save(attributes)
         taxon_id = attributes[:taxon_id]
         attributes.reject { |k,v| k == :taxon_id }.mash do |k,v|
