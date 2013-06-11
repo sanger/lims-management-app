@@ -24,6 +24,81 @@ Please note you will generally find two different URLs to create a new resource,
 `/resources` or `/actions/create_resource`.
 ---
 
+
+--
+Root
+--
+
+The root JSON lists all the resources available through the lims-management-app api and all the actions which can be performed. 
+A resource responds to all the actions listed under its `actions` elements.
+Consider this URL and the JSON response like the entry point for lims-management-app api. All the other interactions through the 
+API can be performed browsing this JSON response.
+GET /
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "actions": {
+        "read": "http://localhost:9292/"
+    },
+    "searches": {
+        "actions": {
+            "create": "http://localhost:9292/searches",
+            "read": "http://localhost:9292/searches",
+            "first": "http://localhost:9292/searches/page=1",
+            "last": "http://localhost:9292/searches/page=-1"
+        }
+    },
+    "samples": {
+        "actions": {
+            "create": "http://localhost:9292/samples",
+            "read": "http://localhost:9292/samples",
+            "first": "http://localhost:9292/samples/page=1",
+            "last": "http://localhost:9292/samples/page=-1"
+        }
+    },
+    "uuid_resources": {
+        "actions": {
+            "create": "http://localhost:9292/uuid_resources",
+            "read": "http://localhost:9292/uuid_resources",
+            "first": "http://localhost:9292/uuid_resources/page=1",
+            "last": "http://localhost:9292/uuid_resources/page=-1"
+        }
+    },
+    "bulk_create_samples": {
+        "actions": {
+            "create": "http://localhost:9292/actions/bulk_create_sample"
+        }
+    },
+    "update_samples": {
+        "actions": {
+            "create": "http://localhost:9292/actions/update_sample"
+        }
+    },
+    "bulk_update_samples": {
+        "actions": {
+            "create": "http://localhost:9292/actions/bulk_update_sample"
+        }
+    },
+    "delete_samples": {
+        "actions": {
+            "create": "http://localhost:9292/actions/delete_sample"
+        }
+    },
+    "bulk_delete_samples": {
+        "actions": {
+            "create": "http://localhost:9292/actions/bulk_delete_sample"
+        }
+    },
+    "create_samples": {
+        "actions": {
+            "create": "http://localhost:9292/actions/create_sample"
+        }
+    },
+    "revision": 3
+}
+
+
 --
 Sample Resource
 --
