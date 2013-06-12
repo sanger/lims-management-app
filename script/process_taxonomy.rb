@@ -126,6 +126,11 @@ def insert_data_to_tmp_taxonomy_table
       data[:type] = type
       data_to_process << data
     end
+
+    if ((data_to_process.length % @nb_of_bulk_inserts) == 0)
+      inserting_bulk_data(ds, data_to_process)
+      data_to_process = []
+    end
   end
 
   inserting_bulk_data(ds, data_to_process)
@@ -162,6 +167,11 @@ def process_new_taxonomy_data
     new_element[:created] = today
     new_taxonomies_to_process << new_element
     @tmp_taxon_ids_for_deletion << new_element[:taxon_id]
+
+    if ((new_taxonomies_to_process.length % @nb_of_bulk_inserts) == 0)
+      inserting_bulk_data(ds_taxonomies, new_taxonomies_to_process)
+      new_taxonomies_to_process = []
+    end
   end
   unless new_taxonomies_to_process.empty?
     @logger.info("Started processing new taxonomy data.")
