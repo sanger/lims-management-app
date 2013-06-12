@@ -15,20 +15,7 @@ def db_init
   @db_config = YAML.load_file(File.join("config", "database.yml"))
   db_adapter = @db_config[config_environment]["adapter"]
   database = @db_config[config_environment]["database"]
-  case db_adapter
-  when "sqlite"
-    @db = Sequel.sqlite(database)
-  when "mysql", "mysql2"
-    db_user = @db_config[config_environment]["username"]
-    db_password = @db_config[config_environment]["password"]
-    @db = Sequel.connect(:adapter => db_adapter,
-      :user => db_user,
-      :database => database,
-      :password => db_password)
-  else
-    @logger.error("Not supported database has been configured!")
-    abort
-  end
+  @db = (db_adapter == "sqlite") ? Sequel.sqlite(database) : Sequel.connect(@db_config[config_environment])
 
   @db.create_table :tmp_taxonomies do
     primary_key :id
