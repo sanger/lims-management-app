@@ -36,7 +36,7 @@ module Lims::ManagementApp
       # If an exception is raised, the save is cancelled
       # and the transaction rollbacked.
       def taxonomy_primary_id(taxon_id, name, type)
-        if taxon_id
+        if taxon_id && !name.nil? && name.strip != ""
           persistor = @session.persistor_for(:taxonomy)
           raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)
 
