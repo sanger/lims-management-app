@@ -50,10 +50,6 @@ module Lims::ManagementApp
         described_class.new(parameters.merge({:gender => "dummy"})).valid?.should == false
       end
 
-      it "is invalid if a human sample has a unknown gender" do
-        described_class.new(parameters.merge({:taxon_id => 9606, :gender => "Unknown"})).valid?.should == false
-      end
-
       it "is invalid if a human sample has a not applicable gender" do
         described_class.new(parameters.merge({:taxon_id => 9606, :gender => "Not applicable"})).valid?.should == false
       end

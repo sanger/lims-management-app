@@ -63,7 +63,7 @@ module Lims::ManagementApp
 
       it "requires that taxon_id and human sample match if taxon_id is a human one", :focus => true do
         wrong_parameters = parameters.tap do |p|
-          p[:updates]['dummy_uuid'] = {:taxon_id => 9606, :gender => 'Unknown'}
+          p[:updates]['dummy_uuid'] = {:taxon_id => 9606, :gender => 'not applicable'}
         end
         described_class.new(wrong_parameters).valid?.should == false
       end
