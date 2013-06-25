@@ -55,6 +55,7 @@ describe "update_a_sample", :sample => true do
     },
     "cellular_material": {
         "lysed": false,
+        "donor_id": "donor id",
         "extraction_process": "extraction_method_name"
     }
 }
@@ -106,6 +107,7 @@ describe "update_a_sample", :sample => true do
         },
         "cellular_material": {
             "lysed": false,
+            "donor_id": "donor id",
             "extraction_process": "extraction_method_name"
         }
     }

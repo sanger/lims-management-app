@@ -100,7 +100,8 @@ module Lims::ManagementApp
 
     def cellular_material_parameters(parameters = {})
       {
-        :lysed => true
+        :lysed => true,
+        :donor_id => "donor id"
       }.merge(parameters)
     end
 
