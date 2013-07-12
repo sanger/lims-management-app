@@ -45,7 +45,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (1.6.0)
+    lims-management-app (1.6.1)
       bunny (= 0.9.0.pre10)
       json
 
@@ -136,7 +136,7 @@ DEPENDENCIES
   github-markup (~> 0.7.1)
   hashdiff
   jdbc-mysql
-  lims-api (~> 2.2)!
+  lims-api (~> 2.4)!
   lims-core (~> 2.3)!
   lims-management-app!
   mysql2
