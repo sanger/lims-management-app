@@ -30,8 +30,13 @@ module Lims::ManagementApp
 
       private
 
+      # @return [Array]
       def ensure_quantity_value
-        quantity ? quantity > 0 : true
+        if quantity && quantity <= 0
+          [false, "The quantity '#{quantity}' is not valid"]
+        else
+          [true]
+        end
       end
     end
   end

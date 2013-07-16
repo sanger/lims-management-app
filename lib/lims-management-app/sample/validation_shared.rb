@@ -78,7 +78,7 @@ module Lims::ManagementApp
           end
 
           valid = validation_errors.empty?
-          valid ? [true] : [false, "The sample to be published is not valid. #{validation_errors.size} error(s) found: #{validation_errors.join(" ")}"]
+          valid ? [true] : [false, "The sample to be published is not valid. #{validation_errors.size} error(s) found: #{validation_errors.join(", ")}"]
         else
           [true]
         end

@@ -33,16 +33,27 @@ module Lims::ManagementApp
       # @return [Bool]
       # If by is not nil, we check its value, otherwise returns true
       def ensure_by_value
-        by ? BY_ATTRIBUTE_VALUES.include?(by.downcase) : true 
+        if by && !BY_ATTRIBUTE_VALUES.include?(by.downcase)
+          [false, "By parameter's value '#{by}' is not valid"]
+        else
+          [true]
+        end
       end
 
       # @return [Array]
       # The first cell of the array is a bool
       # The second one is a string if an error is found
       def ensure_updates_parameter
-        updates.each do |_, parameters|
+        errors, valid = {}, true
+
+        updates.each do |uuid, parameters|
+          errors[uuid] ||= []
           parameters.each do |key, value|
-            return [false, "Invalid parameter '#{key}'"] unless UPDATE_ATTRIBUTES.include?(key.to_sym.downcase)
+            unless UPDATE_ATTRIBUTES.include?(key.to_sym.downcase)
+              valid = false
+              errors[uuid] << "Invalid parameter '#{key}'" 
+            end
+
             result = case key.to_sym
                      when :gender then validate_gender(value)
                      when :sample_type then validate_sample_type(value)
@@ -50,10 +61,15 @@ module Lims::ManagementApp
                      when :state then validate_state(value)
                      else [true]
                      end
-            return result unless result[0]
+
+            unless result[0]
+              valid = false
+              errors[uuid] << result[1]
+            end
           end
         end
-        [true]
+
+        valid ? [true] : [false, errors]
       end
 
       # @param [Session] session
