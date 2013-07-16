@@ -20,7 +20,12 @@ module Lims::ManagementApp
       attribute :sanger_sample_id_core, String, :required => true
 
       def _call_in_session(session)
-        _create(quantity, session)
+        samples = []
+        quantity.times do
+          samples << _create(session)
+        end
+
+        {:samples => samples.map { |s| s[:sample] }}
       end
 
       private
