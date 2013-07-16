@@ -36,8 +36,9 @@ module Lims::ManagementApp
         by ? BY_ATTRIBUTE_VALUES.include?(by.downcase) : true 
       end
 
-      # @return [Bool]
-      # Return false if one of the parameters is invalid.
+      # @return [Array]
+      # The first cell of the array is a bool
+      # The second one is a string if an error is found
       def ensure_updates_parameter
         updates.each do |_, parameters|
           parameters.each do |key, value|

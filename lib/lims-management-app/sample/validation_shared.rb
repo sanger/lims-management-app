@@ -10,6 +10,8 @@ module Lims::ManagementApp
 
       private
 
+      # @param [String] value
+      # @return [Array]
       def validate_gender(value)
         if GENDER.map(&:downcase).include?(value.downcase)
           [true]
@@ -18,6 +20,8 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [String] value
+      # @return [Array]
       def validate_sample_type(value)
         if SAMPLE_TYPE.map(&:downcase).include?(value.downcase)
           [true]
@@ -26,6 +30,9 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [Integer] taxon_id
+      # @param [String] gender
+      # @return [Array]
       def validate_gender_for_human_sample(taxon_id, gender)
         if taxon_id == HUMAN_SAMPLE_TAXON_ID && gender && 
           !HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase)
@@ -35,6 +42,8 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [String] state
+      # @return [Array]
       def validate_state(state)
         if STATES.include?(state)
           [true]
@@ -43,6 +52,8 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [Sample] sample
+      # @return [Array]
       def validate_published_data(sample)
         if sample.state == PUBLISHED_STATE
           gender_validator = lambda { validate_gender(sample.gender) }
@@ -73,6 +84,7 @@ module Lims::ManagementApp
         end
       end
 
+
       module CommonValidator
         def self.included(klass)
           klass.class_eval do
@@ -83,21 +95,21 @@ module Lims::ManagementApp
           end
         end
 
-        # @return [Boolean]
+        # @return [Array]
         # Validate if gender value belongs to the gender enumeration
         # Case insensitive
         def ensure_gender_value
-          gender ? validate_gender(gender) : true
+          gender ? validate_gender(gender) : [true]
         end
 
-        # @return [Boolean]
+        # @return [Array]
         # Validate if sample_type value belongs to the sample_type enumeration
         # Case insensitive
         def ensure_sample_type_value
-          sample_type ? validate_sample_type(sample_type) : true
+          sample_type ? validate_sample_type(sample_type) : [true]
         end
 
-        # @return [Boolean]
+        # @return [Array]
         # The gender of the sample must be something other than
         # "not applicable" or "unkown" for human samples.
         # A human sample has a taxon id equals to 9606.
@@ -105,10 +117,12 @@ module Lims::ManagementApp
           validate_gender_for_human_sample(taxon_id, gender)
         end
 
+        # @return [Array]
         def ensure_state
-          state ? validate_state(state) : true
+          state ? validate_state(state) : [true]
         end
 
+        # @return [Array]
         def ensure_published_data
           validate_published_data(self)
         end
