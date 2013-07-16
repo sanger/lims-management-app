@@ -8,39 +8,68 @@ module Lims::ManagementApp
       HUMAN_SAMPLE_GENDER = GENDER - ["Not applicable"]
       STATES = [Sample::DRAFT_STATE, Sample::PUBLISHED_STATE]
 
-
       private
 
       def validate_gender(value)
-        GENDER.map(&:downcase).include?(value.downcase)
+        if GENDER.map(&:downcase).include?(value.downcase)
+          [true]
+        else
+          [false, "'#{value}' is not a valid gender"]
+        end
       end
 
       def validate_sample_type(value)
-        SAMPLE_TYPE.map(&:downcase).include?(value.downcase)
+        if SAMPLE_TYPE.map(&:downcase).include?(value.downcase)
+          [true]
+        else
+          [false, "'#{value}' is not a valid sample type"]
+        end
       end
 
       def validate_gender_for_human_sample(taxon_id, gender)
-        if taxon_id == HUMAN_SAMPLE_TAXON_ID && gender
-          HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase)
+        if taxon_id == HUMAN_SAMPLE_TAXON_ID && gender && 
+          !HUMAN_SAMPLE_GENDER.map(&:downcase).include?(gender.downcase)
+          [false, "The taxon ID '#{taxon_id}' and the gender '#{gender}' do not match."]
         else
-          true
+          [true]
         end
       end
-  
+
       def validate_state(state)
-        STATES.include?(state)
+        if STATES.include?(state)
+          [true]
+        else
+          [false, "'#{state}' is not a valid state"]
+        end
       end
 
       def validate_published_data(sample)
         if sample.state == PUBLISHED_STATE
-          valid = sample.gender && validate_gender(sample.gender) &&
-            sample.sample_type && validate_sample_type(sample.sample_type) &&
-            sample.taxon_id && validate_gender_for_human_sample(sample.taxon_id, sample.gender)
+          gender_validator = lambda { validate_gender(sample.gender) }
+          sample_type_validator = lambda { validate_sample_type(sample.sample_type) }
+          gender_for_human_sample_validator = lambda { validate_gender_for_human_sample(sample.taxon_id, sample.gender) }
 
-          raise Lims::Core::Actions::Action::InvalidParameters, "The sample to be published is not valid. Check the gender, the sample type or/and the taxon id." unless valid
-          true
+          validation_errors = [].tap do |e|
+            [
+              {:attribute => "gender", :validator => gender_validator},
+              {:attribute => "sample_type", :validator => sample_type_validator},
+              {:attribute => "taxon_id", :validator => gender_for_human_sample_validator}
+            ].each do |val|
+              if sample.send(val[:attribute])
+                result = val[:validator].call
+                unless result.first
+                  e << result[1]
+                end
+              else
+                e << "#{val[:attribute].capitalize} must be set."
+              end
+            end
+          end
+
+          valid = validation_errors.empty?
+          valid ? [true] : [false, "The sample to be published is not valid. #{validation_errors.size} error(s) found: #{validation_errors.join(" ")}"]
         else
-          true
+          [true]
         end
       end
 
