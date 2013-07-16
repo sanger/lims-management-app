@@ -95,7 +95,8 @@ module Lims::ManagementApp
         # be sure that the sample data are valid. So, we validate
         # the sample here one more time, after it has been updated 
         # with the new parameter.
-        validate_published_data(sample)
+        result = validate_published_data(sample)
+        raise Lims::Core::Actions::Action::InvalidParameters, {:ensure_published_data => result[1]} unless result.first
 
         {:sample => sample}
       end
