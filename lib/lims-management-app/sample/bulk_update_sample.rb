@@ -41,16 +41,18 @@ module Lims::ManagementApp
       def ensure_updates_parameter
         updates.each do |_, parameters|
           parameters.each do |key, value|
-            return false unless UPDATE_ATTRIBUTES.include?(key.to_sym.downcase)
-            case key.to_sym
-            when :gender then return false unless validate_gender(value)
-            when :sample_type then return false unless validate_sample_type(value)
-            when :taxon_id then return false unless validate_gender_for_human_sample(value, parameters[:gender] || parameters["gender"])
-            when :state then return false unless validate_state(value)
-            end
+            return [false, "Invalid parameter '#{key}'"] unless UPDATE_ATTRIBUTES.include?(key.to_sym.downcase)
+            result = case key.to_sym
+                     when :gender then validate_gender(value)
+                     when :sample_type then validate_sample_type(value)
+                     when :taxon_id then validate_gender_for_human_sample(value, parameters[:gender] || parameters["gender"])
+                     when :state then validate_state(value)
+                     else [true]
+                     end
+            return result unless result[0]
           end
         end
-        true
+        [true]
       end
 
       # @param [Session] session
