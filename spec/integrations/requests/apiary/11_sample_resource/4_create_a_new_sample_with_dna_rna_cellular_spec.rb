@@ -48,7 +48,8 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
             "concentration_determined_by_which_method": "method"
         },
         "cellular_material": {
-            "lysed": true
+            "lysed": true,
+            "donor_id": "donor id"
         }
     }
 }
@@ -103,7 +104,8 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
             "concentration_determined_by_which_method": "method"
         },
         "cellular_material": {
-            "lysed": true
+            "lysed": true,
+            "donor_id": "donor id"
         }
     }
 }

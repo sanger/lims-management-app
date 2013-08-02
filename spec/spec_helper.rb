@@ -56,7 +56,7 @@ RSpec::Matchers.define :io_stream do |content|
 end
 
 
-Rspec::Matchers.define :match_json do |content|
+RSpec::Matchers.define :match_json do |content|
 
   match { |to_match| Helper::parse_json(to_match) == Helper::parse_json(content) }
 

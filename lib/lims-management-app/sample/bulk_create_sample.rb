@@ -20,13 +20,23 @@ module Lims::ManagementApp
       attribute :sanger_sample_id_core, String, :required => true
 
       def _call_in_session(session)
-        _create(quantity, session)
+        samples = []
+        quantity.times do
+          samples << _create(session)
+        end
+
+        {:samples => samples.map { |s| s[:sample] }}
       end
 
       private
 
+      # @return [Array]
       def ensure_quantity_value
-        quantity ? quantity > 0 : true
+        if quantity && quantity <= 0
+          [false, "The quantity '#{quantity}' is not valid"]
+        else
+          [true]
+        end
       end
     end
   end

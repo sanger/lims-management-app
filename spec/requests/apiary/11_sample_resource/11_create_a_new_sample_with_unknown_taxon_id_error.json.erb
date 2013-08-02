@@ -34,7 +34,7 @@ EOD
 h[:status]=422
 h[:response_header] << 'Content-Type: application/json'
 h[:response]=<<EOD
-{"errors": "Taxon ID 1234 unknown"}
+{"errors": {"taxon_id": "Taxon ID 1234 unknown"}}
 EOD
 %>
 <%= h.to_json %>

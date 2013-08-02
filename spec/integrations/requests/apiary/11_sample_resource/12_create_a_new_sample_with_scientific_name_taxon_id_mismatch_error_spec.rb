@@ -36,7 +36,9 @@ describe "create_a_new_sample_with_scientific_name_taxon_id_mismatch_error", :sa
     response.status.should == 422
     response.body.should match_json <<-EOD
     {
-    "errors": "Taxon ID 9606 does not match the scientific name 'hoomo sapiens'. Do you mean 'Homo sapiens'?"
+    "errors": {
+        "scientific name": "Taxon ID 9606 does not match the scientific name 'hoomo sapiens'. Do you mean 'Homo sapiens'?"
+    }
 }
     EOD
 

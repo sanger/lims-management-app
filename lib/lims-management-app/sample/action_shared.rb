@@ -27,29 +27,21 @@ module Lims::ManagementApp
         end
       end
 
-      # @param [Integer] sample_quantity
       # @param [Session] session
       # @return [Hash]
       # Shared method for sample creation and bulk creation
       # Generate the sanger sample id, set the dna/rna/cellular material data
       # if requested.
-      def _create(sample_quantity = nil, session)
-        attributes = filtered_attributes
-        samples = []
-        quantity = sample_quantity || 1
+      def _create(session)
+        sample = Sample.new(filtered_attributes)
+        sample.dna = Dna.new(dna) if dna && dna.size > 0
+        sample.rna = Rna.new(rna) if rna && rna.size > 0
+        sample.cellular_material = CellularMaterial.new(cellular_material) if cellular_material && cellular_material.size > 0
+        sample.genotyping = Genotyping.new(genotyping) if genotyping && genotyping.size > 0
+        sample.sanger_sample_id = generate_sanger_sample_id(sanger_sample_id_core, session)
+        session << sample
 
-        quantity.times do
-          sample = Sample.new(attributes)
-          sample.dna = Dna.new(dna) if dna && dna.size > 0
-          sample.rna = Rna.new(rna) if rna && rna.size > 0
-          sample.cellular_material = CellularMaterial.new(cellular_material) if cellular_material && cellular_material.size > 0
-          sample.genotyping = Genotyping.new(genotyping) if genotyping && genotyping.size > 0
-          sample.sanger_sample_id = generate_sanger_sample_id(sanger_sample_id_core, session)
-          session << sample
-          samples << {:sample => sample, :uuid => session.uuid_for!(sample)}
-        end
-
-        sample_quantity ? {:samples => samples.map { |e| e[:sample] }} : samples.first
+        {:sample => sample, :uuid => session.uuid_for!(sample)}
       end
 
       # @param [String] Sanger sample id core
@@ -94,8 +86,9 @@ module Lims::ManagementApp
         # If the sample state is updated to published, we need to
         # be sure that the sample data are valid. So, we validate
         # the sample here one more time, after it has been updated 
-        # with the new parameter.
-        validate_published_data(sample)
+        # with the new parameter. If it's not valid, we raise an error.
+        result = validate_published_data(sample)
+        raise Lims::Core::Actions::Action::InvalidParameters, {:ensure_published_data => result[1]} unless result.first
 
         {:sample => sample}
       end
