@@ -75,10 +75,6 @@ module Lims::ManagementApp
         Sample.new(full_sample_parameters.merge({:sample_type => "dummy"})).valid?.should == false
       end
 
-      it "is invalid if a human sample has an unknown gender" do
-        Sample.new(full_sample_parameters.merge({:taxon_id => 9606, :gender => "Unknown"})).valid?.should == false
-      end
-
       it "is invalid if a human sample has a not applicable gender" do
         Sample.new(full_sample_parameters.merge({:taxon_id => 9606, :gender => "Not applicable"})).valid?.should == false
       end
