@@ -16,7 +16,7 @@ def expand_uuid(ids)
   Lims::Core::Persistence::UuidResource::Form.zip(ids).map { |length, id| id.to_s*length }.join('-')
 end
 
-Rspec.configure do |config|
+RSpec.configure do |config|
   # Stub uuid to generete a Sequence of uuid 
   # depending on the class
   config.before(:each) do 
