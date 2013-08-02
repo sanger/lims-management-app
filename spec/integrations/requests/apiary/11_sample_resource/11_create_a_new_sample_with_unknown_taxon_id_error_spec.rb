@@ -36,7 +36,9 @@ describe "create_a_new_sample_with_unknown_taxon_id_error", :sample => true do
     response.status.should == 422
     response.body.should match_json <<-EOD
     {
-    "errors": "Taxon ID 1234 unknown"
+    "errors": {
+        "taxon_id": "Taxon ID 1234 unknown"
+    }
 }
     EOD
 

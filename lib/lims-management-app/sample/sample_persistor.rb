@@ -38,10 +38,10 @@ module Lims::ManagementApp
       def taxonomy_primary_id(taxon_id, name, type)
         if taxon_id && !name.nil? && name.strip != ""
           persistor = @session.persistor_for(:taxonomy)
-          raise UnknownTaxonIdError, "Taxon ID #{taxon_id} unknown" unless persistor.valid_taxon_id?(taxon_id, type)
+          raise UnknownTaxonIdError, {:taxon_id => "Taxon ID #{taxon_id} unknown"} unless persistor.valid_taxon_id?(taxon_id, type)
 
           id = persistor.id_by_taxon_id_and_name(taxon_id, name, type)
-          raise NameTaxonIdMismatchError, "Taxon ID #{taxon_id} does not match the #{type} '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?" unless id 
+          raise NameTaxonIdMismatchError, {type => "Taxon ID #{taxon_id} does not match the #{type} '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?"} unless id 
           id
         end
       end
