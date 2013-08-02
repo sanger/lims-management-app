@@ -15,20 +15,7 @@ def db_init
   @db_config = YAML.load_file(File.join("config", "database.yml"))
   db_adapter = @db_config[config_environment]["adapter"]
   database = @db_config[config_environment]["database"]
-  case db_adapter
-  when "sqlite"
-    @db = Sequel.sqlite(database)
-  when "mysql", "mysql2"
-    db_user = @db_config[config_environment]["username"]
-    db_password = @db_config[config_environment]["password"]
-    @db = Sequel.connect(:adapter => db_adapter,
-      :user => db_user,
-      :database => database,
-      :password => db_password)
-  else
-    @logger.error("Not supported database has been configured!")
-    abort
-  end
+  @db = (db_adapter == "sqlite") ? Sequel.sqlite(database) : Sequel.connect(@db_config[config_environment])
 
   @db.create_table :tmp_taxonomies do
     primary_key :id
@@ -139,6 +126,11 @@ def insert_data_to_tmp_taxonomy_table
       data[:type] = type
       data_to_process << data
     end
+
+    if ((data_to_process.length % @nb_of_bulk_inserts) == 0)
+      inserting_bulk_data(ds, data_to_process)
+      data_to_process = []
+    end
   end
 
   inserting_bulk_data(ds, data_to_process)
@@ -169,18 +161,25 @@ def process_new_taxonomy_data
   end
 
   # new taxonomies -> add them to the taxonomies table
-  new_taxonomies_to_process = []
-  new_taxonomies = @db["SELECT r.taxon_id, r.name, r.type FROM taxonomies l RIGHT JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id WHERE l.taxon_id IS NULL"].all
-  new_taxonomies.each do |new_element|
-    new_element[:created] = today
-    new_taxonomies_to_process << new_element
-    @tmp_taxon_ids_for_deletion << new_element[:taxon_id]
+  @logger.info("Started processing new taxonomy data.")
+  index = 0
+  while true
+    new_taxonomies = @db[%Q{
+      SELECT r.taxon_id, r.name, r.type
+      FROM taxonomies l RIGHT JOIN tmp_taxonomies r ON l.taxon_id=r.taxon_id
+      WHERE l.taxon_id IS NULL
+      LIMIT #{@nb_of_bulk_inserts} OFFSET #{index * @nb_of_bulk_inserts}
+    }].all
+    break if new_taxonomies.empty?
+
+    new_taxonomies.each do |new_element|
+      new_element[:created] = today
+      @tmp_taxon_ids_for_deletion << new_element[:taxon_id]
+    end
+    inserting_bulk_data(ds_taxonomies, new_taxonomies)
+    index += 1
   end
-  unless new_taxonomies_to_process.empty?
-    @logger.info("Started processing new taxonomy data.")
-    inserting_bulk_data(ds_taxonomies, new_taxonomies_to_process)
-    @logger.info("New taxonomy data has been processed.")
-  end
+  @logger.info("New taxonomy data has been processed.")
 
   # process changed elements
   # process changed scientific names

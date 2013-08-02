@@ -54,7 +54,9 @@ describe "update_a_sample", :sample => true do
         "concentration": 50
     },
     "cellular_material": {
-        "lysed": false
+        "lysed": false,
+        "donor_id": "donor id",
+        "extraction_process": "extraction_method_name"
     }
 }
     EOD
@@ -104,7 +106,9 @@ describe "update_a_sample", :sample => true do
             "concentration": 50
         },
         "cellular_material": {
-            "lysed": false
+            "lysed": false,
+            "donor_id": "donor id",
+            "extraction_process": "extraction_method_name"
         }
     }
 }

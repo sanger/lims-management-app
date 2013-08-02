@@ -6,20 +6,20 @@ test:
   adapter: sqlite
   database: test.db
 
-development_mysql:
+development:
   adapter: mysql2
   encoding: utf8
   charset: utf8
-  database: development
+  database: management_development
   username: root
-  password:
+  password: root
   socket: /tmp/mysql.sock
 
 test_mysql:
   adapter: mysql2
   encoding: utf8
   charset: utf8
-  database: test_lims_api
+  database: management_test
   username: root
   password:
   socket: /tmp/mysql.sock
