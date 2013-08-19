@@ -48,7 +48,8 @@ describe "bulk_create_new_samples", :sample => true do
             "concentration_determined_by_which_method": "method"
         },
         "cellular_material": {
-            "lysed": true
+            "lysed": true,
+            "donor_id": "donor id"
         },
         "genotyping": {
             "country_of_origin": "England",
@@ -115,7 +116,8 @@ describe "bulk_create_new_samples", :sample => true do
                         "concentration_determined_by_which_method": "method"
                     },
                     "cellular_material": {
-                        "lysed": true
+                        "lysed": true,
+                        "donor_id": "donor id"
                     },
                     "genotyping": {
                         "country_of_origin": "England",
@@ -170,7 +172,8 @@ describe "bulk_create_new_samples", :sample => true do
                         "concentration_determined_by_which_method": "method"
                     },
                     "cellular_material": {
-                        "lysed": true
+                        "lysed": true,
+                        "donor_id": "donor id"
                     },
                     "genotyping": {
                         "country_of_origin": "England",
@@ -225,7 +228,8 @@ describe "bulk_create_new_samples", :sample => true do
                         "concentration_determined_by_which_method": "method"
                     },
                     "cellular_material": {
-                        "lysed": true
+                        "lysed": true,
+                        "donor_id": "donor id"
                     },
                     "genotyping": {
                         "country_of_origin": "England",
@@ -275,7 +279,8 @@ describe "bulk_create_new_samples", :sample => true do
             "concentration_determined_by_which_method": "method"
         },
         "cellular_material": {
-            "lysed": true
+            "lysed": true,
+            "donor_id": "donor id"
         },
         "genotyping": {
             "country_of_origin": "England",
