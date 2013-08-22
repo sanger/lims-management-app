@@ -8,7 +8,7 @@ end
 namespace :db do
   require 'sequel'
   require 'sequel/extensions/migration'
-  spec = Gem::Specification.find_by_name('lims-support-app')
+  spec = Gem::Specification.find_by_name('lims-management-app')
   core_migrations_path = "#{spec.gem_dir}/db/migrations"
 
   task :test do
