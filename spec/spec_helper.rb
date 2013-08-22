@@ -1,6 +1,7 @@
 require 'lims-management-app'
 require 'rack/test'
 require 'hashdiff'
+require 'timecop'
 
 # setup test environment
 set :environment, :test
@@ -90,4 +91,9 @@ RSpec::Matchers.define :include_json do |content|
     "expected: \n#{hcontent}\nto match: \n#{hactual},\ndiff:\n#{
     diffs.map { |d| d.join(' ') }.join("\n")}"
   end
+end
+
+shared_context "timecop" do
+  before { Timecop.freeze(Time.now) }
+  after { Timecop.return }
 end

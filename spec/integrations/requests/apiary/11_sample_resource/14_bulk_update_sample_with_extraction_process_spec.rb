@@ -1,6 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_update_sample_with_extraction_process", :sample => true do
   include_context "use core context service"
+  include_context "timecop"
   it "bulk_update_sample_with_extraction_process" do
     sample = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-1",

@@ -6,6 +6,9 @@ EOD
 h[:method] = "PUT"
 h[:url] = '/11111111-2222-3333-4444-555555555555'
 h[:header] << 'Accept: application/json'
+h[:global_setup] = <<EOD
+include_context "timecop"
+EOD
 h[:setup] = <<EOD
 sample = Lims::ManagementApp::Sample.new({
     "sanger_sample_id" => "S2-1",

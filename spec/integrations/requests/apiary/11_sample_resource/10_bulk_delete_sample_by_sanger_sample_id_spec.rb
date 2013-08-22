@@ -1,6 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_delete_sample_by_sanger_sample_id", :sample => true do
   include_context "use core context service"
+  include_context "timecop"
   it "bulk_delete_sample_by_sanger_sample_id" do
     sample = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "s2-1",

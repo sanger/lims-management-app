@@ -1,6 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "update_a_sample", :sample => true do
   include_context "use core context service"
+  include_context "timecop"
   it "update_a_sample" do
     sample = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-1",
