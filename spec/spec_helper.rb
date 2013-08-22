@@ -94,6 +94,9 @@ RSpec::Matchers.define :include_json do |content|
 end
 
 shared_context "timecop" do
-  before { Timecop.freeze(Time.now) }
+  before {
+    Timecop.freeze(Time.now)
+    Timecop.freeze(Time.now.utc)
+  }
   after { Timecop.return }
 end
