@@ -1,6 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
   include_context "use core context service"
+  include_context "timecop"
   it "create_a_new_sample_with_dna_rna_cellular" do
 
     header('Accept', 'application/json')

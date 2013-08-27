@@ -6,6 +6,9 @@ EOD
 h[:method] = "POST"
 h[:url] = '/samples'
 h[:header] << 'Accept: application/json'
+h[:global_setup] = <<EOD
+include_context "timecop"
+EOD
 h[:parameters] = <<EOD
 { "sample": {
     "sanger_sample_id_core": "S2",
