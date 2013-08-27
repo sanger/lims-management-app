@@ -1,5 +1,4 @@
 require 'lims-core/persistence'
-require 'timecop'
 
 shared_examples "an action" do
   context "to be valid" do
@@ -27,7 +26,3 @@ shared_context "create object" do
   end
 end
 
-shared_context "timecop" do
-  before { Timecop.freeze(Time.now) }
-  after { Timecop.return }
-end

@@ -1,6 +1,7 @@
 require 'lims-management-app'
 require 'rack/test'
 require 'hashdiff'
+require 'timecop'
 
 # setup test environment
 set :environment, :test
@@ -91,3 +92,13 @@ RSpec::Matchers.define :include_json do |content|
     diffs.map { |d| d.join(' ') }.join("\n")}"
   end
 end
+
+shared_context "timecop" do
+  before {
+    Timecop.freeze(Time.now)
+    Timecop.freeze(Time.now.utc)
+  }
+  after { Timecop.return }
+end
+
+Sequel.default_timezone = :utc
