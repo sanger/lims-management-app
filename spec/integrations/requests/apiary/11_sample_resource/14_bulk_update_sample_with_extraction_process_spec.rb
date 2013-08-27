@@ -9,7 +9,7 @@ describe "bulk_update_sample_with_extraction_process", :sample => true do
         "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
-        "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+        "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -33,7 +33,7 @@ describe "bulk_update_sample_with_extraction_process", :sample => true do
         "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
-        "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+        "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -110,7 +110,7 @@ describe "bulk_update_sample_with_extraction_process", :sample => true do
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
                     "volume": 5000,
-                    "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
+                    "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false,
                     "cellular_material": {
@@ -144,7 +144,7 @@ describe "bulk_update_sample_with_extraction_process", :sample => true do
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
                     "volume": 4000,
-                    "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
+                    "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 }

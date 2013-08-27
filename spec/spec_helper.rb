@@ -100,3 +100,5 @@ shared_context "timecop" do
   }
   after { Timecop.return }
 end
+
+Sequel.default_timezone = :utc
