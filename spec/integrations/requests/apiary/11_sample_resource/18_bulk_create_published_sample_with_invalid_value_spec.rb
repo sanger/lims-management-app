@@ -1,6 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_create_published_sample_with_invalid_value", :sample => true do
   include_context "use core context service"
+  include_context "timecop"
   it "bulk_create_published_sample_with_invalid_value" do
 
     header('Accept', 'application/json')
