@@ -6,6 +6,9 @@ EOD
 h[:method] = "POST"
 h[:url] = '/actions/bulk_create_sample'
 h[:header] << 'Accept: application/json'
+h[:global_setup] = <<EOD
+include_context "timecop"
+EOD
 h[:parameters] = <<EOD
 { "bulk_create_sample": {
     "sanger_sample_id_core": "S2",
