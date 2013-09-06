@@ -6,6 +6,9 @@ EOD
 h[:method] = "DELETE"
 h[:url] = '/11111111-2222-3333-4444-555555555555'
 h[:header] << 'Accept: application/json'
+h[:global_setup] = <<EOD
+include_context "timecop"
+EOD
 h[:setup] = <<EOD
 sample = Lims::ManagementApp::Sample.new({
     "sanger_sample_id" => "S2-1",
@@ -13,7 +16,7 @@ sample = Lims::ManagementApp::Sample.new({
     "state" => "draft",
     "sample_type" => "RNA",
     "taxon_id" => 9606,
-    "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+    "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
     "is_sample_a_control" => true,
     "is_re_submitted_sample" => false,
     "hmdmc_number" => "number",
@@ -32,7 +35,7 @@ sample = Lims::ManagementApp::Sample.new({
     "storage_conditions" => "conditions",
     "dna" => {
       "pre_amplified" => true,
-      "date_of_sample_extraction" => "2013-04-25 11:05 UTC",
+      "date_of_sample_extraction" => "2013-04-25T10:27:00+00:00",
       "extraction_method" => "method",
       "concentration" => 20,
       "sample_purified" => false,
@@ -77,12 +80,12 @@ h[:response]=<<EOD
   "storage_conditions": "conditions",
   "taxon_id": 9606,
   "volume": 1000,
-  "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
+  "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
   "is_sample_a_control": true,
   "is_re_submitted_sample": false,
   "dna": {
     "pre_amplified": true,
-    "date_of_sample_extraction": "2013-04-25T12:05:00+01:00",
+    "date_of_sample_extraction": "2013-04-25T10:27:00+00:00",
     "extraction_method": "method",
     "concentration": 20,
     "sample_purified": false,

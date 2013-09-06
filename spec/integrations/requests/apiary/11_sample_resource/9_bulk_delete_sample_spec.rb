@@ -1,6 +1,7 @@
 require "integrations/requests/apiary/11_sample_resource/spec_helper"
 describe "bulk_delete_sample", :sample => true do
   include_context "use core context service"
+  include_context "timecop"
   it "bulk_delete_sample" do
     sample = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-1",
@@ -8,7 +9,7 @@ describe "bulk_delete_sample", :sample => true do
         "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
-        "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+        "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -33,7 +34,7 @@ describe "bulk_delete_sample", :sample => true do
         "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
-        "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+        "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -104,7 +105,7 @@ describe "bulk_delete_sample", :sample => true do
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
                     "volume": 5000,
-                    "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
+                    "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 },
@@ -135,7 +136,7 @@ describe "bulk_delete_sample", :sample => true do
                     "storage_conditions": "conditions",
                     "taxon_id": 9606,
                     "volume": 5000,
-                    "date_of_sample_collection": "2013-04-25T11:27:00+01:00",
+                    "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
                     "is_sample_a_control": true,
                     "is_re_submitted_sample": false
                 }

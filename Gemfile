@@ -2,8 +2,8 @@ source "http://rubygems.org"
 gemspec
 
 gem 'sinatra', :git => 'http://github.com/sinatra/sinatra.git', :branch => '459369eb66224836f72e21bbece58c007f3422fa'
-gem 'lims-core', '~>2.3', :git => 'http://github.com/sanger/lims-core.git' , :branch => 'master'
-gem 'lims-api', '~>2.2', :git => 'http://github.com/sanger/lims-api.git' , :branch => 'master'
+gem 'lims-core', '~>2.5.0.pre', :git => 'http://github.com/sanger/lims-core.git' , :branch => 'uat'
+gem 'lims-api', '~>2.5.0.pre', :git => 'http://github.com/sanger/lims-api.git' , :branch => 'uat'
 
 group :development do
   gem 'redcarpet', '~> 2.1.0', :platforms => :mri
