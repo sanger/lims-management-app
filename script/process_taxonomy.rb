@@ -11,7 +11,7 @@ require 'logger'
 $stdout.sync = true
 
 def db_init
-  config_environment = @config["db_environment"]
+  config_environment = @config["db_environment"] || ENV["LIMS_MANAGEMENT_APP_ENV"]
   @db_config = YAML.load_file(File.join("config", "database.yml"))
   db_adapter = @db_config[config_environment]["adapter"]
   database = @db_config[config_environment]["database"]
