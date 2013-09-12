@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: 67b18da64903077eb87c7080613ba815ef4e2ca5
+  revision: 5fd325b3a8a29a1916e72b35fd66eee9698a2cce
   branch: uat
   specs:
-    lims-api (2.5.0.pre)
+    lims-api (2.5.1.pre)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -136,7 +136,7 @@ DEPENDENCIES
   github-markup (~> 0.7.1)
   hashdiff
   jdbc-mysql
-  lims-api (~> 2.5.0.pre)!
+  lims-api (~> 2.5.1.pre)!
   lims-core (~> 2.5.0.pre)!
   lims-management-app!
   mysql2
