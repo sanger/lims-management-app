@@ -1,4 +1,5 @@
 require 'lims-core/persistence'
+require 'spec_helper'
 
 shared_examples "an action" do
   context "to be valid" do
@@ -20,7 +21,7 @@ shared_context "create object" do
   let(:uuid) { "11111111-2222-3333-4444-555555555555" }
   before do
     Lims::Core::Persistence::Session.any_instance.tap do |session|
-      session.stub(:save)
+      session.stub(:save_all)
       session.stub(:uuid_for!) { uuid }
     end
   end
