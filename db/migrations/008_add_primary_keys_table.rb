@@ -4,6 +4,7 @@
       primary_key :id
       String :table_name
       Integer :current_key
+      index :table_name, :unique => true
     end
   end
 end
