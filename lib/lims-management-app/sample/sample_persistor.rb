@@ -1,30 +1,46 @@
-require 'lims-core/persistence/persistor'
+require 'lims-core/persistence/persistable_trait'
+require 'lims-core/persistence/sequel/persistor'
 require 'lims-core/actions/action'
 
 module Lims::ManagementApp
   class Sample
-
     UnknownTaxonIdError = Class.new(Lims::Core::Actions::Action::InvalidParameters)
     NameTaxonIdMismatchError = Class.new(Lims::Core::Actions::Action::InvalidParameters)
 
-    class SamplePersistor < Lims::Core::Persistence::Persistor
-      Model = Sample
+    does "lims/core/persistence/persistable", :parents => [
+      {:name => :dna, :deletable => true},
+      {:name => :rna, :deletable => true},
+      {:name => :cellular_material, :deletable => true},
+      {:name => :genotyping, :deletable => true}
+    ]
 
-      # TODO : should be in the sample sequel persistor !
+    class SampleSequelPersistor < SamplePersistor
+      include Lims::Core::Persistence::Sequel::Persistor
 
+      def self.table_name
+        :samples
+      end
+
+      def attribute_for(key)
+        {
+          :dna => 'dna_id',
+          :rna => 'rna_id',
+          :cellular_material => 'cellular_material_id',
+          :genotyping => 'genotyping_id'
+        }[key]
+      end
+
+      alias filter_attributes_on_save_old filter_attributes_on_save
       def filter_attributes_on_save(attributes)
         taxon_id = attributes[:taxon_id]
-        attributes.reject { |k,v| k == :taxon_id }.mash do |k,v|
+        attributes = attributes.reject { |k,v| k == :taxon_id }.mash do |k,v|
           case k
-          when :dna then [:dna_id, save_component(v)]
-          when :rna then [:rna_id, save_component(v)]
-          when :cellular_material then [:cellular_material_id, save_component(v)]
-          when :genotyping then [:genotyping_id, save_component(v)]
           when :scientific_name then [:scientific_taxon_id, taxonomy_primary_id(taxon_id, v, "scientific name")]
           when :common_name then [:common_taxon_id, taxonomy_primary_id(taxon_id, v, "common name")]
           else [k,v]
           end
         end
+        filter_attributes_on_save_old(attributes)
       end
 
       # @param [Integer] taxon_id
@@ -75,6 +91,30 @@ module Lims::ManagementApp
           id = attributes[:scientific_taxon_id]
           a[:taxon_id] = @session.taxonomy[id].taxon_id if id 
         end
+      end
+
+      private
+
+      # @param [Object] object
+      # @param [Integer] id
+      # @param [Arguments] params
+      # @return [Integer]
+      # Override lims-core sequel/persistor#delete_raw.
+      # After a sample is deleted, we need to delete
+      # the DNA, RNA, Cellular Material it references 
+      # with its foreign keys. We need to first delete
+      # the sample object to verify the constraints.
+      def delete_raw(object, id, *params)
+        sample_id = super
+        components = [object.dna, object.rna, object.cellular_material, object.genotyping]
+        components.each do |component|
+          if component
+            persistor = @session.persistor_for(component)
+            persistor_dataset = persistor.dataset
+            persistor_dataset.filter(persistor.primary_key => persistor.id_for(component)).delete
+          end
+        end
+        sample_id
       end
     end
   end
