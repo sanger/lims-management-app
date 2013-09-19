@@ -10,7 +10,7 @@ module Lims::ManagementApp
       it_behaves_like "an action"
 
       it "updates a sample object" do
-        Lims::Core::Persistence::Session.any_instance.should_receive(:save)
+        Lims::Core::Persistence::Session.any_instance.should_receive(:save_all)
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
