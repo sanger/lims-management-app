@@ -62,20 +62,6 @@ module Lims::ManagementApp
         end
       end
 
-      # @param [Object] object
-      # @return [Integer]
-      # In that case, object is not a Lims::Core::Resource object.
-      # Indeed, sample contains DNA/RNA/... data but there are not
-      # resources. They are only part of a sample. As a result, we
-      # cannot use the @session.id_for!(object) as it only works 
-      # with Lims::Core::Resource. Here we try to get an id for that
-      # object, if we cannot find it in session, we save the object
-      # and get its id.
-      def save_component(object)
-        return nil unless object
-        @session.persistor_for(object).id_for(object) || @session.save(object)
-      end
-
       def filter_attributes_on_load(attributes)
         attributes.mash do |k,v|
           case k
@@ -91,30 +77,6 @@ module Lims::ManagementApp
           id = attributes[:scientific_taxon_id]
           a[:taxon_id] = @session.taxonomy[id].taxon_id if id 
         end
-      end
-
-      private
-
-      # @param [Object] object
-      # @param [Integer] id
-      # @param [Arguments] params
-      # @return [Integer]
-      # Override lims-core sequel/persistor#delete_raw.
-      # After a sample is deleted, we need to delete
-      # the DNA, RNA, Cellular Material it references 
-      # with its foreign keys. We need to first delete
-      # the sample object to verify the constraints.
-      def delete_raw(object, id, *params)
-        sample_id = super
-        components = [object.dna, object.rna, object.cellular_material, object.genotyping]
-        components.each do |component|
-          if component
-            persistor = @session.persistor_for(component)
-            persistor_dataset = persistor.dataset
-            persistor_dataset.filter(persistor.primary_key => persistor.id_for(component)).delete
-          end
-        end
-        sample_id
       end
     end
   end
