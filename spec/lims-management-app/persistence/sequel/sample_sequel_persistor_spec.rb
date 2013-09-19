@@ -1,5 +1,5 @@
 require 'lims-management-app/persistence/sequel/spec_helper'
-require 'lims-management-app/sample/sample_sequel_persistor'
+require 'lims-management-app/sample/sample_persistor'
 require 'lims-management-app/sample/sample_shared'
 require 'integrations/spec_helper'
 
