@@ -16,6 +16,7 @@ module Lims::ManagementApp
       validates_with_method :ensure_published_data
 
       def _call_in_session(session)
+        session.persistor_for(:sanger_sample_id_number).prefetch_sanger_sample_id_number
         _create(session)
       end
     end

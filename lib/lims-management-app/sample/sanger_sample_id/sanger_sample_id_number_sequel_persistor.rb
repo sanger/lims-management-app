@@ -12,10 +12,18 @@ module Lims::ManagementApp
         end
 
         def generate_new_number
+          @sanger_sample_id_numbers.shift 
+        end
+
+        # @param [Integer] quantity
+        # In multithreading environment, we need to lock the table
+        # sanger_sample_id_number to avoid race conditions problem.
+        def prefetch_sanger_sample_id_number(quantity = 1)
           lock(dataset, true) do |d|
-            new_number = d.where(:id => 1).first[:number] + 1
+            current_number = d.where(:id => 1).first[:number]
+            new_number = current_number + quantity
             d.where(:id => 1).update(:number => new_number)
-            new_number
+            @sanger_sample_id_numbers = (current_number+1..new_number).to_a
           end
         end
 
