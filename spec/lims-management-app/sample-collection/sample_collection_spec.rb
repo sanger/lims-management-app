@@ -1,4 +1,5 @@
 require 'lims-management-app/spec_helper'
+require 'lims-management-app/sample-collection/sample_collection_shared'
 
 module Lims::ManagementApp
   describe SampleCollection do
@@ -18,21 +19,21 @@ module Lims::ManagementApp
     # End Macros
 
     context "valid" do
-      let(:collection_type) { "Study" }
-      let(:collection_data) {[
-        {"key" => "name", "type" => "string", "value" => "my name"},
-        {"key" => "field1", "type" => "integer", "value" => 1},
-        {"key" => "address", "type" => "url", "value" => "http://www.sanger.ac.uk"},
-        {"key" => "something uuid", "type" => "uuid", "value" => "11111111-2222-3333-4444-555555555555"}
-      ]}
-      subject { described_class.new(:type => collection_type, :data => collection_data) }
+      include_context "collection factory"
+
+      subject { new_sample_collection }
 
       it "is a valid sample collection" do
         subject.valid?.should == true
       end
 
+      it "is a valid sample collection without data" do
+        described_class.new(:type => "Study").valid?.should == true
+      end
+
       it_has_a :type
       it_has_a :data
+      it_has_a :samples
     end
 
 
@@ -45,32 +46,32 @@ module Lims::ManagementApp
         SampleCollection.new({:type => "dummy"}).valid?.should == false
       end
 
-      it "is invalid if the data contains non triple" do
-        SampleCollection.new({:type => "study", :data => [1]}).valid?.should == false
-      end
-
-      it "is invalid if the data is not a triple key/type/value" do
+      it "is invalid if the data is not a SampleCollectionData object" do
         SampleCollection.new({:type => "study", :data => [{"dummy" => "test"}]}).valid?.should == false
       end
 
-      it "is invalid if the type is unknown" do
-        SampleCollection.new({:type => "study", :data => [{"key" => "test", "type" => "dummy", "value" => "aaa"}]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::Int contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Int.new(:key => "test", :value => "string")]}).valid?.should == false
       end
 
-      it "is invalid if the type integer does not match the value" do
-        SampleCollection.new({:type => "study", :data => [{"key" => "test", "type" => "integer", "value" => "string"}]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::String contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::String.new(:key => "test", :value => 1)]}).valid?.should == false
       end
 
-      it "is invalid if the type string does not match the value" do
-        SampleCollection.new({:type => "study", :data => [{"key" => "test", "type" => "string", "value" => 1}]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::Url contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Url.new(:key => "test", :value => 1)]}).valid?.should == false
       end
 
-      it "is invalid if the type url does not match the value" do
-        SampleCollection.new({:type => "study", :data => [{"key" => "test", "type" => "url", "value" => "sanger.ac.uk"}]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::Uuid contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Uuid.new(:key => "test", :value => 1)]}).valid?.should == false
       end
 
-      it "is invalid if the type uuid does not match the value" do
-        SampleCollection.new({:type => "study", :data => [{"key" => "test", "type" => "uuid", "value" => "123456"}]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::Bool contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Bool.new(:key => "test", :value => "string")]}).valid?.should == false
+      end
+
+      it "is invalid if the samples parameter contains something else than samples" do
+        SampleCollection.new({:type => "study", :samples => [1,2,3]}).valid?.should == false
       end
     end
   end
