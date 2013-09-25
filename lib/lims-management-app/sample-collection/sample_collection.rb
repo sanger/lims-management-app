@@ -1,5 +1,6 @@
 require 'lims-core/resource'
 require 'lims-management-app/sample-collection/validation_shared'
+require 'lims-management-app/sample-collection/data/data_types'
 
 module Lims::ManagementApp
   class SampleCollection
@@ -7,7 +8,8 @@ module Lims::ManagementApp
     include ValidationShared
 
     attribute :type, String, :required => true, :initializable => true
-    attribute :data, Array, :required => false, :initializable => true
+    attribute :data, Array, :required => false, :default => [], :initializable => true, :writer => :private, :reader => :private
+    attribute :samples, Array, :required => false, :default => [], :initializable => true, :writer => :private
 
   end
 end

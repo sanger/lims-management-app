@@ -3,12 +3,6 @@ module Lims::ManagementApp
     module ValidationShared
 
       COLLECTION_TYPES = ["Manifest", "Accessing", "Study", "User"]
-      DATA_TYPE_STRING = "string"
-      DATA_TYPE_INT = "integer"
-      DATA_TYPE_URL = "url"
-      DATA_TYPE_UUID = "uuid"
-      DATA_TYPES = [DATA_TYPE_STRING, DATA_TYPE_INT, DATA_TYPE_URL, DATA_TYPE_UUID]
-
       VALID_URL_PATTERN = /^http:\/\/.*$/i
       VALID_UUID_PATTERN = /#{[8,4,4,4,12].map { |n| "[0-9a-f]{#{n}}" }.join("-")}/i
 
@@ -16,6 +10,7 @@ module Lims::ManagementApp
         klass.class_eval do
           validates_with_method :ensure_type_parameter
           validates_with_method :ensure_data_parameter
+          validates_with_method :ensure_samples_parameter
         end
       end
 
@@ -30,31 +25,28 @@ module Lims::ManagementApp
       end
 
       def ensure_data_parameter
-        if data
-          data.each do |d|
-            unless d.is_a?(Hash) && d.keys.sort == ["key", "type", "value"]
-              return [false, "Error found in data: '#{d.inspect}'. It must be a triple (key, type, value)"]
-            end
-
-            key, type, value = d["key"], d["type"], d["value"]
-            unless DATA_TYPES.include?(type.downcase)
-              return [false, "Type must belong to the valid types #{DATA_TYPES.inspect}: '#{type}'"]
-            end
-
-            return ensure_data_type_value_matching(type, value)
+        data.each do |d|
+          error = false
+          case d
+          when SampleCollectionData::String then error = true unless d.value.is_a?(String)
+          when SampleCollectionData::Int then error = true unless d.value.is_a?(Integer)
+          when SampleCollectionData::Url then error = true unless d.value =~ VALID_URL_PATTERN
+          when SampleCollectionData::Uuid then error = true unless d.value =~ VALID_UUID_PATTERN
+          when SampleCollectionData::Bool then error = true unless d.value.is_a?(TrueClass) || d.value.is_a?(FalseClass)
+          else return [false, "Error found in data: '#{d.inspect}' isn't a valid SampleCollectionData."]
           end
+          return error ? [false, "Type/value mismatch: '#{d.value}' is not a valid value for '#{d.class}'"] : [true]
         end
+        [true]
       end
 
-      def ensure_data_type_value_matching(type, value)
-        error = false
-        case type
-        when DATA_TYPE_STRING then error = true unless value.is_a?(String)
-        when DATA_TYPE_INT then error = true unless value.is_a?(Integer)
-        when DATA_TYPE_URL then error = true unless value =~ VALID_URL_PATTERN
-        when DATA_TYPE_UUID then error = true unless value =~ VALID_UUID_PATTERN
+      def ensure_samples_parameter
+        samples.each do |sample|
+          unless sample.is_a?(Sample)
+            return [false, "'#{sample.inspect}' is not a sample"]
+          end
         end
-        error ? [false, "Type/value mismatch: '#{value}' is not a '#{type}'"] : [true]
+        [true]
       end
     end
   end
