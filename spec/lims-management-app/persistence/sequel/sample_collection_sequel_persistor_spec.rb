@@ -25,14 +25,41 @@ module Lims::ManagementApp
 
       it_behaves_like "modify table", :collections, 1
       it_behaves_like "modify table", :collections_samples, 3
+      it_behaves_like "modify table", :collection_data_string, 1
+      it_behaves_like "modify table", :collection_data_int, 1
+      it_behaves_like "modify table", :collection_data_url, 1
+      it_behaves_like "modify table", :collection_data_bool, 1
+      it_behaves_like "modify table", :collection_data_uuid, 1
 
       it "should be reloadable" do
         store.with_session do |session|
           c = session.sample_collection[collection_id]
           c.should == session.sample_collection[collection_id]
+        end
+      end
+
+      it "reloads the samples in the collection" do
+        store.with_session do |session|
+          c = session.sample_collection[collection_id]
           c.samples.size.should == collection.samples.size
           c.samples.each do |sample|
             sample.should be_a(Sample)
+          end
+        end
+      end
+
+      it "reloads the data in the collection" do
+        store.with_session do |session|
+          c = session.sample_collection[collection_id]
+          c.data.size.should == collection.data.size
+          c.data.sort do |a,b|
+            a.class.to_s <=> b.class.to_s
+          end.zip(collection.data.sort do |a,b|
+            a.class.to_s <=> b.class.to_s
+          end).each do |data_saved, data|
+            data_saved.should be_a(data.class)
+            data_saved.key.should == data.key
+            data_saved.value.should == data.value
           end
         end
       end
