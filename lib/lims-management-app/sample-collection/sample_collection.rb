@@ -8,9 +8,8 @@ module Lims::ManagementApp
     include ValidationShared
 
     attribute :type, String, :required => true, :initializable => true
-    attribute :data, Array, :required => false, :default => [], :initializable => true, :writer => :private, :reader => :private
     attribute :samples, Array, :required => false, :default => [], :initializable => true, :writer => :private
-
+    attribute :data, Array, :required => false, :default => [], :initializable => true, :writer => :private
   end
 end
 

@@ -9,6 +9,23 @@ module Lims::ManagementApp
       def self.table_name
         :collections
       end
+
+      def load_children(id, collection)
+        super(id, collection)
+        load_data(id) do |data|
+          collection.data << data
+        end
+      end
+
+      def load_data(collection_id, &block)
+        SampleCollectionData::DATA_TYPES.map do |type|
+          @session.send("collection_data_#{type}")
+        end.each do |data_sequel_persistor|
+          data_sequel_persistor.load_data(collection_id).each do |data|
+            block.call(data_sequel_persistor.get_or_create_single_model(data[:id], data))
+          end
+        end
+      end
     end
 
     class CollectionSample

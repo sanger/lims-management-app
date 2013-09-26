@@ -1,4 +1,5 @@
 require 'lims-core/persistence/persistor'
+require 'lims-management-app/sample-collection/data/data_types_persistor'
 
 module Lims::ManagementApp
   class SampleCollection
@@ -8,6 +9,10 @@ module Lims::ManagementApp
       def save_children(id, collection)
         collection.samples.each do |sample|
           collection_sample.save_as_association(id, sample) 
+        end
+
+        collection.data.each do |data|
+          @session.save(data, id)
         end
       end
 
@@ -19,6 +24,7 @@ module Lims::ManagementApp
 
       def filter_attributes_on_save(attributes)
         attributes.delete(:samples)
+        attributes.delete(:data)
         attributes
       end
 
