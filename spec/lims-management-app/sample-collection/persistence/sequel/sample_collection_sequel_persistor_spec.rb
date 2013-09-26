@@ -1,6 +1,6 @@
 require 'integrations/spec_helper'
 require 'lims-management-app/sample-collection/sample_collection_shared'
-require 'lims-management-app/persistence/sequel/spec_helper'
+require 'lims-management-app/sample-collection/persistence/sequel/spec_helper'
 require 'lims-management-app/sample-collection/sample_collection_sequel_persistor'
 
 module Lims::ManagementApp

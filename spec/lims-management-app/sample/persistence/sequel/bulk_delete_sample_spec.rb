@@ -1,4 +1,4 @@
-require 'lims-management-app/persistence/sequel/spec_helper'
+require 'lims-management-app/sample/persistence/sequel/spec_helper'
 require 'lims-management-app/sample/bulk_delete_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
