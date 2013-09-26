@@ -9,35 +9,35 @@ Sequel.migration do
     create_table :collection_data_string do
       primary_key :id
       foreign_key :collection_id, :collections, :key => :id
-      String :name
+      String :key
       String :value
     end
 
     create_table :collection_data_bool do
       primary_key :id
       foreign_key :collection_id, :collections, :key => :id
-      String :name
+      String :key
       Bool :value
     end
 
     create_table :collection_data_int do
       primary_key :id
       foreign_key :collection_id, :collections, :key => :id
-      String :name
+      String :key
       Integer :value
     end
 
     create_table :collection_data_url do
       primary_key :id
       foreign_key :collection_id, :collections, :key => :id
-      String :name
+      String :key
       String :value
     end
 
     create_table :collection_data_uuid do
       primary_key :id
       foreign_key :collection_id, :collections, :key => :id
-      String :name
+      String :key
       String :value, :fixed => true, :size => 64
     end
 
