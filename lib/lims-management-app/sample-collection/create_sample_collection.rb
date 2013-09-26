@@ -7,6 +7,8 @@ module Lims::ManagementApp
       include Lims::Core::Actions::Action
       include ValidationShared
 
+      SampleNotFound = Class.new(StandardError)
+
       attribute :type, String, :required => true
       attribute :data, Array, :required => false, :default => []
       attribute :sample_uuids, Array, :required => false, :default => []
@@ -28,7 +30,9 @@ module Lims::ManagementApp
 
       def prepared_samples(session)
         sample_uuids.map do |uuid|
-          session[uuid]
+          sample = session[uuid]
+          raise SampleNotFound, "The sample '#{uuid}' cannot be found" unless sample
+          sample
         end
       end
 
