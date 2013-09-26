@@ -10,6 +10,8 @@ module Lims::ManagementApp
     attribute :type, String, :required => true, :initializable => true
     attribute :samples, Array, :required => false, :default => [], :initializable => true, :writer => :private
     attribute :data, Array, :required => false, :default => [], :initializable => true, :writer => :private
+    validates_with_method :ensure_type_parameter
+    validates_with_method :ensure_data_parameter
     validates_with_method :ensure_samples_parameter
 
     def ensure_data_parameter

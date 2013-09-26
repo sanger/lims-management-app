@@ -8,13 +8,6 @@ module Lims::ManagementApp
       VALID_URL_PATTERN = /^http:\/\/.*$/i
       VALID_UUID_PATTERN = /#{[8,4,4,4,12].map { |n| "[0-9a-f]{#{n}}" }.join("-")}/i
 
-      def self.included(klass)
-        klass.class_eval do
-          validates_with_method :ensure_type_parameter
-          validates_with_method :ensure_data_parameter
-        end
-      end
-
       def ensure_type_parameter
         if type
           if COLLECTION_TYPES.map(&:downcase).include?(type.downcase) 
