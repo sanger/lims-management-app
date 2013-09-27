@@ -60,7 +60,7 @@ module Lims::ManagementApp
         })).valid?.should == true
       end
 
-      it "creates a sample collection" do
+      it "updates a sample collection" do
         Lims::Core::Persistence::Session.any_instance.should_receive(:save)
         result = subject.call
         collection = result[:sample_collection]
