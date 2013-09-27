@@ -51,7 +51,7 @@ module Lims::ManagementApp
         it "raises an exception" do
           expect do
             subject.call
-          end.to raise_error(SampleCollection::CreateSampleCollection::SampleNotFound)
+          end.to raise_error(SampleCollection::SampleNotFound)
         end
       end
     end
