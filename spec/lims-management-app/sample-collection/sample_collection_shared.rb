@@ -14,7 +14,7 @@ module Lims::ManagementApp
       {
         :type => "Study",
         :data => [
-          data("key_string", "string", "name"),
+          data("key_string", "string", "value"),
           data("key_int", "integer", 1),
           data("key_url", "url", "http://www.sanger.ac.uk"),
           data("key_bool", "bool", true),
