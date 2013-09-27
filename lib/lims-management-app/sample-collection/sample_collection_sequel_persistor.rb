@@ -10,11 +10,17 @@ module Lims::ManagementApp
         :collections
       end
 
-      def delete_children(id, collection)
-        @session.collection_sample.dataset.where(:collection_id => id).delete
+      # @param [Integer] collection_id
+      # @param [SampleCollection] collection
+      def delete_children(collection_id, collection)
+        @session.collection_sample.dataset.where(:collection_id => collection_id).delete
       end
 
-      def delete_raw(collection, id, *params)
+      # @param [SampleCollection] collection
+      # @param [Integer] collection_id
+      # Delete first the data associated to the collection 
+      # to verify the foreign key constraints.
+      def delete_raw(collection, collection_id, *params)
         collection.data.each do |data|
           persistor = @session.persistor_for(data)
           persistor.dataset.where(persistor.primary_key => persistor.id_for(data)).delete
@@ -23,6 +29,8 @@ module Lims::ManagementApp
         super
       end
 
+      # @param [Integer] id
+      # @param [SampleCollection] collection
       def load_children(id, collection)
         super(id, collection)
         load_data(id) do |data|
@@ -30,6 +38,8 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [Integer] collection_id
+      # @param [Block] block
       def load_data(collection_id, &block)
         SampleCollectionData::DATA_TYPES.map do |type|
           @session.send("collection_data_#{type}")
@@ -41,6 +51,7 @@ module Lims::ManagementApp
       end
     end
 
+
     class CollectionSample
       class CollectionSampleSequelPersistor < CollectionSamplePersistor
         include Lims::Core::Persistence::Sequel::Persistor
@@ -49,10 +60,14 @@ module Lims::ManagementApp
           :collections_samples
         end
 
+        # @param [Integer] collection_id
+        # @param [Integer] sample_id
         def save_raw_association(collection_id, sample_id)
           dataset.insert(:collection_id => collection_id, :sample_id => sample_id)
         end
 
+        # @param [Integer] collection_id
+        # @param [Block] block
         def load_samples(collection_id, &block)
           dataset.join(:samples, :id => :sample_id).where(:collection_id => collection_id).each do |attr|
             sample = @session.sample.get_or_create_single_model(attr[:sample_id], attr)

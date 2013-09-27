@@ -2,6 +2,8 @@ require 'lims-core/resource'
 
 module Lims::ManagementApp
   class SampleCollection
+    # Define dynamically a resource class for each types
+    # defined in DATA_TYPES. Each class contains key/value attributes.
     module SampleCollectionData
       include Virtus
 

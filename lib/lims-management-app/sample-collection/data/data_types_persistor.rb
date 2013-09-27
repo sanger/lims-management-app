@@ -3,6 +3,8 @@ require 'lims-core/persistence/sequel/persistor'
 
 module Lims::ManagementApp
   class SampleCollection
+    # Define persistor and sequel persistor classes for each
+    # types defined in DATA_TYPES.
     module SampleCollectionData
 
       DATA_TYPES.each do |type|

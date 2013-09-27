@@ -6,28 +6,35 @@ module Lims::ManagementApp
     class SampleCollectionPersistor < Lims::Core::Persistence::Persistor
       Model = SampleCollection
 
-      def save_children(id, collection)
+      # @param [Integer] collection_id
+      # @param [SampleCollection] collection
+      def save_children(collection_id, collection)
         collection.samples.each do |sample|
-          collection_sample.save_as_association(id, sample) 
+          collection_sample.save_as_association(collection_id, sample) 
         end
 
         collection.data.each do |data|
-          @session.save(data, id)
+          @session.save(data, collection_id)
         end
       end
 
-      def load_children(id, collection)
-        collection_sample.load_samples(id) do |sample|
+      # @param [Integer] collection_id
+      # @param [SampleCollection] collection
+      def load_children(collection_id, collection)
+        collection_sample.load_samples(collection_id) do |sample|
           collection.samples << sample
         end
       end
 
+      # @param [Hash] attributes
+      # @return [Hash]
       def filter_attributes_on_save(attributes)
         attributes.delete(:samples)
         attributes.delete(:data)
         attributes
       end
 
+      # @return [CollectionSamplePersistor]
       def collection_sample
         @session.collection_sample
       end
