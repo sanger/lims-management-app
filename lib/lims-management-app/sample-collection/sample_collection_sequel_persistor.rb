@@ -14,6 +14,15 @@ module Lims::ManagementApp
         @session.collection_sample.dataset.where(:collection_id => id).delete
       end
 
+      def delete_raw(collection, id, *params)
+        collection.data.each do |data|
+          persistor = @session.persistor_for(data)
+          persistor.dataset.where(persistor.primary_key => persistor.id_for(data)).delete
+        end
+
+        super
+      end
+
       def load_children(id, collection)
         super(id, collection)
         load_data(id) do |data|
