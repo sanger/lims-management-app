@@ -25,7 +25,7 @@ module Lims::ManagementApp
           end
 
           key, type, value = d["key"], d["type"], d["value"]
-          unless SampleCollectionData::DATA_TYPES.include?(type)
+          unless type.nil? || SampleCollectionData::DATA_TYPES.include?(type)
             return [false, "'#{type}' is not a valid type. Supported types are #{SampleCollectionData::DATA_TYPES.inspect}"]
           end
 

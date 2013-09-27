@@ -1,5 +1,8 @@
 module Lims::ManagementApp
-  module SampleCollection
+  class SampleCollection
+
+    SampleNotFound = Class.new(StandardError)
+
     module ActionShared
 
       def prepared_data
@@ -14,7 +17,7 @@ module Lims::ManagementApp
       def prepared_samples(session)
         sample_uuids.map do |uuid|
           sample = session[uuid]
-          raise SampleNotFound, "The sample '#{uuid}' cannot be found" unless sample
+          raise SampleCollection::SampleNotFound, "The sample '#{uuid}' cannot be found" unless sample
           sample
         end
       end

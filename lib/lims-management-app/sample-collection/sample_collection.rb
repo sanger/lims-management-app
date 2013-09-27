@@ -35,6 +35,22 @@ module Lims::ManagementApp
       end
       [true]
     end
+
+    def add_data(element)
+      if element.is_a?(Array)
+        @data |= element
+      else
+        @data << element
+      end
+    end
+
+    def add_samples(sample)
+      if sample.is_a?(Array)
+        @samples |= sample
+      else
+        @samples << sample
+      end
+    end
   end
 end
 

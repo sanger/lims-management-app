@@ -9,8 +9,6 @@ module Lims::ManagementApp
       include ValidationShared
       include ActionShared
 
-      SampleNotFound = Class.new(StandardError)
-
       attribute :type, String, :required => true
       attribute :data, Array, :required => false, :default => []
       attribute :sample_uuids, Array, :required => false, :default => []

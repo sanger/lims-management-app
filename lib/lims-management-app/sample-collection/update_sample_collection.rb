@@ -11,7 +11,7 @@ module Lims::ManagementApp
 
       SampleNotFound = Class.new(StandardError)
 
-      attribute :collection, SampleCollection, :required => true
+      attribute :sample_collection, SampleCollection, :required => true
       attribute :data, Array, :required => false, :default => []
       attribute :sample_uuids, Array, :required => false, :default => []
       validates_with_method :ensure_data_parameter
@@ -19,26 +19,26 @@ module Lims::ManagementApp
       def _call_in_session(session)
         update_data
         update_samples(session)
-        {:sample_collection => collection}
+        {:sample_collection => sample_collection}
       end
 
       def update_data
         # We delete the data which are overriden by the new data parameters
         data.inject([]) { |m,e| m << e["key"] }.tap do |keys|
-          collection.data.delete_if do |element|
+          sample_collection.data.delete_if do |element|
             keys.include?(element.key)
           end
         end
 
         # We add the new data to the collection
-        collection.data |= prepared_data
+        sample_collection.add_data(prepared_data)
       end
 
       def update_samples(session)
         # We delete all the samples which do not appear 
         # in the sample_uuids parameter from the collection
         collection_sample_uuids = []
-        collection.samples.keep_if do |sample|
+        sample_collection.samples.keep_if do |sample|
           collection_sample_uuid = session.uuid_for(sample)
           collection_sample_uuids << collection_sample_uuid
           sample_uuids.include?(collection_sample_uuid)
@@ -50,7 +50,7 @@ module Lims::ManagementApp
           collection_sample_uuids.include?(uuid)
         end
 
-        collection.samples |= prepared_samples(session)
+        sample_collection.add_samples(prepared_samples(session))
       end
     end
 

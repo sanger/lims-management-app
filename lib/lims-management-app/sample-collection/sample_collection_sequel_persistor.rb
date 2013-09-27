@@ -10,6 +10,10 @@ module Lims::ManagementApp
         :collections
       end
 
+      def delete_children(id, collection)
+        @session.collection_sample.dataset.where(:collection_id => id).delete
+      end
+
       def load_children(id, collection)
         super(id, collection)
         load_data(id) do |data|
