@@ -26,7 +26,7 @@ describe "delete_a_sample_collection", :sample_collection => true do
           Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => "value bool"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http=>//www.sanger.ac.uk"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 132)
       ],
       :samples => [sample, sample2]
@@ -57,7 +57,7 @@ describe "delete_a_sample_collection", :sample_collection => true do
             "key_string": "value string",
             "key_bool": true,
             "key_int": 132,
-            "key_url": "http=>//www.sanger.ac.uk",
+            "key_url": "http://www.sanger.ac.uk",
             "key_uuid": "11111111-0000-0000-0000-000000000000"
         },
         "samples": [
