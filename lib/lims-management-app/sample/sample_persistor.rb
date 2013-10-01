@@ -74,11 +74,19 @@ module Lims::ManagementApp
         end.tap do |a|
           id = attributes[:scientific_taxon_id]
           a[:taxon_id] = @session.taxonomy[id].taxon_id if id 
+        end
+      end
 
-          unless @in_collection
-            sample_collections = sample_collections_metadata(attributes[:id])
-            a[:sample_collections] = sample_collections if sample_collections
-          end
+      def load_children(sample_id, sample)
+        load_sample_collections(sample_id) do |collection|
+          sample.sample_collections << collection
+        end
+      end
+
+      def load_sample_collections(sample_id, &block)
+        unless @in_collection
+          sample_collections = sample_collections_metadata(sample_id)
+          sample_collections.each { |collection| block.call(collection) }
         end
       end
 
@@ -88,6 +96,10 @@ module Lims::ManagementApp
 
       def reset_in_collection
         @in_collection = false
+      end
+
+      def sample_collection
+        @session.sample_collection
       end
 
       def sample_collections_metadata(sample_id)
