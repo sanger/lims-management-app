@@ -5,7 +5,7 @@ module Lims::ManagementApp
   class SampleCollection
     class SampleCollectionResource < Lims::Api::CoreResource
 
-      def content_to_stream(s, mime_type)
+      def content_to_stream(s, mime_type, without_samples = false)
         object.attributes.each do |k,v|
           next if k.to_s == "data" || k.to_s == "samples"
           s.add_key k
@@ -17,9 +17,11 @@ module Lims::ManagementApp
           data_to_stream(object.data, s)
         end
 
-        s.add_key "samples"
-        s.with_array do
-          samples_to_stream(object.samples, s, mime_type)
+        unless without_samples
+          s.add_key "samples"
+          s.with_array do
+            samples_to_stream(object.samples, s, mime_type)
+          end
         end
       end
 
