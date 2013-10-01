@@ -24,6 +24,10 @@ module Lims::ManagementApp
         collection_sample.load_samples(collection_id) do |sample|
           collection.samples << sample
         end
+
+        load_data(collection_id) do |data|
+          collection.data << data
+        end
       end
 
       # @param [Hash] attributes
@@ -38,11 +42,39 @@ module Lims::ManagementApp
       def collection_sample
         @session.collection_sample
       end
+
+      # @param [Integer] collection_id
+      # @param [Block] block
+      def load_data(collection_id, &block)
+        SampleCollectionData::DATA_TYPES.map do |type|
+          @session.send("collection_data_#{type}")
+        end.each do |data_persistor|
+          data_persistor.load_data(collection_id).each do |data|
+            block.call(data_persistor.get_or_create_single_model(data[:id], data))
+          end
+        end
+      end
     end
+
+
+    class SampleCollectionMetadata
+      SESSION_NAME = :sample_collection_metadata
+      class SampleCollectionMetadataPersistor < SampleCollectionPersistor
+        def load_children(collection_id, collection)
+          load_data(collection_id) do |data|
+            collection.data << data
+          end
+        end
+      end
+    end
+
 
     class CollectionSample
       SESSION_NAME = :collection_sample
       class CollectionSamplePersistor < Lims::Core::Persistence::Persistor
+        def load_samples(collection_id, &block)
+          raise NotImplementedError, "load_samples is not implemented"
+        end
       end
     end
   end
