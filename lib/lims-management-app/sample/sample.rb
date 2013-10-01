@@ -36,6 +36,8 @@ module Lims::ManagementApp
     attribute :cellular_material, CellularMaterial, :required => false, :initializable => true
     attribute :genotyping, Genotyping, :required => false, :initializable => true
 
+    attribute :sample_collections, Array, :required => false
+    
     def initialize(*args, &block)
       super
     end
