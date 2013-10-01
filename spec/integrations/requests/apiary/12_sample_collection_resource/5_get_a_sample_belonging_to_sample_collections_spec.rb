@@ -48,7 +48,7 @@ describe "get_a_sample_belonging_to_sample_collections", :sample_collection => t
     header('Content-Type', 'application/json')
 
     response = get "/11111111-2222-3333-4444-777777777777"
-    #response.status.should == 200
+    response.status.should == 200
     response.body.should match_json <<-EOD
     {
     "sample": {
