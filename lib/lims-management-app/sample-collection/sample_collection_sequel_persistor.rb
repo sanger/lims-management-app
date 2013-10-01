@@ -25,28 +25,16 @@ module Lims::ManagementApp
           persistor = @session.persistor_for(data)
           persistor.dataset.where(persistor.primary_key => persistor.id_for(data)).delete
         end
-
         super
       end
+    end
 
-      # @param [Integer] id
-      # @param [SampleCollection] collection
-      def load_children(id, collection)
-        super(id, collection)
-        load_data(id) do |data|
-          collection.data << data
-        end
-      end
-
-      # @param [Integer] collection_id
-      # @param [Block] block
-      def load_data(collection_id, &block)
-        SampleCollectionData::DATA_TYPES.map do |type|
-          @session.send("collection_data_#{type}")
-        end.each do |data_sequel_persistor|
-          data_sequel_persistor.load_data(collection_id).each do |data|
-            block.call(data_sequel_persistor.get_or_create_single_model(data[:id], data))
-          end
+    
+    class SampleCollectionMetadata
+      class SampleCollectionMetadataSequelPersistor < SampleCollectionMetadataPersistor
+        include Lims::Core::Persistence::Sequel::Persistor
+        def self.table_name
+          :collections
         end
       end
     end
@@ -69,10 +57,12 @@ module Lims::ManagementApp
         # @param [Integer] collection_id
         # @param [Block] block
         def load_samples(collection_id, &block)
+          @session.sample.in_collection!
           dataset.join(:samples, :id => :sample_id).where(:collection_id => collection_id).each do |attr|
             sample = @session.sample.get_or_create_single_model(attr[:sample_id], attr)
             block.call(sample)
           end
+          @session.sample.reset_in_collection
         end
       end
     end
