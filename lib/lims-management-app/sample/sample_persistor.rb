@@ -14,7 +14,7 @@ module Lims::ManagementApp
 
       def filter_attributes_on_save(attributes)
         taxon_id = attributes[:taxon_id]
-        attributes.reject { |k,v| k == :taxon_id }.mash do |k,v|
+        attributes.reject { |k,v| k == :taxon_id || k == :sample_collections }.mash do |k,v|
           case k
           when :dna then [:dna_id, save_component(v)]
           when :rna then [:rna_id, save_component(v)]
@@ -74,7 +74,24 @@ module Lims::ManagementApp
         end.tap do |a|
           id = attributes[:scientific_taxon_id]
           a[:taxon_id] = @session.taxonomy[id].taxon_id if id 
+
+          unless @in_collection
+            sample_collections = sample_collections_metadata(attributes[:id])
+            a[:sample_collections] = sample_collections if sample_collections
+          end
         end
+      end
+
+      def in_collection!
+        @in_collection = true
+      end
+
+      def reset_in_collection
+        @in_collection = false
+      end
+
+      def sample_collections_metadata(sample_id)
+        raise NotImplementedError, "sample_collection is not implemented"
       end
     end
   end
