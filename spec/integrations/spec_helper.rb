@@ -52,7 +52,7 @@ shared_context 'use core context service' do
     # list of all the tables in our DB
     %w{collections_samples samples taxonomies dna rna cellular_material genotyping 
     collection_data_bool collection_data_string  collection_data_url collection_data_uuid 
-    collection_data_int collections uuid_resources}.each do |table|
+    collection_data_int collections searches uuid_resources}.each do |table|
       db[table.to_sym].delete
     end
     db[:sanger_sample_id_number].where(:id => 1).update(:number => 0)
