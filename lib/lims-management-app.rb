@@ -10,6 +10,9 @@ require 'lims-management-app/version'
 require 'lims-management-app/sample/all'
 require 'lims-management-app/sample-collection/all'
 
+require 'lims-core/persistence/search/all'
+require 'lims-api/persistence/search_resource'
+
 require 'lims-api/server'
 require 'lims-api/context_service'
 require 'lims-api/message_bus'

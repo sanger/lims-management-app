@@ -54,6 +54,12 @@ module Lims::ManagementApp
           end
         end
       end
+
+      SampleCollectionData::DATA_TYPES.each do |type|
+        define_method("collection_data_#{type}") do
+          @session.send("collection_data_#{type}")
+        end
+      end
     end
 
 
