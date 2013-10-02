@@ -23,10 +23,13 @@ module Lims::ManagementApp
       end
 
       def update_data
-        # We delete the data which are overriden by the new data parameters
-        data.inject([]) { |m,e| m << e["key"] }.tap do |keys|
-          sample_collection.data.delete_if do |element|
-            keys.include?(element.key)
+        # We update the data which are overriden by the new data parameters
+        data.inject({}) { |m,e| m.merge(e["key"] => e["value"]) }.tap do |data_h|
+          sample_collection.data.each do |collection_data|
+            if data_h.keys.include?(collection_data.key)
+              collection_data.value = data_h[collection_data.key]
+              data.delete_if { |d| d["key"] == collection_data.key }
+            end
           end
         end
 
