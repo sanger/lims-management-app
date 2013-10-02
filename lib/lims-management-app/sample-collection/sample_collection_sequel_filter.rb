@@ -104,12 +104,11 @@ module Lims::Core
         criteria = criteria[:sample_collection] if criteria.keys.first.to_s == "sample_collection"
         criteria.rekey! { |k| k.to_sym }
 
-        sample_collection_persistor = @session.sample_collection.__multi_criteria_filter(expanded_criteria(criteria))
+        sample_collection_persistor = @session.sample_collection.multi_criteria_filter(criteria)
         sample_collection_dataset = sample_collection_persistor.dataset.join(
           :collections_samples, :collection_id => :collections__id
-        )
+        ).select_all(:collections_samples)
 
-        debugger
         self.class.new(self, dataset.join(sample_collection_dataset, :sample_id => :samples__id).qualify.distinct)
       end
     end
