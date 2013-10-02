@@ -28,7 +28,7 @@ module Lims::ManagementApp
       it_behaves_like "modify table", :collection_data_string, 1
       it_behaves_like "modify table", :collection_data_int, 1
       it_behaves_like "modify table", :collection_data_url, 1
-      it_behaves_like "modify table", :collection_data_bool, 1
+      it_behaves_like "modify table", :collection_data_bool, 2
       it_behaves_like "modify table", :collection_data_uuid, 1
 
       it "should be reloadable" do
@@ -53,9 +53,9 @@ module Lims::ManagementApp
           c = session.sample_collection[collection_id]
           c.data.size.should == collection.data.size
           c.data.sort do |a,b|
-            a.class.to_s <=> b.class.to_s
+            a.key <=> b.key
           end.zip(collection.data.sort do |a,b|
-            a.class.to_s <=> b.class.to_s
+            a.key <=> b.key
           end).each do |data_saved, data|
             data_saved.should be_a(data.class)
             data_saved.key.should == data.key

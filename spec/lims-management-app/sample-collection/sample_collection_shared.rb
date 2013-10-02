@@ -18,6 +18,7 @@ module Lims::ManagementApp
           data("key_int", "integer", 1),
           data("key_url", "url", "http://www.sanger.ac.uk"),
           data("key_bool", "bool", true),
+          data("key_bool2", "bool", false),
           data("key_uuid", "uuid", "11111111-2222-3333-4444-555555555555")
         ],
         :samples => [new_full_sample, new_sample_with_dna, new_common_sample]
@@ -38,6 +39,7 @@ module Lims::ManagementApp
         {"key" => "key_int", "type" => "int", "value" => 1},
         {"key" => "key_url", "type" => "url", "value" => "http://www.sanger.ac.uk"},
         {"key" => "key_bool", "type" => "bool", "value" => true},
+        {"key" => "key_bool2", "type" => "bool", "value" => false},
         {"key" => "key_uuid", "type" => "uuid", "value" => "11111111-2222-3333-4444-555555555555"}
       ]
     end

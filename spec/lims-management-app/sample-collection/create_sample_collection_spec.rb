@@ -84,9 +84,12 @@ module Lims::ManagementApp
         collection.data[3].should be_a(SampleCollection::SampleCollectionData::Bool)
         collection.data[3].key.should == "key_bool"
         collection.data[3].value.should == true 
-        collection.data[4].should be_a(SampleCollection::SampleCollectionData::Uuid)
-        collection.data[4].key.should == "key_uuid"
-        collection.data[4].value.should == "11111111-2222-3333-4444-555555555555"
+        collection.data[4].should be_a(SampleCollection::SampleCollectionData::Bool)
+        collection.data[4].key.should == "key_bool2"
+        collection.data[4].value.should == false 
+        collection.data[5].should be_a(SampleCollection::SampleCollectionData::Uuid)
+        collection.data[5].key.should == "key_uuid"
+        collection.data[5].value.should == "11111111-2222-3333-4444-555555555555"
       end
     end
   end

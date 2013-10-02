@@ -8,7 +8,8 @@ describe "search_for_a_sample_collection_by_type_and_data", :searches => true do
       :type => "Study",
       :data => [
           Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => true),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string2", "value" => "value string 2"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => false),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 132)
@@ -34,14 +35,22 @@ describe "search_for_a_sample_collection_by_type_and_data", :searches => true do
     response = post "/searches", <<-EOD
     {
     "search": {
-        "description": "search for a sample collection by data",
+        "description": "search for a sample collection by type and data",
         "model": "sample_collection",
         "criteria": {
             "type": "Study",
             "data": [
                 {
                     "key": "key_bool",
-                    "value": true
+                    "value": false
+                },
+                {
+                    "key": "key_string",
+                    "value": "value string"
+                },
+                {
+                    "key": "key_string2",
+                    "value": "value string 2"
                 },
                 {
                     "key": "key_url",
@@ -92,7 +101,8 @@ describe "search_for_a_sample_collection_by_type_and_data", :searches => true do
             "type": "Study",
             "data": {
                 "key_string": "value string",
-                "key_bool": true,
+                "key_string2": "value string 2",
+                "key_bool": false,
                 "key_int": 132,
                 "key_url": "http://www.sanger.ac.uk",
                 "key_uuid": "11111111-0000-0000-0000-000000000000"

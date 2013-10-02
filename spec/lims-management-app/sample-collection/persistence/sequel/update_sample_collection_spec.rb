@@ -40,7 +40,7 @@ module Lims::ManagementApp
       it_behaves_like "changing the table", :collection_data_int, 0
       it_behaves_like "changing the table", :samples, 0
       it_behaves_like "changing the table", :collection_data_url, 0
-      it_behaves_like "changing the table", :collection_data_bool, 1
+      it_behaves_like "changing the table", :collection_data_bool, 0
       it_behaves_like "changing the table", :collection_data_uuid, 0
 
       context "when 2 samples are added and 2 samples deleted" do

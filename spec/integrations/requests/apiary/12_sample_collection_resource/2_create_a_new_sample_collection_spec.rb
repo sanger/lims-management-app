@@ -45,6 +45,11 @@ describe "create_a_new_sample_collection", :sample_collection => true do
                 "value": true
             },
             {
+                "key": "key_bool2",
+                "type": "bool",
+                "value": false
+            },
+            {
                 "key": "key_uuid",
                 "type": "uuid",
                 "value": "11111111-0000-0000-0000-000000000000"
@@ -78,6 +83,7 @@ describe "create_a_new_sample_collection", :sample_collection => true do
         "data": {
             "key_string": "value string",
             "key_bool": true,
+            "key_bool2": false,
             "key_uuid": "11111111-0000-0000-0000-000000000000",
             "key_url": "http://www.sanger.ac.uk",
             "key_int": 123

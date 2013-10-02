@@ -66,7 +66,7 @@ module Lims::ManagementApp
         collection = result[:sample_collection]
         collection.should be_a(SampleCollection)
 
-        collection.data.size.should == 6
+        collection.data.size.should == 7
         collection.samples.size.should == 0
 
         collection.data[0].should be_a(SampleCollection::SampleCollectionData::String)
@@ -78,15 +78,18 @@ module Lims::ManagementApp
         collection.data[2].should be_a(SampleCollection::SampleCollectionData::Url)
         collection.data[2].key.should == "key_url"
         collection.data[2].value.should == "http://www.sanger.ac.uk"
-        collection.data[3].should be_a(SampleCollection::SampleCollectionData::Uuid)
-        collection.data[3].key.should == "key_uuid"
-        collection.data[3].value.should == "11111111-2222-3333-4444-555555555555" 
-        collection.data[4].should be_a(SampleCollection::SampleCollectionData::String)
-        collection.data[4].key.should == "new key"
-        collection.data[4].value.should == "new value"
-        collection.data[5].should be_a(SampleCollection::SampleCollectionData::Bool)
-        collection.data[5].key.should == "key_bool"
-        collection.data[5].value.should == false 
+        collection.data[3].should be_a(SampleCollection::SampleCollectionData::Bool)
+        collection.data[3].key.should == "key_bool"
+        collection.data[3].value.should == false 
+        collection.data[4].should be_a(SampleCollection::SampleCollectionData::Bool)
+        collection.data[4].key.should == "key_bool2"
+        collection.data[4].value.should == false 
+        collection.data[5].should be_a(SampleCollection::SampleCollectionData::Uuid)
+        collection.data[5].key.should == "key_uuid"
+        collection.data[5].value.should == "11111111-2222-3333-4444-555555555555" 
+        collection.data[6].should be_a(SampleCollection::SampleCollectionData::String)
+        collection.data[6].key.should == "new key"
+        collection.data[6].value.should == "new value"
       end
     end
   end

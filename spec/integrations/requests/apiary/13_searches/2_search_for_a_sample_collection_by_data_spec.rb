@@ -9,24 +9,34 @@ describe "search_for_a_sample_collection_by_data", :searches => true do
       :data => [
           Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => true),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool2", :value => false),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 132)
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 245),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int2", "value" => 300)
       ]
     })
     
     collection2 = Lims::ManagementApp::SampleCollection.new({
       :type => "User",
       :data => [
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string 2"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => true),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool2", :value => false),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-111111111111"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 245)
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 245),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int2", "value" => 300)
       ]
     })
     
-    save_with_uuid collection1 => [1,2,3,4,6], collection2 => [1,2,3,4,7]
+    collection3 = Lims::ManagementApp::SampleCollection.new({
+      :type => "User",
+      :data => [
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => false),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 789)
+      ]
+    })
+    
+    save_with_uuid collection1 => [1,2,3,4,6], collection2 => [1,2,3,4,7], collection3 => [1,2,3,4,8]
 
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
@@ -39,8 +49,16 @@ describe "search_for_a_sample_collection_by_data", :searches => true do
         "criteria": {
             "data": [
                 {
-                    "key": "key_bool",
-                    "value": true
+                    "key": "key_bool2",
+                    "value": false
+                },
+                {
+                    "key": "key_int",
+                    "value": 245
+                },
+                {
+                    "key": "key_int2",
+                    "value": 300
                 },
                 {
                     "key": "key_url",
@@ -92,9 +110,10 @@ describe "search_for_a_sample_collection_by_data", :searches => true do
             "data": {
                 "key_string": "value string",
                 "key_bool": true,
-                "key_int": 132,
-                "key_url": "http://www.sanger.ac.uk",
-                "key_uuid": "11111111-0000-0000-0000-000000000000"
+                "key_bool2": false,
+                "key_int": 245,
+                "key_int2": 300,
+                "key_url": "http://www.sanger.ac.uk"
             },
             "samples": [
 
@@ -110,9 +129,9 @@ describe "search_for_a_sample_collection_by_data", :searches => true do
             "uuid": "11111111-2222-3333-4444-777777777777",
             "type": "User",
             "data": {
-                "key_string": "value string 2",
-                "key_bool": true,
+                "key_bool2": false,
                 "key_int": 245,
+                "key_int2": 300,
                 "key_url": "http://www.sanger.ac.uk",
                 "key_uuid": "11111111-0000-0000-0000-111111111111"
             },

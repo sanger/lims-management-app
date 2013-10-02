@@ -33,7 +33,7 @@ module Lims::ManagementApp
       it_behaves_like "changing the table", :collection_data_string, 1
       it_behaves_like "changing the table", :collection_data_int, 1
       it_behaves_like "changing the table", :collection_data_url, 1
-      it_behaves_like "changing the table", :collection_data_bool, 1
+      it_behaves_like "changing the table", :collection_data_bool, 2
       it_behaves_like "changing the table", :collection_data_uuid, 1
     end
 
