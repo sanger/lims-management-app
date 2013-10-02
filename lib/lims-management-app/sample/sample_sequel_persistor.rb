@@ -35,7 +35,7 @@ module Lims::ManagementApp
       end
 
       def sample_collections_metadata(sample_id)
-        collection_id_rows = self.dataset.from(:collections_samples).select(:collection_id).where(:sample_id => sample_id).all
+        collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:collection_id).where(:sample_id => sample_id).all
         collection_ids = collection_id_rows.map { |r| r[:collection_id] }
         collection_ids.map { |id| @session.sample_collection_metadata[id] }
       end
