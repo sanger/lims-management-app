@@ -29,16 +29,6 @@ module Lims::ManagementApp
       end
     end
 
-    
-    class SampleCollectionMetadata
-      class SampleCollectionMetadataSequelPersistor < SampleCollectionMetadataPersistor
-        include Lims::Core::Persistence::Sequel::Persistor
-        def self.table_name
-          :collections
-        end
-      end
-    end
-
 
     class CollectionSample
       class CollectionSampleSequelPersistor < CollectionSamplePersistor
