@@ -28,6 +28,7 @@ module Lims::ManagementApp
           class #{name.capitalize}
             include Lims::Core::Resource
             NOT_IN_ROOT = 1
+            TYPE = "#{name}"
             attribute :key, String, :required => true, :initializable => true
             attribute :value, #{ruby_type}, :required => true, :initializable => true
           end

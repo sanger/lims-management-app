@@ -1,3 +1,4 @@
+require 'lims-management-app/sample-collection/data/helper'
 require 'lims-management-app/sample-collection/data/data_types'
 
 module Lims::ManagementApp
@@ -20,11 +21,12 @@ module Lims::ManagementApp
 
       def ensure_data_parameter
         data.each do |d|
-          unless d.is_a?(Hash) && d.keys.sort == ["key","type","value"]
-            return [false, "Data must be a hash containing the element 'key', 'type' and 'value'"]
+          unless d.is_a?(Hash) && (d.keys & ["key","value"]).sort == ["key", "value"]
+            return [false, "Data must be a hash containing the element 'key' and 'value'"]
           end
 
-          key, type, value = d["key"], d["type"], d["value"]
+          key, value = d["key"], d["value"]
+          type = d["type"] || SampleCollectionData::Helper.discover_type_of(value)
           unless type.nil? || SampleCollectionData::DATA_TYPES.include?(type)
             return [false, "'#{type}' is not a valid type. Supported types are #{SampleCollectionData::DATA_TYPES.inspect}"]
           end

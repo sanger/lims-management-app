@@ -10,6 +10,7 @@ module Lims::ManagementApp
       include ActionShared
 
       SampleNotFound = Class.new(StandardError)
+      DataTypeMismatch = Class.new(StandardError)
 
       attribute :sample_collection, SampleCollection, :required => true
       attribute :data, Array, :required => false, :default => []
@@ -24,10 +25,15 @@ module Lims::ManagementApp
 
       def update_data
         # We update the data which are overriden by the new data parameters
-        data.inject({}) { |m,e| m.merge(e["key"] => e["value"]) }.tap do |data_h|
+        data.inject({}) { |m,e| m.merge(e["key"] => {:value => e["value"], :type => e["type"]}) }.tap do |data_h|
           sample_collection.data.each do |collection_data|
             if data_h.keys.include?(collection_data.key)
-              collection_data.value = data_h[collection_data.key]
+              current_data = data_h[collection_data.key]
+              value = current_data[:value]
+              type = current_data[:type] || SampleCollectionData::Helper.discover_type_of(value)
+              raise DataTypeMismatch unless type == collection_data.class::TYPE
+
+              collection_data.value = value 
               data.delete_if { |d| d["key"] == collection_data.key }
             end
           end

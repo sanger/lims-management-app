@@ -1,6 +1,6 @@
 require 'lims-core/persistence/sequel/filters'
 require 'lims-management-app/sample-collection/sample_collection_filter'
-require 'lims-management-app/sample-collection/action_shared'
+require 'lims-management-app/sample-collection/data/helper'
 
 module Lims::Core
   module Persistence
@@ -79,7 +79,7 @@ module Lims::Core
         {}.tap do |data_criteria|
           if criteria.has_key?(:data)
             criteria.delete(:data).each do |key,value|
-              type = Lims::ManagementApp::SampleCollection::ActionShared.discover_type_of(value)
+              type = Lims::ManagementApp::SampleCollection::SampleCollectionData::Helper.discover_type_of(value)
               table = "collection_data_#{type}".to_sym
               data_criteria[table] ||= []
               data_criteria[table] << {:key => key, :value => value}
