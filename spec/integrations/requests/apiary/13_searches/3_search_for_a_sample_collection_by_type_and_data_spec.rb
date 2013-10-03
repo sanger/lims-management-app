@@ -39,24 +39,12 @@ describe "search_for_a_sample_collection_by_type_and_data", :searches => true do
         "model": "sample_collection",
         "criteria": {
             "type": "Study",
-            "data": [
-                {
-                    "key": "key_bool",
-                    "value": false
-                },
-                {
-                    "key": "key_string",
-                    "value": "value string"
-                },
-                {
-                    "key": "key_string2",
-                    "value": "value string 2"
-                },
-                {
-                    "key": "key_url",
-                    "value": "http://www.sanger.ac.uk"
-                }
-            ]
+            "data": {
+                "key_bool": false,
+                "key_string": "value string",
+                "key_string2": "value string 2",
+                "key_url": "http://www.sanger.ac.uk"
+            }
         }
     }
 }

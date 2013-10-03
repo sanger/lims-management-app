@@ -85,20 +85,11 @@ describe "search_for_samples_by_sample_collection_type_and_data", :searches => t
         "criteria": {
             "sample_collection": {
                 "type": "User",
-                "data": [
-                    {
-                        "key": "key_bool",
-                        "value": false
-                    },
-                    {
-                        "key": "key_int",
-                        "value": 245
-                    },
-                    {
-                        "key": "key_url",
-                        "value": "http://www.sanger.ac.uk"
-                    }
-                ]
+                "data": {
+                    "key_bool": false,
+                    "key_int": 245,
+                    "key_url": "http://www.sanger.ac.uk"
+                }
             }
         }
     }

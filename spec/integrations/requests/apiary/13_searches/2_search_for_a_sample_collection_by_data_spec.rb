@@ -47,24 +47,12 @@ describe "search_for_a_sample_collection_by_data", :searches => true do
         "description": "search for a sample collection by data",
         "model": "sample_collection",
         "criteria": {
-            "data": [
-                {
-                    "key": "key_bool2",
-                    "value": false
-                },
-                {
-                    "key": "key_int",
-                    "value": 245
-                },
-                {
-                    "key": "key_int2",
-                    "value": 300
-                },
-                {
-                    "key": "key_url",
-                    "value": "http://www.sanger.ac.uk"
-                }
-            ]
+            "data": {
+                "key_bool2": false,
+                "key_int": 245,
+                "key_int2": 300,
+                "key_url": "http://www.sanger.ac.uk"
+            }
         }
     }
 }
