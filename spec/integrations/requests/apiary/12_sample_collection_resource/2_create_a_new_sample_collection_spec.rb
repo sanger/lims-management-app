@@ -41,7 +41,6 @@ describe "create_a_new_sample_collection", :sample_collection => true do
             },
             {
                 "key": "key_bool",
-                "type": "bool",
                 "value": true
             },
             {
@@ -56,7 +55,6 @@ describe "create_a_new_sample_collection", :sample_collection => true do
             },
             {
                 "key": "key_url",
-                "type": "url",
                 "value": "http://www.sanger.ac.uk"
             },
             {

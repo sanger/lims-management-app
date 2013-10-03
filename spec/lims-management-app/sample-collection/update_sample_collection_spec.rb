@@ -32,27 +32,8 @@ module Lims::ManagementApp
       end
     end
 
-    context "when the action is valid" do
-      include_context "create object"
-      it_behaves_like "an action"
 
-      before do
-        Lims::Core::Persistence::Session.any_instance.stub(:uuid_for)
-      end
-
-      let(:sample_collection) { new_sample_collection }
-      let(:updated_data) {[
-        {"key" => "new key", "type" => "string", "value" => "new value"},
-        {"key" => "key_bool", "type" => "bool", "value" => false}
-      ]}
-
-      subject {
-        described_class.new(parameters) do |a,s|
-          a.sample_collection = sample_collection 
-          a.data = updated_data
-        end
-      }
-
+    shared_examples_for "an updated sample collection" do
       it "has valid parameters" do
         described_class.new(parameters.merge({
           :sample_collection => sample_collection,
@@ -92,6 +73,52 @@ module Lims::ManagementApp
         collection.data[6].value.should == "new value"
       end
     end
-  end
 
+
+    context "when the action is valid" do
+      include_context "create object"
+      it_behaves_like "an action"
+
+      before do
+        Lims::Core::Persistence::Session.any_instance.stub(:uuid_for)
+      end
+
+      let(:sample_collection) { new_sample_collection }
+      subject {
+        described_class.new(parameters) do |a,s|
+          a.sample_collection = sample_collection 
+          a.data = updated_data
+        end
+      }
+
+      context "with data to update with an explit type" do
+        let(:updated_data) {[
+          {"key" => "new key", "type" => "string", "value" => "new value"},
+          {"key" => "key_bool", "type" => "bool", "value" => false}
+        ]}
+        it_behaves_like "an updated sample collection"
+      end
+
+      context "with data to update without an explit type" do
+        let(:updated_data) {[
+          {"key" => "new key", "value" => "new value"},
+          {"key" => "key_bool", "value" => false}
+        ]}
+        it_behaves_like "an updated sample collection"
+      end
+
+      context "with data containing type mismatch with an existing data" do
+        let(:updated_data) {[
+          {"key" => "new key", "value" => "new value"},
+          {"key" => "key_bool", "value" => 123}
+        ]}
+
+        it "raises an exception" do
+          expect do
+            subject.call
+          end.to raise_error(SampleCollection::UpdateSampleCollection::DataTypeMismatch)
+        end
+      end
+    end
+  end
 end

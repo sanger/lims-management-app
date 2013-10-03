@@ -42,22 +42,7 @@ module Lims::ManagementApp
     end
 
 
-    context "when the action is valid" do
-      include_context "create object"
-      it_behaves_like "an action"
-
-      let(:type) { "Study" }
-
-      subject {
-        described_class.new(parameters) do |a,s|
-          a.type = "Study"
-          a.data = sample_collection_action_data
-          # we do not test sample_uuids here as it needs persistence
-          # @see the corresponding spec in persistence
-          a.sample_uuids = []
-        end
-      }
-
+    shared_examples_for "a new sample collection" do
       it "has valid parameters" do
         described_class.new(parameters.merge({
           :type => type, 
@@ -90,6 +75,33 @@ module Lims::ManagementApp
         collection.data[5].should be_a(SampleCollection::SampleCollectionData::Uuid)
         collection.data[5].key.should == "key_uuid"
         collection.data[5].value.should == "11111111-2222-3333-4444-555555555555"
+      end
+    end
+
+
+    context "when the action is valid" do
+      include_context "create object"
+      it_behaves_like "an action"
+      let(:type) { "Study" }
+
+      subject {
+        described_class.new(parameters) do |a,s|
+          a.type = "Study"
+          a.data = data
+          # we do not test sample_uuids here as it needs persistence
+          # @see the corresponding spec in persistence
+          a.sample_uuids = []
+        end
+      }
+
+      context "with data explicitely typed" do
+        let(:data) { sample_collection_action_data }
+        it_behaves_like "a new sample collection"
+      end
+
+      context "with data non typed" do
+        let(:data) { sample_collection_action_data_no_type }
+        it_behaves_like "a new sample collection"
       end
     end
   end

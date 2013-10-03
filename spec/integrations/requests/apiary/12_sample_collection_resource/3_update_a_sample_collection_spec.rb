@@ -51,7 +51,6 @@ describe "update_a_sample_collection", :sample_collection => true do
     "data": [
         {
             "key": "key_bool",
-            "type": "bool",
             "value": false
         },
         {

@@ -44,6 +44,13 @@ module Lims::ManagementApp
       ]
     end
 
+    def sample_collection_action_data_no_type
+      sample_collection_action_data.map do |data|
+        data.delete("type")
+        data
+      end
+    end
+
     def sample_collection_action_sample_uuids
       [
         "11111111-0000-0000-0000-111111111111",
