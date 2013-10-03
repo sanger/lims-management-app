@@ -20,6 +20,10 @@ module Lims::ManagementApp
 
       # @param [Integer] collection_id
       # @param [SampleCollection] collection
+      # About @in_sample:
+      # If the collection is loaded in a context a client asks for a sample 
+      # resource (the collection is part of the sample resource), we do not
+      # load the collection samples.
       def load_children(collection_id, collection)
         unless @in_sample
           collection_sample.load_samples(collection_id) do |sample|

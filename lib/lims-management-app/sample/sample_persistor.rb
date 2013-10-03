@@ -77,17 +77,19 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [Integer] sample_id
+      # @param [Lims::ManagementApp::Sample] sample
+      # Sample collections are defined as sample's children.
       def load_children(sample_id, sample)
         load_sample_collections(sample_id) do |collection|
           sample.sample_collections << collection
         end
       end
 
+      # @param [Integer] sample_id
+      # @param [Block] block
       def load_sample_collections(sample_id, &block)
-        unless @in_collection
-          sample_collections = sample_collections_metadata(sample_id)
-          sample_collections.each { |collection| block.call(collection) }
-        end
+        raise NotImplementedError, "load_sample_collections is not implemented"
       end
 
       def in_collection!
@@ -100,10 +102,6 @@ module Lims::ManagementApp
 
       def sample_collection
         @session.sample_collection
-      end
-
-      def sample_collections_metadata(sample_id)
-        raise NotImplementedError, "sample_collection is not implemented"
       end
     end
   end

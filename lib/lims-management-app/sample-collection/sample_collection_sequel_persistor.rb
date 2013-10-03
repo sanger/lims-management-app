@@ -46,6 +46,10 @@ module Lims::ManagementApp
 
         # @param [Integer] collection_id
         # @param [Block] block
+        # About in_collection!
+        # The samples are loaded in a collection load context. So we do not
+        # want the samples load again the collection. For that, we tell the
+        # sample persistor we are in a collection loading context.
         def load_samples(collection_id, &block)
           @session.sample.in_collection!
           dataset.join(:samples, :id => :sample_id).where(:collection_id => collection_id).each do |attr|

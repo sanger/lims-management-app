@@ -1,4 +1,3 @@
-# requirement used by  everything
 require 'facets/string'
 require 'facets/kernel'
 require 'facets/hash'

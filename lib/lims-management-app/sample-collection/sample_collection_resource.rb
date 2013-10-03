@@ -5,6 +5,9 @@ module Lims::ManagementApp
   class SampleCollection
     class SampleCollectionResource < Lims::Api::CoreResource
 
+      # @param [StructStream] s
+      # @param [String] mime_type
+      # @param [Bool] without_samples
       def content_to_stream(s, mime_type, without_samples = false)
         object.attributes.each do |k,v|
           next if k.to_s == "data" || k.to_s == "samples"
