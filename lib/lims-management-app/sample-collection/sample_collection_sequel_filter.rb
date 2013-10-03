@@ -1,5 +1,6 @@
 require 'lims-core/persistence/sequel/filters'
 require 'lims-management-app/sample-collection/sample_collection_filter'
+require 'lims-management-app/sample-collection/action_shared'
 
 module Lims::Core
   module Persistence
@@ -77,9 +78,8 @@ module Lims::Core
       def expand_data_criteria!(criteria)
         {}.tap do |data_criteria|
           if criteria.has_key?(:data)
-            criteria.delete(:data).each do |data|
-              key, value = data["key"], data["value"]
-              type = type_discovery(value)
+            criteria.delete(:data).each do |key,value|
+              type = Lims::ManagementApp::SampleCollection::ActionShared.discover_type_of(value)
               table = "collection_data_#{type}".to_sym
               data_criteria[table] ||= []
               data_criteria[table] << {:key => key, :value => value}
@@ -88,18 +88,8 @@ module Lims::Core
         end
       end
 
-      # TODO: Move type discovery in data_types.rb and use it for sample collection creation
-      def type_discovery(value)
-        case value
-        when Integer then "int"
-        when TrueClass then "bool"
-        when FalseClass then "bool"
-        when Lims::ManagementApp::SampleCollection::ValidationShared::VALID_URL_PATTERN then "url"
-        when Lims::ManagementApp::SampleCollection::ValidationShared::VALID_UUID_PATTERN then "uuid"
-        else "string"
-        end
-      end
-     
+      # @param [Hash] criteria
+      # @return [Lims::Core::Persistence::Persistor]
       def sample_collection_filter(criteria)
         criteria = criteria[:sample_collection] if criteria.keys.first.to_s == "sample_collection"
         criteria.rekey! { |k| k.to_sym }
