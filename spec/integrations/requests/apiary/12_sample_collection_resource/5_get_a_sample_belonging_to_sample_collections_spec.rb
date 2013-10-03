@@ -42,7 +42,7 @@ describe "get_a_sample_belonging_to_sample_collections", :sample_collection => t
       :samples => [sample, sample2]
     })
     
-    save_with_uuid sample => [1,2,3,4,7], sample2 => [1,2,3,4,8], collection1 => [1,2,3,4,5], collection2 => [1,2,3,4,6]
+    save_with_uuid sample => [1,2,3,4,7], sample2 => [1,2,3,4,8], collection1 => [1,2,3,4,8], collection2 => [1,2,3,4,6]
 
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
@@ -84,12 +84,12 @@ describe "get_a_sample_belonging_to_sample_collections", :sample_collection => t
         "sample_collections": [
             {
                 "actions": {
-                    "read": "http://example.org/11111111-2222-3333-4444-555555555555",
-                    "create": "http://example.org/11111111-2222-3333-4444-555555555555",
-                    "update": "http://example.org/11111111-2222-3333-4444-555555555555",
-                    "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
+                    "read": "http://example.org/11111111-2222-3333-4444-888888888888",
+                    "create": "http://example.org/11111111-2222-3333-4444-888888888888",
+                    "update": "http://example.org/11111111-2222-3333-4444-888888888888",
+                    "delete": "http://example.org/11111111-2222-3333-4444-888888888888"
                 },
-                "uuid": "11111111-2222-3333-4444-555555555555",
+                "uuid": "11111111-2222-3333-4444-888888888888",
                 "type": "Study",
                 "data": {
                     "key_string": "value string",

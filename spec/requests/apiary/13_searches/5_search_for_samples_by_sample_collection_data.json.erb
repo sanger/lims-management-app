@@ -115,7 +115,98 @@ result[:status]=200
 result[:response_header] << 'Content-Type: application/json'
 result[:response]=<<EOD
 {
-
+  "actions": {
+    "read": "http://example.org/11111111-2222-3333-4444-555555555555/page=1",
+    "first": "http://example.org/11111111-2222-3333-4444-555555555555/page=1",
+    "last": "http://example.org/11111111-2222-3333-4444-555555555555/page=-1"
+  },
+  "size": 1,
+  "samples": [
+    {
+      "actions": {
+        "read": "http://example.org/11111111-0000-0000-0000-222222222222",
+        "create": "http://example.org/11111111-0000-0000-0000-222222222222",
+        "update": "http://example.org/11111111-0000-0000-0000-222222222222",
+        "delete": "http://example.org/11111111-0000-0000-0000-222222222222"
+      },
+      "uuid": "11111111-0000-0000-0000-222222222222",
+      "state": null,
+      "supplier_sample_name": null,
+      "gender": "Female",
+      "sanger_sample_id": "S2-2",
+      "sample_type": "RNA",
+      "scientific_name": "Homo sapiens",
+      "common_name": "human",
+      "hmdmc_number": null,
+      "ebi_accession_number": null,
+      "sample_source": null,
+      "mother": null,
+      "father": null,
+      "sibling": null,
+      "gc_content": null,
+      "public_name": null,
+      "cohort": null,
+      "storage_conditions": null,
+      "taxon_id": 9606,
+      "volume": null,
+      "date_of_sample_collection": null,
+      "is_sample_a_control": null,
+      "is_re_submitted_sample": null,
+      "sample_collections": [
+        {
+          "actions": {
+            "read": "http://example.org/11111111-2222-3333-4444-666666666666",
+            "create": "http://example.org/11111111-2222-3333-4444-666666666666",
+            "update": "http://example.org/11111111-2222-3333-4444-666666666666",
+            "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
+          },
+          "uuid": "11111111-2222-3333-4444-666666666666",
+          "type": "Study",
+          "data": {
+            "key_string": "value string",
+            "key_bool": true,
+            "key_int": 132,
+            "key_url": "http://www.sanger.ac.uk",
+            "key_uuid": "11111111-0000-0000-0000-000000000000"
+          }
+        },
+        {
+          "actions": {
+            "read": "http://example.org/11111111-2222-3333-4444-777777777777",
+            "create": "http://example.org/11111111-2222-3333-4444-777777777777",
+            "update": "http://example.org/11111111-2222-3333-4444-777777777777",
+            "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
+          },
+          "uuid": "11111111-2222-3333-4444-777777777777",
+          "type": "Study",
+          "data": {
+            "key_string": "value string 2",
+            "key_bool": false,
+            "key_int": 245,
+            "key_url": "http://www.sanger.ac.uk",
+            "key_uuid": "11111111-0000-0000-0000-111111111111"
+          }
+        },
+        {
+          "actions": {
+            "read": "http://example.org/11111111-2222-3333-4444-888888888888",
+            "create": "http://example.org/11111111-2222-3333-4444-888888888888",
+            "update": "http://example.org/11111111-2222-3333-4444-888888888888",
+            "delete": "http://example.org/11111111-2222-3333-4444-888888888888"
+          },
+          "uuid": "11111111-2222-3333-4444-888888888888",
+          "type": "User",
+          "data": {
+            "key_string": "value string 3",
+            "key_bool": false,
+            "key_int": 789,
+            "key_url": "http://www.sanger.ac.uk",
+            "key_uuid": "11111111-0000-0000-0000-111111111111"
+          }
+        }
+      ]
+    }
+  ]
 }
 EOD
 
