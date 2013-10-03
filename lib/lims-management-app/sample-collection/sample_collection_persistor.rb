@@ -21,13 +21,23 @@ module Lims::ManagementApp
       # @param [Integer] collection_id
       # @param [SampleCollection] collection
       def load_children(collection_id, collection)
-        collection_sample.load_samples(collection_id) do |sample|
-          collection.samples << sample
+        unless @in_sample
+          collection_sample.load_samples(collection_id) do |sample|
+            collection.samples << sample
+          end
         end
 
         load_data(collection_id) do |data|
           collection.data << data
         end
+      end
+
+      def in_sample!
+        @in_sample = true
+      end
+
+      def reset_in_sample
+        @in_sample = false
       end
 
       # @param [Hash] attributes
@@ -58,18 +68,6 @@ module Lims::ManagementApp
       SampleCollectionData::DATA_TYPES.each do |type|
         define_method("collection_data_#{type}") do
           @session.send("collection_data_#{type}")
-        end
-      end
-    end
-
-
-    class SampleCollectionMetadata
-      SESSION_NAME = :sample_collection_metadata
-      class SampleCollectionMetadataPersistor < SampleCollectionPersistor
-        def load_children(collection_id, collection)
-          load_data(collection_id) do |data|
-            collection.data << data
-          end
         end
       end
     end
