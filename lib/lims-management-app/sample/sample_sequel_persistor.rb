@@ -37,7 +37,10 @@ module Lims::ManagementApp
       def sample_collections_metadata(sample_id)
         collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:collection_id).where(:sample_id => sample_id).all
         collection_ids = collection_id_rows.map { |r| r[:collection_id] }
-        collection_ids.map { |id| @session.sample_collection_metadata[id] }
+        @session.sample_collection.in_sample!
+        collection_ids.map { |id| @session.sample_collection[id] }.tap do |_|
+          @session.sample_collection.reset_in_sample
+        end
       end
     end
   end
