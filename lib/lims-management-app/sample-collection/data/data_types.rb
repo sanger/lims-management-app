@@ -27,6 +27,7 @@ module Lims::ManagementApp
         self.class_eval <<-EOC
           class #{name.capitalize}
             include Lims::Core::Resource
+            NOT_IN_ROOT = 1
             attribute :key, String, :required => true, :initializable => true
             attribute :value, #{ruby_type}, :required => true, :initializable => true
           end
