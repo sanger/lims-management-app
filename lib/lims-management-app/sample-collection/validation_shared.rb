@@ -20,12 +20,14 @@ module Lims::ManagementApp
       end
 
       def ensure_data_parameter
+        keys = []
         data.each do |d|
           unless d.is_a?(Hash) && (d.keys & ["key","value"]).sort == ["key", "value"]
             return [false, "Data must be a hash containing the element 'key' and 'value'"]
           end
 
           key, value = d["key"], d["value"]
+          keys << key
           type = d["type"] || SampleCollectionData::Helper.discover_type_of(value)
           unless type.nil? || SampleCollectionData::DATA_TYPES.include?(type)
             return [false, "'#{type}' is not a valid type. Supported types are #{SampleCollectionData::DATA_TYPES.inspect}"]
@@ -34,7 +36,19 @@ module Lims::ManagementApp
           check_type_value = ensure_data_parameter_value(type, value)
           return check_type_value unless check_type_value.first
         end
+
+        check_key_uniqueness = ensure_data_parameter_key_uniqueness(keys)
+        return check_key_uniqueness unless check_key_uniqueness.first
+
         [true]
+      end
+
+      def ensure_data_parameter_key_uniqueness(keys)
+        unless keys.size == keys.uniq.size
+          [false, "Duplicate keys have been found"]
+        else 
+          [true]
+        end
       end
 
       def ensure_data_parameter_value(type, value)
