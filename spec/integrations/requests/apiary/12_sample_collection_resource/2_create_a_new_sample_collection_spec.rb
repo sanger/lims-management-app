@@ -20,7 +20,7 @@ describe "create_a_new_sample_collection", :sample_collection => true do
         "scientific_name" => "homo sapiens"
     })
     
-    save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
+    save_with_uuid sample => [1,2,3,4,6], sample2 => [1,2,3,4,7]
 
     header('Accept', 'application/json')
     header('Content-Type', 'application/json')
@@ -30,8 +30,8 @@ describe "create_a_new_sample_collection", :sample_collection => true do
     "sample_collection": {
         "type": "Study",
         "sample_uuids": [
-            "11111111-2222-3333-4444-555555555555",
-            "11111111-2222-3333-4444-666666666666"
+            "11111111-2222-3333-4444-666666666666",
+            "11111111-2222-3333-4444-777777777777"
         ],
         "data": [
             {
@@ -89,12 +89,12 @@ describe "create_a_new_sample_collection", :sample_collection => true do
         "samples": [
             {
                 "actions": {
-                    "read": "http://example.org/11111111-2222-3333-4444-555555555555",
-                    "create": "http://example.org/11111111-2222-3333-4444-555555555555",
-                    "update": "http://example.org/11111111-2222-3333-4444-555555555555",
-                    "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
+                    "read": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "create": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "update": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
                 },
-                "uuid": "11111111-2222-3333-4444-555555555555",
+                "uuid": "11111111-2222-3333-4444-666666666666",
                 "state": null,
                 "supplier_sample_name": null,
                 "gender": "Male",
@@ -120,12 +120,12 @@ describe "create_a_new_sample_collection", :sample_collection => true do
             },
             {
                 "actions": {
-                    "read": "http://example.org/11111111-2222-3333-4444-666666666666",
-                    "create": "http://example.org/11111111-2222-3333-4444-666666666666",
-                    "update": "http://example.org/11111111-2222-3333-4444-666666666666",
-                    "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
+                    "read": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "create": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "update": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
                 },
-                "uuid": "11111111-2222-3333-4444-666666666666",
+                "uuid": "11111111-2222-3333-4444-777777777777",
                 "state": null,
                 "supplier_sample_name": null,
                 "gender": "Male",

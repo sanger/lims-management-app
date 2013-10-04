@@ -23,13 +23,13 @@ sample2 = Lims::ManagementApp::Sample.new({
     "scientific_name" => "homo sapiens"
 })
 
-save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
+save_with_uuid sample => [1,2,3,4,6], sample2 => [1,2,3,4,7]
 EOD
 h[:parameters] = <<EOD
 {
   "sample_collection": {
     "type": "Study",
-    "sample_uuids": ["11111111-2222-3333-4444-555555555555", "11111111-2222-3333-4444-666666666666"],
+    "sample_uuids": ["11111111-2222-3333-4444-666666666666", "11111111-2222-3333-4444-777777777777"],
     "data": [
       {"key": "key_string", "type":"string", "value":"value string"}, 
       {"key": "key_bool", "value":true}, 
@@ -65,12 +65,12 @@ h[:response]=<<EOD
     "samples": [
       {
         "actions": {
-          "read": "http://example.org/11111111-2222-3333-4444-555555555555",
-          "create": "http://example.org/11111111-2222-3333-4444-555555555555",
-          "update": "http://example.org/11111111-2222-3333-4444-555555555555",
-          "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
+          "read": "http://example.org/11111111-2222-3333-4444-666666666666",
+          "create": "http://example.org/11111111-2222-3333-4444-666666666666",
+          "update": "http://example.org/11111111-2222-3333-4444-666666666666",
+          "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
         },
-        "uuid": "11111111-2222-3333-4444-555555555555",
+        "uuid": "11111111-2222-3333-4444-666666666666",
         "state": null,
         "supplier_sample_name": null,
         "gender": "Male",
@@ -96,12 +96,12 @@ h[:response]=<<EOD
       },
       {
         "actions": {
-          "read": "http://example.org/11111111-2222-3333-4444-666666666666",
-          "create": "http://example.org/11111111-2222-3333-4444-666666666666",
-          "update": "http://example.org/11111111-2222-3333-4444-666666666666",
-          "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
+          "read": "http://example.org/11111111-2222-3333-4444-777777777777",
+          "create": "http://example.org/11111111-2222-3333-4444-777777777777",
+          "update": "http://example.org/11111111-2222-3333-4444-777777777777",
+          "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
         },
-        "uuid": "11111111-2222-3333-4444-666666666666",
+        "uuid": "11111111-2222-3333-4444-777777777777",
         "state": null,
         "supplier_sample_name": null,
         "gender": "Male",
