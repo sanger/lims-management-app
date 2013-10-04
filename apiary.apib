@@ -1359,3 +1359,114 @@ DELETE /11111111-2222-3333-4444-555555555555
         ]
     }
 }
+
+
+--
+Searches
+--
+
+**Search for a sample collection by type and data**
+
+The following search will get back all the sample collections which have a `Study` type and the 
+parameter `key_bool` set to `true`, `key_string` set to `abcd` and `key_int` set to `1`.
+
+POST /searches
+> Accept: application/json
+{
+    "search": {
+        "description": "search for a sample collection",
+        "model": "sample_collection",
+        "criteria": {
+            "type": "Study",
+            "data": {
+                "key_bool": true,
+                "key_string": "abcd",
+                "key_int": 1
+            }
+        }
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "search": {
+        "actions": {
+            "read": "/11111111-2222-3333-4444-555555555555",
+            "first": "/11111111-2222-3333-4444-555555555555/page=1",
+            "last": "/11111111-2222-3333-4444-555555555555/page=-1"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555"
+    }
+}
+
+
+**Search for a sample collection by type and sample uuids**
+
+The following search will get back all the sample collections which have a `Study` type and contain
+the sample `11111111-0000-0000-0000-111111111111` OR the sample `11111111-0000-0000-0000-222222222222`.
+
+POST /searches
+> Accept: application/json
+{
+    "search": {
+        "description": "search for a sample collection",
+        "model": "sample_collection",
+        "criteria": {
+            "type": "Study",
+            "sample_uuids": [
+                "11111111-0000-0000-0000-111111111111",
+                "11111111-0000-0000-0000-222222222222"
+            ]
+        }
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "search": {
+        "actions": {
+            "read": "/11111111-2222-3333-4444-555555555555",
+            "first": "/11111111-2222-3333-4444-555555555555/page=1",
+            "last": "/11111111-2222-3333-4444-555555555555/page=-1"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555"
+    }
+}
+
+
+**Search for samples by collection type and data**
+
+The following search will get back all the samples which can be found in collections 
+which have a `Study` type and the parameter `key_bool` set to `true`, `key_string` 
+set to `abcd` and `key_int` set to `1`.
+
+POST /searches
+> Accept: application/json
+{
+    "search": {
+        "description": "search for samples",
+        "model": "sample",
+        "criteria": {
+            "sample_collection": {
+                "type": "Study",
+                "data": {
+                    "key_bool": true,
+                    "key_string": "abcd",
+                    "key_int": 1
+                }
+            }
+        }
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "search": {
+        "actions": {
+            "read": "/11111111-2222-3333-4444-555555555555",
+            "first": "/11111111-2222-3333-4444-555555555555/page=1",
+            "last": "/11111111-2222-3333-4444-555555555555/page=-1"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555"
+    }
+}
