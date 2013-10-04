@@ -981,3 +981,120 @@ POST /actions/bulk_delete_sample
         "sanger_sample_ids": ["S2-cd9b200ec5634288ad5b4f56eab2a84f", "S2-745819ae3dfe401caa68a87a90c95a4c"]
     }
 }
+
+
+--
+Sample Collection Resource
+--
+**Create a new sample collection**
+
+* `type` is mandatory
+* `data` is an array containing hash. Each hash must follow the pattern `{'key': "key", 'value': "value", 'type': "type"}`. 
+The supported types are `int`, `bool`, `string`, `uuid` and `url`. Note that `:type` is optional in the hash, the type being 
+automatically deducted from the value if it is not explicitely set.
+* `sample_uuids` the list of sample uuids to add in the sample collection
+
+POST /sample_collections
+> Accept: application/json
+{
+    "sample_collection": {
+        "type": "Study",
+        "data": [
+            {"key": "key_string", "value": "value string", "type": "string"},
+            {"key": "key_bool", "value": false},
+            {"key": "key_int", "value": 123, "type": "int"},
+            {"key": "key_url", "value": "http://www.example.org"},
+            {"key": "key_uuid", "value": "11111111-1234-5678-9012-111111111111", "type": "uuid"}
+        ],
+        "sample_uuids": [
+            "11111111-2222-3333-4444-666666666666", 
+            "11111111-2222-3333-4444-777777777777"
+        ]
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "sample_collection": {
+        "actions": {
+            "read": "http://example.org/11111111-2222-3333-4444-555555555555",
+            "create": "http://example.org/11111111-2222-3333-4444-555555555555",
+            "update": "http://example.org/11111111-2222-3333-4444-555555555555",
+            "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555",
+        "type": "Study",
+        "data": {
+            "key_string": "value string",
+            "key_bool": true,
+            "key_bool2": false,
+            "key_uuid": "11111111-0000-0000-0000-000000000000",
+            "key_url": "http://www.sanger.ac.uk",
+            "key_int": 123
+        },
+        "samples": [
+            {
+                "actions": {
+                    "read": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "create": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "update": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
+                },
+                "uuid": "11111111-2222-3333-4444-666666666666",
+                "state": null,
+                "supplier_sample_name": null,
+                "gender": "Male",
+                "sanger_sample_id": "S2-1",
+                "sample_type": "RNA",
+                "scientific_name": "Homo sapiens",
+                "common_name": "human",
+                "hmdmc_number": null,
+                "ebi_accession_number": null,
+                "sample_source": null,
+                "mother": null,
+                "father": null,
+                "sibling": null,
+                "gc_content": null,
+                "public_name": null,
+                "cohort": null,
+                "storage_conditions": null,
+                "taxon_id": 9606,
+                "volume": null,
+                "date_of_sample_collection": null,
+                "is_sample_a_control": null,
+                "is_re_submitted_sample": null
+            },
+            {
+               "actions": {
+                 "read": "http://example.org/11111111-2222-3333-4444-777777777777",
+                 "create": "http://example.org/11111111-2222-3333-4444-777777777777",
+                 "update": "http://example.org/11111111-2222-3333-4444-777777777777",
+                 "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
+               },
+               "uuid": "11111111-2222-3333-4444-777777777777",
+               "state": null,
+               "supplier_sample_name": null,
+               "gender": "Male",
+               "sanger_sample_id": "S2-2",
+               "sample_type": "RNA",
+               "scientific_name": "Homo sapiens",
+               "common_name": "human",
+               "hmdmc_number": null,
+               "ebi_accession_number": null,
+               "sample_source": null,
+               "mother": null,
+               "father": null,
+               "sibling": null,
+               "gc_content": null,
+               "public_name": null,
+               "cohort": null,
+               "storage_conditions": null,
+               "taxon_id": 9606,
+               "volume": null,
+               "date_of_sample_collection": 1,
+               "is_sample_a_control": null,
+               "is_re_submitted_sample": null
+             }
+        ]
+    }
+}
