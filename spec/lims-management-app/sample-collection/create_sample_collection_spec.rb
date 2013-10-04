@@ -41,7 +41,6 @@ module Lims::ManagementApp
       end
 
       it "cannot have 2 data with the same key" do
-        pending
         described_class.new(
           parameters.merge(sample_collection_action_parameters(:data => sample_collection_action_data.tap { |h|
             h << {"key" => "key_bool", "type" => "int", "value" => 123}
