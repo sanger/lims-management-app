@@ -18,6 +18,10 @@ module Lims::Core
       def multi_criteria_filter(criteria)
         data_criteria = expand_data_criteria!(criteria)
         persistor = data_criteria.empty? ? self : collection_data_criteria_filter(data_criteria)
+        
+        sample_uuid_criteria = criteria.delete(:sample_uuids)
+        persistor = sample_uuid_criteria.nil? ? persistor : collection_sample_uuid_criteria_filter(sample_uuid_criteria, persistor)
+
         persistor.multi_criteria_filter_old(criteria)
       end
 
@@ -41,13 +45,11 @@ module Lims::Core
       # If not, we would need something like:
       # having count(distinct cdi.key) = 2 and count(distinct cdb.key) = 2.
       def collection_data_criteria_filter(criteria)
-        qualify = lambda { |table, column| ::Sequel.qualify(table, column) }
-
         joined_filtered_dataset = criteria.reduce(self.dataset) do |dataset, (table, data)|
           dataset.join(
-            table, :collection_id => qualify[self.table_name, self.primary_key]
+            table, :collection_id => qualify(self.table_name, self.primary_key)
         ).where(
-          [qualify[table, :key], qualify[table, :value]] => [].tap { |compared_data|
+          [qualify(table, :key), qualify(table, :value)] => [].tap { |compared_data|
             data.each { |d| compared_data << [d[:key], d[:value]] }
           }
         )
@@ -58,14 +60,37 @@ module Lims::Core
         end
 
         grouped_dataset = joined_filtered_dataset.group_and_count(
-          qualify[self.table_name, self.primary_key]
+          qualify(self.table_name, self.primary_key)
         ).having({:count => cartesian_product_joined_rows})
 
         result_dataset = self.dataset.join(
-          ::Sequel.as(grouped_dataset, :grouped_dataset), qualify[:grouped_dataset, self.primary_key] => qualify[self.table_name, self.primary_key]
+          ::Sequel.as(grouped_dataset, :grouped_dataset), qualify(:grouped_dataset, self.primary_key) => qualify(self.table_name, self.primary_key)
         ).select_all(self.table_name)
 
         self.class.new(self, result_dataset)
+      end
+
+      # @param [Hash] criteria
+      # @return [Lims::Core::Persistence::Persistor]
+      def collection_sample_uuid_criteria_filter(criteria, persistor)
+        sample_uuid_criteria = criteria.map { |uuid| Lims::Core::Persistence::UuidResource.compact(uuid) }
+        sample_uuid_dataset = persistor.dataset.join(
+          :collections_samples, qualify(:collections_samples, :collection_id) => qualify(:collections, :id)
+        ).join(
+          :uuid_resources, qualify(:uuid_resources, :key) => qualify(:collections_samples, :sample_id)
+        ).where(
+          qualify(:uuid_resources, :uuid) => sample_uuid_criteria,
+          qualify(:uuid_resources, :model_class) => "sample"
+        )
+
+        self.class.new(self, sample_uuid_dataset)
+      end
+
+      # @param [String,Symbol] table
+      # @param [String,Symbol] column
+      # @return [Sequel::SQL::QualifiedIdentifier] 
+      def qualify(table, column)
+        ::Sequel.qualify(table, column)
       end
 
       # @param [Hash] criteria
