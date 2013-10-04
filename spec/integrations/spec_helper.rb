@@ -43,6 +43,7 @@ shared_context 'use core context service' do
   let(:message_bus) { mock(:message_bus).tap { |m| m.stub(:publish) } } 
   let(:context_service) { Lims::Api::ContextService.new(store, message_bus) }
   include_context "initialize taxonomies table"
+  include_context "sample collection configuration"
 
   before(:each) do
     app.set(:context_service, context_service)

@@ -7,6 +7,7 @@ module Lims::ManagementApp
   describe SampleCollection::CreateSampleCollection do
     include_context "collection factory"
     include_context "for application", "collection creation"
+    include_context "sample collection configuration"
     
     let!(:store) { Lims::Core::Persistence::Store.new }
     let(:parameters) {
