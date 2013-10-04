@@ -31,7 +31,10 @@ module Lims::ManagementApp
               current_data = data_h[collection_data.key]
               value = current_data[:value]
               type = current_data[:type] || SampleCollectionData::Helper.discover_type_of(value)
-              raise DataTypeMismatch unless type == collection_data.class::TYPE
+
+              unless type == collection_data.class::TYPE
+                raise DataTypeMismatch, "The type of '#{collection_data.key}' should be '#{collection_data.class::TYPE}'. The value passed is '#{type}'"
+              end
 
               collection_data.value = value 
               data.delete_if { |d| d["key"] == collection_data.key }
