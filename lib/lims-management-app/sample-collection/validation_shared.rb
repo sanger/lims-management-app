@@ -5,13 +5,12 @@ module Lims::ManagementApp
   class SampleCollection
     module ValidationShared
 
-      COLLECTION_TYPES = ["Manifest", "Accessing", "Study", "User"]
       VALID_URL_PATTERN = /^http:\/\/.*$/i
       VALID_UUID_PATTERN = /#{[8,4,4,4,12].map { |n| "[0-9a-f]{#{n}}" }.join("-")}/i
 
       def ensure_type_parameter
         if type
-          if COLLECTION_TYPES.map(&:downcase).include?(type.downcase) 
+          if Configuration::SAMPLE_COLLECTION_TYPES.map(&:downcase).include?(type.downcase) 
             [true]
           else
             [false, "'#{type}' is not a valid collection type"]

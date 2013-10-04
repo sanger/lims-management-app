@@ -7,6 +7,7 @@ module Lims
 end
 
 require 'lims-management-app/version'
+require 'lims-management-app/configuration'
 require 'lims-management-app/sample/all'
 require 'lims-management-app/sample-collection/all'
 
