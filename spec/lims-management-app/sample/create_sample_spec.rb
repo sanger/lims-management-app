@@ -106,6 +106,7 @@ module Lims::ManagementApp
     end
 
     before do
+      Lims::ManagementApp::Sample::SangerSampleIdNumber::SangerSampleIdNumberPersistor.any_instance.stub(:prefetch_sanger_sample_id_number)
       Lims::ManagementApp::Sample::SangerSampleIdNumber::SangerSampleIdNumberPersistor.any_instance.stub(:generate_new_number) { 1 }
     end
 

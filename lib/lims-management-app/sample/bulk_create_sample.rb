@@ -21,6 +21,7 @@ module Lims::ManagementApp
 
       def _call_in_session(session)
         samples = []
+        session.persistor_for(:sanger_sample_id_number).prefetch_sanger_sample_id_number(quantity)
         quantity.times do
           samples << _create(session)
         end
