@@ -45,7 +45,7 @@ module Lims::ManagementApp
       # @param [String] state
       # @return [Array]
       def validate_state(state)
-        if STATES.include?(state)
+        if state.nil? || STATES.include?(state)
           [true]
         else
           [false, "'#{state}' is not a valid state"]
@@ -54,11 +54,13 @@ module Lims::ManagementApp
 
       # @param [Sample] sample
       # @return [Array]
-      def validate_published_data(sample)
-        if sample.state == PUBLISHED_STATE
-          gender_validator = lambda { validate_gender(sample.gender) }
-          sample_type_validator = lambda { validate_sample_type(sample.sample_type) }
-          gender_for_human_sample_validator = lambda { validate_gender_for_human_sample(sample.taxon_id, sample.gender) }
+      def validate_published_data(sample, accessor=nil)
+        accessor = lambda { |object, parameter| object.send(parameter) } unless accessor
+
+        if accessor[sample, :state] == PUBLISHED_STATE
+          gender_validator = lambda { validate_gender(accessor[sample, :gender]) }
+          sample_type_validator = lambda { validate_sample_type(accessor[sample, :sample_type]) }
+          gender_for_human_sample_validator = lambda { validate_gender_for_human_sample(accessor[sample, :taxon_id], accessor[sample, :gender]) }
 
           validation_errors = [].tap do |e|
             [
@@ -66,13 +68,13 @@ module Lims::ManagementApp
               {:attribute => "sample_type", :validator => sample_type_validator},
               {:attribute => "taxon_id", :validator => gender_for_human_sample_validator}
             ].each do |val|
-              if sample.send(val[:attribute])
+              if accessor[sample, val[:attribute]]
                 result = val[:validator].call
                 unless result.first
                   e << result[1]
                 end
               else
-                e << "#{val[:attribute].capitalize} must be set."
+                e << "#{val[:attribute].capitalize} must be set"
               end
             end
           end

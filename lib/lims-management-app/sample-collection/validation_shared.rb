@@ -29,7 +29,7 @@ module Lims::ManagementApp
           keys << key
           type = d["type"] || SampleCollectionData::Helper.discover_type_of(value)
           unless type.nil? || SampleCollectionData::DATA_TYPES.include?(type)
-            return [false, "'#{type}' is not a valid type. Supported types are #{SampleCollectionData::DATA_TYPES.inspect}"]
+            return [false, "'#{type}' is not a valid type. Supported types are #{SampleCollectionData::DATA_TYPES.join(", ")}"]
           end
 
           check_type_value = ensure_data_parameter_value(type, value)
