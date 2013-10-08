@@ -121,7 +121,7 @@ module Lims::ManagementApp
           :cellular_material => cellular_material_parameters, 
           :genotyping => genotyping_parameters
         }
-      )
+      ).merge(parameters)
     end
 
     def update_parameters(parameters)
