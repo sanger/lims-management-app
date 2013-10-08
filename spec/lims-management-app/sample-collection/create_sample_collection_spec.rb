@@ -223,7 +223,6 @@ module Lims::ManagementApp
       end
 
       context "with new samples" do
-        let(:samples) { full_sample_parameters.merge("quantity" => 3, "sanger_sample_id_core" => "test") } 
         let(:data) { sample_collection_action_data_no_type }
         subject {
           described_class.new(parameters) do |a,s|
@@ -237,25 +236,47 @@ module Lims::ManagementApp
           Lims::ManagementApp::Sample::SangerSampleIdNumber::SangerSampleIdNumberPersistor.any_instance.stub(:generate_new_number) { 1 }
         end
 
-        it "has valid parameters" do
-          described_class.new(parameters.merge({
-            :type => type, 
-            :data => sample_collection_action_data, 
-            :samples => samples
-          })).valid?.should == true
+        shared_examples_for "creating samples through create collection action" do |state|
+          it "has valid parameters" do
+            described_class.new(parameters.merge({
+              :type => type, 
+              :data => sample_collection_action_data, 
+              :samples => samples
+            })).valid?.should == true
+          end
+
+          it "creates 3 samples" do
+            Lims::Core::Persistence::Session.any_instance.should_receive(:save)
+            result = subject.call
+            collection = result[:sample_collection]
+            collection.should be_a(SampleCollection)
+
+            collection.samples.should be_a(Array)
+            collection.samples.size.should == 3
+            collection.samples.each do |sample|
+              sample.should be_a(Sample)
+              full_sample_parameters.each do |k,v|
+                if [:dna, :rna, :cellular_material, :genotyping].include?(k)
+                  v.each do |k2,v2|
+                    sample.send(k).send(k2).to_s.should == v2.to_s
+                  end
+                else
+                  sample.send(k).to_s.should == v.to_s
+                end
+              end
+              sample.state.should == state
+            end
+          end
         end
 
-        it "creates 3 samples", :focus => true do
-          Lims::Core::Persistence::Session.any_instance.should_receive(:save)
-          result = subject.call
-          collection = result[:sample_collection]
-          collection.should be_a(SampleCollection)
-          
-          collection.samples.should be_a(Array)
-          collection.samples.size.should == 3
-          collection.samples.each do |sample|
-            sample.should be_a(Sample)
-          end
+        context "with a draft state" do
+          let(:samples) { full_sample_parameters.merge("quantity" => 3, "sanger_sample_id_core" => "test") } 
+          it_behaves_like "creating samples through create collection action", "draft"
+        end
+
+        context "with a published state" do
+          let(:samples) { full_sample_parameters.merge("state" => "published", "quantity" => 3, "sanger_sample_id_core" => "test") } 
+          it_behaves_like "creating samples through create collection action", "published"
         end
       end
     end
