@@ -40,8 +40,9 @@ module Lims::ManagementApp
         sample.genotyping = Genotyping.new(genotyping) if genotyping && genotyping.size > 0
         
         # TODO: to refactor when bulk_create_sample is not used anymore
-        sanger_sample_id_core = sample_attributes[:sanger_sample_id_core] if sample_attributes
-        sample.sanger_sample_id = generate_sanger_sample_id(sanger_sample_id_core, session)
+        # no method sanger_sample_id_core when using sample collection
+        core = sample_attributes ? sample_attributes[:sanger_sample_id_core] : sanger_sample_id_core
+        sample.sanger_sample_id = generate_sanger_sample_id(core, session)
         session << sample
 
         {:sample => sample, :uuid => session.uuid_for!(sample)}
@@ -130,6 +131,8 @@ module Lims::ManagementApp
           when :quantity then [k, v ? v : 1]
           else [k,v]
           end
+        end.tap do |a|
+          a[:state] = Sample::DRAFT_STATE unless a[:state] 
         end
       end
     end
