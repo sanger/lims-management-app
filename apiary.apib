@@ -1121,7 +1121,7 @@ POST /sample_collections
         ],
         "samples": {
             "sanger_sample_id_core": "S2",
-            "quantity": 3,
+            "quantity": 2,
             "gender": "Male",
             "sample_type": "RNA",
             "taxon_id": 9606,
@@ -1198,60 +1198,110 @@ POST /sample_collections
                     "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
                 },
                 "uuid": "11111111-2222-3333-4444-666666666666",
-                "state": null,
-                "supplier_sample_name": null,
+                "state": "draft",
+                "supplier_sample_name": "name",
                 "gender": "Male",
                 "sanger_sample_id": "S2-1",
                 "sample_type": "RNA",
-                "scientific_name": "Homo sapiens",
+                "scientific_name": "homo sapiens",
                 "common_name": "human",
-                "hmdmc_number": null,
-                "ebi_accession_number": null,
-                "sample_source": null,
-                "mother": null,
-                "father": null,
-                "sibling": null,
-                "gc_content": null,
-                "public_name": null,
-                "cohort": null,
-                "storage_conditions": null,
+                "hmdmc_number": "number",
+                "ebi_accession_number": "number",
+                "sample_source": "source",
+                "mother": "mother",
+                "father": "father",
+                "sibling": "sibling",
+                "gc_content": "content",
+                "public_name": "name",
+                "cohort": "cohort",
+                "storage_conditions": "conditions",
                 "taxon_id": 9606,
-                "volume": null,
-                "date_of_sample_collection": null,
-                "is_sample_a_control": null,
-                "is_re_submitted_sample": null
+                "volume": 100,
+                "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
+                "is_sample_a_control": true,
+                "is_re_submitted_sample": false,
+                "dna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "rna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "cellular_material": {
+                    "lysed": true,
+                    "donor_id": "donor id"
+                },
+                "genotyping": {
+                    "country_of_origin": "England",
+                    "geographical_region": "UK",
+                    "ethnicity": "english"
+                }
             },
             {
-               "actions": {
-                 "read": "http://example.org/11111111-2222-3333-4444-777777777777",
-                 "create": "http://example.org/11111111-2222-3333-4444-777777777777",
-                 "update": "http://example.org/11111111-2222-3333-4444-777777777777",
-                 "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
-               },
-               "uuid": "11111111-2222-3333-4444-777777777777",
-               "state": null,
-               "supplier_sample_name": null,
-               "gender": "Male",
-               "sanger_sample_id": "S2-2",
-               "sample_type": "RNA",
-               "scientific_name": "Homo sapiens",
-               "common_name": "human",
-               "hmdmc_number": null,
-               "ebi_accession_number": null,
-               "sample_source": null,
-               "mother": null,
-               "father": null,
-               "sibling": null,
-               "gc_content": null,
-               "public_name": null,
-               "cohort": null,
-               "storage_conditions": null,
-               "taxon_id": 9606,
-               "volume": null,
-               "date_of_sample_collection": null,
-               "is_sample_a_control": null,
-               "is_re_submitted_sample": null
-             }
+                "actions": {
+                    "read": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "create": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "update": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
+                },
+                "uuid": "11111111-2222-3333-4444-777777777777",
+                "state": "draft",
+                "supplier_sample_name": "name",
+                "gender": "Male",
+                "sanger_sample_id": "S2-2",
+                "sample_type": "RNA",
+                "scientific_name": "homo sapiens",
+                "common_name": "human",
+                "hmdmc_number": "number",
+                "ebi_accession_number": "number",
+                "sample_source": "source",
+                "mother": "mother",
+                "father": "father",
+                "sibling": "sibling",
+                "gc_content": "content",
+                "public_name": "name",
+                "cohort": "cohort",
+                "storage_conditions": "conditions",
+                "taxon_id": 9606,
+                "volume": 100,
+                "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
+                "is_sample_a_control": true,
+                "is_re_submitted_sample": false,
+                "dna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "rna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "cellular_material": {
+                    "lysed": true,
+                    "donor_id": "donor id"
+                },
+                "genotyping": {
+                    "country_of_origin": "England",
+                    "geographical_region": "UK",
+                    "ethnicity": "english"
+                }
+            }
         ]
     }
 }
