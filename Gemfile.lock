@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: 5fd325b3a8a29a1916e72b35fd66eee9698a2cce
+  revision: ca0205325c93c951534987e6f242b15b66c3153c
   branch: uat
   specs:
-    lims-api (2.5.1.pre)
+    lims-api (2.5.1.rc1)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: 49afa2a7919ec3771e6c5e5c650fca65f214487a
+  revision: 700e433e350bf828b167a68aae2a41673bc9f9a5
   branch: uat
   specs:
-    lims-core (2.5.1.pre)
+    lims-core (2.5.1.rc1)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -104,7 +104,7 @@ GEM
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.8.0)
-    sequel (4.2.0)
+    sequel (4.3.0)
     shotgun (0.9)
       rack (>= 1.0)
     sqlite3 (1.3.8)
@@ -136,8 +136,8 @@ DEPENDENCIES
   github-markup (~> 0.7.1)
   hashdiff
   jdbc-mysql
-  lims-api (~> 2.5.1.pre)!
-  lims-core (~> 2.5.1.pre)!
+  lims-api (~> 2.5.1.rc1)!
+  lims-core (~> 2.5.1.rc1)!
   lims-management-app!
   mysql2
   psd_logger!
