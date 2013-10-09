@@ -1,14 +1,15 @@
-require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_update_published_sample_with_taxon_id_gender_mismatch", :sample => true do
+require "integrations/requests/apiary/14_sample_errors/spec_helper"
+describe "bulk_update_samples_to_published_with_invalid_values", :sample_errors => true do
   include_context "use core context service"
   include_context "timecop"
-  it "bulk_update_published_sample_with_taxon_id_gender_mismatch" do
+  it "bulk_update_samples_to_published_with_invalid_values" do
     sample = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-1",
+        "gender" => "Male",
         "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
-        "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+        "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -28,10 +29,11 @@ describe "bulk_update_published_sample_with_taxon_id_gender_mismatch", :sample =
     
     sample2 = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-2",
+        "gender" => "Male",
         "state" => "draft",
         "sample_type" => "RNA",
         "taxon_id" => 9606,
-        "date_of_sample_collection" => "2013-04-25 10:27 UTC",
+        "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -60,11 +62,12 @@ describe "bulk_update_published_sample_with_taxon_id_gender_mismatch", :sample =
         "updates": {
             "11111111-2222-3333-4444-555555555555": {
                 "state": "published",
-                "gender": "not applicable"
+                "gender": "not applicable",
+                "volume": 5000
             },
             "11111111-2222-3333-4444-666666666666": {
                 "state": "published",
-                "gender": "not applicable"
+                "volume": 4000
             }
         }
     }

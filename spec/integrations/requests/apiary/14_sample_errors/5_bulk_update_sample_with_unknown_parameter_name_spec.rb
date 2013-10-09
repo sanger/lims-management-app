@@ -1,5 +1,5 @@
-require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "bulk_update_sample_with_unknown_parameter_name", :sample => true do
+require "integrations/requests/apiary/14_sample_errors/spec_helper"
+describe "bulk_update_sample_with_unknown_parameter_name", :sample_errors => true do
   include_context "use core context service"
   include_context "timecop"
   it "bulk_update_sample_with_unknown_parameter_name" do

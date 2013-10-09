@@ -1,5 +1,5 @@
-require "integrations/requests/apiary/11_sample_resource/spec_helper"
-describe "create_a_new_sample_with_scientific_name_taxon_id_mismatch_error", :sample => true do
+require "integrations/requests/apiary/14_sample_errors/spec_helper"
+describe "create_a_new_sample_with_scientific_name_taxon_id_mismatch_error", :sample_errors => true do
   include_context "use core context service"
   include_context "timecop"
   it "create_a_new_sample_with_scientific_name_taxon_id_mismatch_error" do

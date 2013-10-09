@@ -1,5 +1,5 @@
-require "integrations/requests/apiary/14_errors/spec_helper"
-describe "update_a_sample_collection_with_data_type_mismatch", :errors => true do
+require "integrations/requests/apiary/15_sample_collection_errors/spec_helper"
+describe "update_a_sample_collection_with_data_type_mismatch", :sample_collection_errors => true do
   include_context "use core context service"
   it "update_a_sample_collection_with_data_type_mismatch" do
     sample = Lims::ManagementApp::Sample.new({

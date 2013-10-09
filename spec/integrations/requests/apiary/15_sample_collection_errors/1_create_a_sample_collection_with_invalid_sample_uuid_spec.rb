@@ -1,5 +1,5 @@
-require "integrations/requests/apiary/14_errors/spec_helper"
-describe "create_a_sample_collection_with_invalid_sample_uuid", :errors => true do
+require "integrations/requests/apiary/15_sample_collection_errors/spec_helper"
+describe "create_a_sample_collection_with_invalid_sample_uuid", :sample_collection_errors => true do
   include_context "use core context service"
   it "create_a_sample_collection_with_invalid_sample_uuid" do
     sample = Lims::ManagementApp::Sample.new({

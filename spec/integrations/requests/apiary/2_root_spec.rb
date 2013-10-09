@@ -53,11 +53,6 @@ describe "root" do
             "last": "http://example.org/searches/page=-1"
         }
     },
-    "bulk_create_samples": {
-        "actions": {
-            "create": "http://example.org/actions/bulk_create_sample"
-        }
-    },
     "update_samples": {
         "actions": {
             "create": "http://example.org/actions/update_sample"
