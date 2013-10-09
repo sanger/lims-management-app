@@ -11,7 +11,6 @@ require 'lims-management-app/sample/sample_sequel_persistor'
 require 'lims-management-app/sample/sample_resource'
 
 require 'lims-management-app/sample/create_sample'
-require 'lims-management-app/sample/bulk_create_sample'
 require 'lims-management-app/sample/update_sample'
 require 'lims-management-app/sample/bulk_update_sample'
 require 'lims-management-app/sample/delete_sample'
