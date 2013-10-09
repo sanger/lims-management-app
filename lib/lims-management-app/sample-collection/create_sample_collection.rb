@@ -32,7 +32,8 @@ module Lims::ManagementApp
         collection_samples = []
 
         unless samples.empty?
-          samples.delete("quantity").times do
+          quantity = samples[:quantity] || samples["quantity"]
+          quantity.times do
             collection_samples << _create(session, samples)[:sample]
           end
         else
@@ -49,7 +50,7 @@ module Lims::ManagementApp
       # @return [Array]
       def ensure_samples_quantity
         unless samples.empty?
-          quantity = samples["quantity"]
+          quantity = samples[:quantity] || samples["quantity"]
           if quantity.nil?
             return [false, "The quantity of samples is required"]
           elsif quantity <= 0
@@ -62,7 +63,7 @@ module Lims::ManagementApp
       # @return [Array]
       def ensure_samples_id_core
         unless samples.empty?
-          sanger_sample_id_core = samples["sanger_sample_id_core"]
+          sanger_sample_id_core = samples[:sanger_sample_id_core] || samples["sanger_sample_id_core"]
           return [false, "A Sanger sample id core is needed"] unless sanger_sample_id_core
         end
         [true]
@@ -96,7 +97,7 @@ module Lims::ManagementApp
       end
 
       def ensure_published_samples
-        accessor = lambda { |object, parameter| object[parameter.to_sym] }
+        accessor = lambda { |object, parameter| object[parameter.to_s] || object[parameter.to_sym] }
         validate_published_data(samples, accessor)
       end
     end
