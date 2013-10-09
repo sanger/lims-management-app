@@ -441,6 +441,9 @@ DELETE /11111111-2222-3333-4444-555555555555
 
 **Bulk create samples**
 
+__FROM LIMS-MANAGEMENT-APP VERSION 2.0.1, BULK_CREATE_SAMPLE ACTION IS NOT AVAILABLE ANYMORE.
+USE CREATE_COLLECTION INSTEAD.__
+
 * `quantity` and `sanger_sample_id_core` are mandatory
 * If `state` is set to `published`, `taxon_id`, `scientific_name`, `common_name` and `supplier_sample_name` are mandatory
 * If `taxon_id` is set, it must match with `scientific_name`/`common_name`
