@@ -29,6 +29,14 @@ describe "root" do
             "last": "http://example.org/samples/page=-1"
         }
     },
+    "sample_collections": {
+        "actions": {
+            "create": "http://example.org/sample_collections",
+            "read": "http://example.org/sample_collections",
+            "first": "http://example.org/sample_collections/page=1",
+            "last": "http://example.org/sample_collections/page=-1"
+        }
+    },
     "uuid_resources": {
         "actions": {
             "create": "http://example.org/uuid_resources",
@@ -43,11 +51,6 @@ describe "root" do
             "read": "http://example.org/searches",
             "first": "http://example.org/searches/page=1",
             "last": "http://example.org/searches/page=-1"
-        }
-    },
-    "bulk_create_samples": {
-        "actions": {
-            "create": "http://example.org/actions/bulk_create_sample"
         }
     },
     "update_samples": {
@@ -73,6 +76,34 @@ describe "root" do
     "bulk_update_samples": {
         "actions": {
             "create": "http://example.org/actions/bulk_update_sample"
+        }
+    },
+    "create_sample_collections": {
+        "actions": {
+            "create": "http://example.org/actions/create_sample_collection"
+        }
+    },
+    "update_sample_collections": {
+        "actions": {
+            "create": "http://example.org/actions/update_sample_collection"
+        }
+    },
+    "delete_sample_collections": {
+        "actions": {
+            "create": "http://example.org/actions/delete_sample_collection"
+        }
+    },
+    "create_searches": {
+        "actions": {
+            "create": "http://example.org/actions/create_search"
+        }
+    },
+    "multi_criteria_filters": {
+        "actions": {
+            "create": "http://example.org/multi_criteria_filters",
+            "read": "http://example.org/multi_criteria_filters",
+            "first": "http://example.org/multi_criteria_filters/page=1",
+            "last": "http://example.org/multi_criteria_filters/page=-1"
         }
     },
     "revision": 3

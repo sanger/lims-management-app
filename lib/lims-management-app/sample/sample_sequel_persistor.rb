@@ -33,6 +33,31 @@ module Lims::ManagementApp
         end
         sample_id
       end
+
+      # @param [Integer] sample_id
+      # @param [Block] block
+      # About @in_collection:
+      # Sample collections are loaded only when the sample is the resource the client asks for.
+      # If the client asks for a collection, we do not want its samples load the collections 
+      # they belongs to as well. Otherwise, might have an infinite loop of inclusion 
+      # (collection load samples which load collections which load samples...)
+      #
+      # About in_sample!
+      # Before loading a collection here, we set the @in_sample parameter which says 
+      # the collection to not load the samples it contains. Here, we just want to load
+      # the collection metadata.
+      def load_sample_collections(sample_id, &block)
+        unless @in_collection
+          collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:collection_id).where(:sample_id => sample_id).all
+          collection_ids = collection_id_rows.map { |r| r[:collection_id] }
+
+          @session.sample_collection.in_sample!
+          collection_ids.map { |id| @session.sample_collection[id] }.tap do |sample_collections|
+            @session.sample_collection.reset_in_sample
+            sample_collections.each { |collection| block.call(collection) } 
+          end
+        end
+      end
     end
   end
 end

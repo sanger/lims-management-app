@@ -1,0 +1,5 @@
+sample_collection_types:
+  - "Study"
+  - "Manifest"
+  - "User viewable"
+  - "Accessing"
