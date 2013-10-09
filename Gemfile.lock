@@ -22,6 +22,7 @@ GIT
       dm-validations
       facets (= 2.9.3)
       modularity
+      oj
       sequel
       state_machine
       uuid
@@ -46,7 +47,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (2.0.1.pre)
+    lims-management-app (2.0.0)
       bunny (= 0.9.0.pre10)
       json
 
@@ -86,9 +87,16 @@ GEM
     json (1.8.0-java)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
+<<<<<<< HEAD
     mime-types (1.25)
     modularity (0.6.1)
     mysql2 (0.3.13)
+=======
+    mime-types (1.23)
+    modularity (0.6.1)
+    mysql2 (0.3.11)
+    oj (2.1.4)
+>>>>>>> ebaf599d7d8419854eedb715fc5b08990a24cab2
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
