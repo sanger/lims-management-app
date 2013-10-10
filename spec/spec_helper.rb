@@ -96,7 +96,6 @@ end
 shared_context "timecop" do
   before {
     Timecop.freeze(Time.now)
-    Timecop.freeze(Time.now.utc)
   }
   after { Timecop.return }
 end
