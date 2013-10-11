@@ -1,10 +1,16 @@
-require 'lims-core/persistence/persistor'
+require 'lims-core/persistence/persistable_trait'
+require 'lims-core/persistence/sequel/persistor'
 
 module Lims::ManagementApp
   class Sample
     class Dna
-      class DnaPersistor < Lims::Core::Persistence::Persistor
-        Model = Sample::Dna
+      does "lims/core/persistence/persistable"
+
+      class DnaSequelPersistor < DnaPersistor
+        include Lims::Core::Persistence::Sequel::Persistor
+        def self.table_name
+          :dna
+        end
       end
     end
   end

@@ -16,7 +16,7 @@ module Lims::ManagementApp
       end
 
       it "creates a sample object" do
-        Lims::Core::Persistence::Session.any_instance.should_receive(:save)
+        Lims::Core::Persistence::Session.any_instance.should_receive(:save_all)
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
@@ -42,7 +42,7 @@ module Lims::ManagementApp
       end
 
       it "creates a sample object" do
-        Lims::Core::Persistence::Session.any_instance.should_receive(:save)
+        Lims::Core::Persistence::Session.any_instance.should_receive(:save_all)
         result = subject.call
         sample = result[:sample]
         sample.should be_a(Sample)
