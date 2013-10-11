@@ -1,30 +1,46 @@
-require 'lims-core/persistence/persistor'
+require 'lims-core/persistence/persistable_trait'
+require 'lims-core/persistence/sequel/persistor'
 require 'lims-core/actions/action'
 
 module Lims::ManagementApp
   class Sample
-
     UnknownTaxonIdError = Class.new(Lims::Core::Actions::Action::InvalidParameters)
     NameTaxonIdMismatchError = Class.new(Lims::Core::Actions::Action::InvalidParameters)
 
-    class SamplePersistor < Lims::Core::Persistence::Persistor
-      Model = Sample
+    does "lims/core/persistence/persistable", :parents => [
+      {:name => :dna, :deletable => true},
+      {:name => :rna, :deletable => true},
+      {:name => :cellular_material, :deletable => true},
+      {:name => :genotyping, :deletable => true}
+    ]
 
-      # TODO : should be in the sample sequel persistor !
+    class SampleSequelPersistor < SamplePersistor
+      include Lims::Core::Persistence::Sequel::Persistor
 
+      def self.table_name
+        :samples
+      end
+
+      def attribute_for(key)
+        {
+          :dna => 'dna_id',
+          :rna => 'rna_id',
+          :cellular_material => 'cellular_material_id',
+          :genotyping => 'genotyping_id'
+        }[key]
+      end
+
+      alias filter_attributes_on_save_old filter_attributes_on_save
       def filter_attributes_on_save(attributes)
         taxon_id = attributes[:taxon_id]
-        attributes.reject { |k,v| k == :taxon_id }.mash do |k,v|
+        attributes = attributes.reject { |k,v| k == :taxon_id }.mash do |k,v|
           case k
-          when :dna then [:dna_id, save_component(v)]
-          when :rna then [:rna_id, save_component(v)]
-          when :cellular_material then [:cellular_material_id, save_component(v)]
-          when :genotyping then [:genotyping_id, save_component(v)]
           when :scientific_name then [:scientific_taxon_id, taxonomy_primary_id(taxon_id, v, "scientific name")]
           when :common_name then [:common_taxon_id, taxonomy_primary_id(taxon_id, v, "common name")]
           else [k,v]
           end
         end
+        filter_attributes_on_save_old(attributes)
       end
 
       # @param [Integer] taxon_id
@@ -44,20 +60,6 @@ module Lims::ManagementApp
           raise NameTaxonIdMismatchError, {type => "Taxon ID #{taxon_id} does not match the #{type} '#{name}'. Do you mean '#{persistor.name_by_taxon_id(taxon_id, type)}'?"} unless id 
           id
         end
-      end
-
-      # @param [Object] object
-      # @return [Integer]
-      # In that case, object is not a Lims::Core::Resource object.
-      # Indeed, sample contains DNA/RNA/... data but there are not
-      # resources. They are only part of a sample. As a result, we
-      # cannot use the @session.id_for!(object) as it only works 
-      # with Lims::Core::Resource. Here we try to get an id for that
-      # object, if we cannot find it in session, we save the object
-      # and get its id.
-      def save_component(object)
-        return nil unless object
-        @session.persistor_for(object).id_for(object) || @session.save(object)
       end
 
       def filter_attributes_on_load(attributes)
