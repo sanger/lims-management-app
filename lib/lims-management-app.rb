@@ -1,3 +1,11 @@
+require 'facets/string'
+require 'facets/kernel'
+require 'facets/hash'
+require 'facets/array'
+
+require 'virtus'
+require 'aequitas/virtus_integration'
+
 require 'common'
 
 module Lims

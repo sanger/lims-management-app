@@ -82,7 +82,7 @@ module Lims::ManagementApp
       # @param [Integer] sample_id
       # @param [Lims::ManagementApp::Sample] sample
       # Sample collections are defined as sample's children.
-      def load_children(sample_id, sample)
+      def load_children(states)
         load_sample_collections(sample_id) do |collection|
           sample.sample_collections << collection
         end
