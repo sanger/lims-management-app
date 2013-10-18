@@ -42,7 +42,7 @@ module Lims::ManagementApp
       end
 
       it "updates a sample collection" do
-        Lims::Core::Persistence::Session.any_instance.should_receive(:save)
+        Lims::Core::Persistence::Session.any_instance.should_receive(:save_all)
         result = subject.call
         collection = result[:sample_collection]
         collection.should be_a(SampleCollection)
@@ -50,25 +50,25 @@ module Lims::ManagementApp
         collection.data.size.should == 7
         collection.samples.size.should == 0
 
-        collection.data[0].should be_a(SampleCollection::SampleCollectionData::String)
+        collection.data[0].should be_a(SampleCollection::SampleCollectionData::DataString)
         collection.data[0].key.should == "key_string"
         collection.data[0].value.should == "value"
-        collection.data[1].should be_a(SampleCollection::SampleCollectionData::Int)
+        collection.data[1].should be_a(SampleCollection::SampleCollectionData::DataInt)
         collection.data[1].key.should == "key_int"
         collection.data[1].value.should == 1 
-        collection.data[2].should be_a(SampleCollection::SampleCollectionData::Url)
+        collection.data[2].should be_a(SampleCollection::SampleCollectionData::DataUrl)
         collection.data[2].key.should == "key_url"
         collection.data[2].value.should == "http://www.sanger.ac.uk"
-        collection.data[3].should be_a(SampleCollection::SampleCollectionData::Bool)
+        collection.data[3].should be_a(SampleCollection::SampleCollectionData::DataBool)
         collection.data[3].key.should == "key_bool"
         collection.data[3].value.should == false 
-        collection.data[4].should be_a(SampleCollection::SampleCollectionData::Bool)
+        collection.data[4].should be_a(SampleCollection::SampleCollectionData::DataBool)
         collection.data[4].key.should == "key_bool2"
         collection.data[4].value.should == false 
-        collection.data[5].should be_a(SampleCollection::SampleCollectionData::Uuid)
+        collection.data[5].should be_a(SampleCollection::SampleCollectionData::DataUuid)
         collection.data[5].key.should == "key_uuid"
         collection.data[5].value.should == "11111111-2222-3333-4444-555555555555" 
-        collection.data[6].should be_a(SampleCollection::SampleCollectionData::String)
+        collection.data[6].should be_a(SampleCollection::SampleCollectionData::DataString)
         collection.data[6].key.should == "new key"
         collection.data[6].value.should == "new value"
       end

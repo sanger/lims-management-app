@@ -3,6 +3,7 @@ require 'lims-management-app/sample-collection/sample_collection_shared'
 
 module Lims::ManagementApp
   describe SampleCollection do
+    include_context "sample collection configuration"
 
     # Macros
     def self.it_has_a(attribute, type = nil)
@@ -50,24 +51,25 @@ module Lims::ManagementApp
         SampleCollection.new({:type => "study", :data => [{"dummy" => "test"}]}).valid?.should == false
       end
 
-      it "is invalid if a SampleCollectionData::Int contains an invalid value" do
-        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Int.new(:key => "test", :value => "string")]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::DataInt contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::DataInt.new(:key => "test", :value => "string")]}).valid?.should == false
       end
 
-      it "is invalid if a SampleCollectionData::String contains an invalid value" do
-        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::String.new(:key => "test", :value => 1)]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::DataString contains an invalid value" do
+        pending
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::DataString.new(:key => "test", :value => true)]}).valid?.should == false
       end
 
-      it "is invalid if a SampleCollectionData::Url contains an invalid value" do
-        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Url.new(:key => "test", :value => 1)]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::DataUrl contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::DataUrl.new(:key => "test", :value => 1)]}).valid?.should == false
       end
 
-      it "is invalid if a SampleCollectionData::Uuid contains an invalid value" do
-        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Uuid.new(:key => "test", :value => 1)]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::DataUuid contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::DataUuid.new(:key => "test", :value => 1)]}).valid?.should == false
       end
 
-      it "is invalid if a SampleCollectionData::Bool contains an invalid value" do
-        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::Bool.new(:key => "test", :value => "string")]}).valid?.should == false
+      it "is invalid if a SampleCollectionData::DataBool contains an invalid value" do
+        SampleCollection.new({:type => "study", :data => [SampleCollection::SampleCollectionData::DataBool.new(:key => "test", :value => "string")]}).valid?.should == false
       end
 
       it "is invalid if the samples parameter contains something else than samples" do

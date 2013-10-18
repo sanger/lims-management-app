@@ -61,11 +61,11 @@ module Lims::ManagementApp
 
     def data(key, type, value)
       case type
-      when "string" then SampleCollection::SampleCollectionData::String
-      when "integer" then SampleCollection::SampleCollectionData::Int
-      when "url" then SampleCollection::SampleCollectionData::Url
-      when "bool" then SampleCollection::SampleCollectionData::Bool
-      when "uuid" then SampleCollection::SampleCollectionData::Uuid
+      when "string" then SampleCollection::SampleCollectionData::DataString
+      when "integer" then SampleCollection::SampleCollectionData::DataInt
+      when "url" then SampleCollection::SampleCollectionData::DataUrl
+      when "bool" then SampleCollection::SampleCollectionData::DataBool
+      when "uuid" then SampleCollection::SampleCollectionData::DataUuid
       end.new(:key => key, :value => value)
     end
 

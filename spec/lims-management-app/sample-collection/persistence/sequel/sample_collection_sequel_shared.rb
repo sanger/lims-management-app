@@ -18,9 +18,17 @@ module Lims::ManagementApp
     def new_sequel_samples(uuids)
       store.with_session do |session|
         uuids.each do |uuid|
-          set_uuid(session, new_common_sample, uuid)
+          sample = new_common_sample
+          sample.sanger_sample_id = new_sanger_sample_id
+          set_uuid(session, sample, uuid)
         end
       end
+    end
+
+    def new_sanger_sample_id
+      @sanger_sample_id ||= 0
+      @sanger_sample_id += 1
+      "sanger_sample_id_#{@sanger_sample_id}"
     end
   end
 end

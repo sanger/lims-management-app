@@ -1,10 +1,10 @@
 require 'integrations/spec_helper'
 require 'lims-management-app/sample-collection/sample_collection_shared'
 require 'lims-management-app/sample-collection/persistence/sequel/spec_helper'
-require 'lims-management-app/sample-collection/sample_collection_sequel_persistor'
+require 'lims-management-app/sample-collection/sample_collection_persistor'
 
 module Lims::ManagementApp
-  describe SampleCollection::SampleCollectionSequelPersistor do
+  describe SampleCollection::SampleCollectionPersistor do
     include_context "use core context service"
     include_context "collection factory"
     include_context "timecop"
