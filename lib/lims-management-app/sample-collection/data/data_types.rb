@@ -25,7 +25,7 @@ module Lims::ManagementApp
 
       DATA_TYPES_DEFINITION.each do |name, ruby_type|
         self.class_eval <<-EOC
-          class #{name.capitalize}
+          class Data#{name.capitalize}
             include Lims::Core::Resource
             NOT_IN_ROOT = 1
             TYPE = "#{name}"

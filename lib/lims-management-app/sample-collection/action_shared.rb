@@ -11,7 +11,7 @@ module Lims::ManagementApp
         data.map do |d|
           key, value = d["key"], d["value"]
           type = d["type"] || SampleCollectionData::Helper.discover_type_of(value)
-          SampleCollectionData.const_get(type.capitalize).new(:key => key, :value => value)
+          SampleCollectionData.const_get(:"Data#{type.capitalize}").new(:key => key, :value => value)
         end
       end
 
