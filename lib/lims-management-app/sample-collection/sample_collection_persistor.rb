@@ -39,6 +39,13 @@ module Lims::ManagementApp
         EOC
       end
 
+      def in_sample!
+        @in_sample = true
+      end
+
+      def reset_in_sample
+        @in_sample = false
+      end
 
       association_class "CollectionSample" do
         attribute :sample_collection, SampleCollection, :relation => :parent, :skip_parents_for_attributes => true
