@@ -14,13 +14,17 @@ module Lims::ManagementApp
     validates_with_method :ensure_data_parameter
     validates_with_method :ensure_samples_parameter
 
+    def attributes
+      {:type => type}
+    end
+
     def ensure_data_parameter
       data.each do |d|
         unless d.respond_to?(:key) && d.respond_to?(:value)
           return [false, "Data elements must be instance of SampleCollectionData classes"]
         end
 
-        type = d.class.to_s.split("::").last.downcase
+        type = d.class::TYPE
         check_type_value = ensure_data_parameter_value(type, d.value)
         return check_type_value unless check_type_value.first
       end
