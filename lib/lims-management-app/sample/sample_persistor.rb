@@ -1,4 +1,5 @@
 require 'lims-core/persistence/persistable_trait'
+require 'lims-core/persistence/persist_association_trait'
 require 'lims-core/persistence/sequel/persistor'
 require 'lims-core/actions/action'
 
@@ -81,11 +82,16 @@ module Lims::ManagementApp
 
       # @param [Lims::Core::Persistence::StateGroup] states
       # Sample collections are defined as sample's children.
-      #def load_children(states)
-      #  load_sample_collections(states.map(&:id)) do |collection|
-      #    sample.sample_collections << collection
-      #  end
-      #end
+      def load_children(states)
+        load_sample_collections(states.map(&:id)) do |sample_ids, collection|
+          sample_ids.each do |sample_id|
+            sample = @session.sample[sample_id]
+            unless sample.sample_collections.include?(collection)
+              @session.sample[sample_id].sample_collections << collection
+            end
+          end
+        end
+      end
 
       # @param [Array] sample_ids
       # @param [Block] block
@@ -101,13 +107,13 @@ module Lims::ManagementApp
       # the collection metadata.
       def load_sample_collections(sample_ids, &block)
         unless @in_collection
-          collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:sample_collection_id).where(:sample_id => sample_id).all
+          collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:sample_collection_id).where(:sample_id => sample_ids).all
           collection_ids = collection_id_rows.map { |r| r[:sample_collection_id] }
 
           @session.sample_collection.in_sample!
           collection_ids.map { |id| @session.sample_collection[id] }.tap do |sample_collections|
             @session.sample_collection.reset_in_sample
-            sample_collections.each { |collection| block.call(collection) } 
+            sample_collections.each { |collection| block.call(sample_ids, collection) } 
           end
         end
       end
