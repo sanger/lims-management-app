@@ -79,19 +79,37 @@ module Lims::ManagementApp
         end
       end
 
-      # @param [Integer] sample_id
-      # @param [Lims::ManagementApp::Sample] sample
+      # @param [Lims::Core::Persistence::StateGroup] states
       # Sample collections are defined as sample's children.
-      def load_children(states)
-        load_sample_collections(sample_id) do |collection|
-          sample.sample_collections << collection
-        end
-      end
+      #def load_children(states)
+      #  load_sample_collections(states.map(&:id)) do |collection|
+      #    sample.sample_collections << collection
+      #  end
+      #end
 
-      # @param [Integer] sample_id
+      # @param [Array] sample_ids
       # @param [Block] block
-      def load_sample_collections(sample_id, &block)
-        raise NotImplementedError, "load_sample_collections is not implemented"
+      # About @in_collection:
+      # Sample collections are loaded only when the sample is the resource the client asks for.
+      # If the client asks for a collection, we do not want its samples load the collections 
+      # they belongs to as well. Otherwise, might have an infinite loop of inclusion 
+      # (collection load samples which load collections which load samples...)
+      #
+      # About in_sample!
+      # Before loading a collection here, we set the @in_sample parameter which says 
+      # the collection to not load the samples it contains. Here, we just want to load
+      # the collection metadata.
+      def load_sample_collections(sample_ids, &block)
+        unless @in_collection
+          collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:sample_collection_id).where(:sample_id => sample_id).all
+          collection_ids = collection_id_rows.map { |r| r[:sample_collection_id] }
+
+          @session.sample_collection.in_sample!
+          collection_ids.map { |id| @session.sample_collection[id] }.tap do |sample_collections|
+            @session.sample_collection.reset_in_sample
+            sample_collections.each { |collection| block.call(collection) } 
+          end
+        end
       end
 
       def in_collection!
