@@ -2,6 +2,7 @@ require 'lims-management-app'
 require 'rack/test'
 require 'hashdiff'
 require 'timecop'
+require 'json'
 
 # setup test environment
 set :environment, :test
