@@ -86,12 +86,10 @@ module Lims::ManagementApp
         if @in_collection
           super(states)
         else
-          load_sample_collections(states.map(&:id)) do |sample_ids, collection|
-            sample_ids.each do |sample_id|
-              sample = @session.sample[sample_id]
-              unless sample.sample_collections.include?(collection)
-                @session.sample[sample_id].sample_collections << collection
-              end
+          load_sample_collections(states.map(&:id)) do |sample_id, collection|
+            sample = @session.sample[sample_id]
+            unless sample.sample_collections.include?(collection)
+              sample.sample_collections << collection
             end
           end
         end
@@ -100,11 +98,13 @@ module Lims::ManagementApp
       # @param [Array] sample_ids
       # @param [Block] block
       def load_sample_collections(sample_ids, &block)
-        collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:sample_collection_id).where(:sample_id => sample_ids).all
-        collection_ids = collection_id_rows.map { |r| r[:sample_collection_id] }
+        sample_ids.each do |sample_id|
+          collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:sample_collection_id).where(:sample_id => sample_id).all
+          collection_ids = collection_id_rows.map { |r| r[:sample_collection_id] }
 
-        collection_ids.map { |id| @session.sample_collection[id] }.tap do |sample_collections|
-          sample_collections.each { |collection| block.call(sample_ids, collection) } 
+          collection_ids.map { |id| @session.sample_collection[id] }.tap do |sample_collections|
+            sample_collections.each { |collection| block.call(sample_id, collection) } 
+          end
         end
       end
 

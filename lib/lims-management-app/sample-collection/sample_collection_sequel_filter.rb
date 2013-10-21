@@ -16,13 +16,14 @@ module Lims::Core
       # data criteria filter when it's needed.
       alias :multi_criteria_filter_old :multi_criteria_filter
       def multi_criteria_filter(criteria)
-        data_criteria = expand_data_criteria!(criteria)
+        data_criteria = expand_data_criteria(criteria)
         persistor = data_criteria.empty? ? self : collection_data_criteria_filter(data_criteria)
         
-        sample_uuid_criteria = criteria.delete(:sample_uuids)
+        sample_uuid_criteria = criteria[:sample_uuids]
         persistor = sample_uuid_criteria.nil? ? persistor : collection_sample_uuid_criteria_filter(sample_uuid_criteria, persistor)
 
-        persistor.multi_criteria_filter_old(criteria)
+        remaining_criteria = criteria.reject { |k,_| [:sample_uuids, :data].include?(k) }
+        persistor.multi_criteria_filter_old(remaining_criteria)
       end
 
       # @param [Hash] criteria
@@ -47,7 +48,7 @@ module Lims::Core
       def collection_data_criteria_filter(criteria)
         joined_filtered_dataset = criteria.reduce(self.dataset) do |dataset, (table, data)|
           dataset.join(
-            table, :collection_id => qualify(self.table_name, self.primary_key)
+            table, :sample_collection_id => qualify(self.table_name, self.primary_key)
         ).where(
           [qualify(table, :key), qualify(table, :value)] => [].tap { |compared_data|
             data.each { |d| compared_data << [d[:key], d[:value]] }
@@ -75,7 +76,7 @@ module Lims::Core
       def collection_sample_uuid_criteria_filter(criteria, persistor)
         sample_uuid_criteria = criteria.map { |uuid| Lims::Core::Persistence::UuidResource.compact(uuid) }
         sample_uuid_dataset = persistor.dataset.join(
-          :collections_samples, qualify(:collections_samples, :collection_id) => qualify(:collections, :id)
+          :collections_samples, qualify(:collections_samples, :sample_collection_id) => qualify(:collections, :id)
         ).join(
           :uuid_resources, qualify(:uuid_resources, :key) => qualify(:collections_samples, :sample_id)
         ).where(
@@ -100,10 +101,10 @@ module Lims::Core
       # {:table_name => [{:key => "criterion key", :value => "criterion value"}]}
       # Table names correspond to collection_data_<type>. The type is automatically
       # infered depending on the criterion value.
-      def expand_data_criteria!(criteria)
+      def expand_data_criteria(criteria)
         {}.tap do |data_criteria|
           if criteria.has_key?(:data)
-            criteria.delete(:data).each do |key,value|
+            criteria[:data].each do |key,value|
               type = Lims::ManagementApp::SampleCollection::SampleCollectionData::Helper.discover_type_of(value)
               table = "collection_data_#{type}".to_sym
               data_criteria[table] ||= []
@@ -121,7 +122,7 @@ module Lims::Core
 
         sample_collection_persistor = @session.sample_collection.multi_criteria_filter(criteria)
         sample_collection_dataset = sample_collection_persistor.dataset.join(
-          :collections_samples, :collection_id => :collections__id
+          :collections_samples, :sample_collection_id => :collections__id
         ).select_all(:collections_samples)
 
         self.class.new(self, dataset.join(sample_collection_dataset, :sample_id => :samples__id).qualify.distinct)

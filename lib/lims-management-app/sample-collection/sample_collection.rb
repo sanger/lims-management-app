@@ -18,6 +18,14 @@ module Lims::ManagementApp
       {:type => type}
     end
 
+    def ==(other)
+      if other.is_a?(SampleCollection)
+        type == other.type && samples == other.samples && data == other.data
+      else
+        super(other)
+      end
+    end
+
     def ensure_data_parameter
       data.each do |d|
         unless d.respond_to?(:key) && d.respond_to?(:value)
