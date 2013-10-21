@@ -7,23 +7,23 @@ describe "search_for_a_sample_collection_by_type_and_data", :searches => true do
     collection1 = Lims::ManagementApp::SampleCollection.new({
       :type => "Study",
       :data => [
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string2", "value" => "value string 2"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => false),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 132)
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataString.new(:key => "key_string", "value" => "value string"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataString.new(:key => "key_string2", "value" => "value string 2"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataBool.new(:key => "key_bool", "value" => false),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUrl.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataInt.new(:key => "key_int", "value" => 132)
       ]
     })
     
     collection2 = Lims::ManagementApp::SampleCollection.new({
       :type => "User",
       :data => [
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string 2"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => true),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-111111111111"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 245)
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataString.new(:key => "key_string", "value" => "value string 2"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataBool.new(:key => "key_bool", "value" => true),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-111111111111"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUrl.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataInt.new(:key => "key_int", "value" => 245)
       ]
     })
     

@@ -23,10 +23,10 @@ describe "get_a_sample_belonging_to_sample_collections", :sample_collection => t
     collection1 = Lims::ManagementApp::SampleCollection.new({
       :type => "Study",
       :data => [
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => true),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Url.new(:key => "key_url", "value" => "http=>//www.sanger.ac.uk"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 132)
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataString.new(:key => "key_string", "value" => "value string"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataBool.new(:key => "key_bool", "value" => true),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUrl.new(:key => "key_url", "value" => "http=>//www.sanger.ac.uk"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataInt.new(:key => "key_int", "value" => 132)
       ],
       :samples => [sample]
     })
@@ -34,10 +34,10 @@ describe "get_a_sample_belonging_to_sample_collections", :sample_collection => t
     collection2 = Lims::ManagementApp::SampleCollection.new({
       :type => "User",
       :data => [
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::String.new(:key => "key_string", "value" => "value string 2"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Bool.new(:key => "key_bool", "value" => false),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Uuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::Int.new(:key => "key_int", "value" => 456)
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataString.new(:key => "key_string", "value" => "value string 2"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataBool.new(:key => "key_bool", "value" => false),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataInt.new(:key => "key_int", "value" => 456)
       ],
       :samples => [sample, sample2]
     })
