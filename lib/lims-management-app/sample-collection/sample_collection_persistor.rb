@@ -23,6 +23,13 @@ module Lims::ManagementApp
         end
       end
 
+      # TODO : probably not the right place for that
+      alias :filter_attributes_on_load_old :filter_attributes_on_load
+      def filter_attributes_on_load(attributes)
+        @session.sample.in_collection!
+        filter_attributes_on_load_old(attributes)
+      end
+
       # @param [SampleCollection] sample_collection
       # @param [Array] children
       # For each type defined in DATA_TYPES we create the corresponding children_ method.
@@ -39,20 +46,15 @@ module Lims::ManagementApp
         EOC
       end
 
-      def in_sample!
-        @in_sample = true
-      end
-
-      def reset_in_sample
-        @in_sample = false
-      end
-
       association_class "CollectionSample" do
         attribute :sample_collection, SampleCollection, :relation => :parent, :skip_parents_for_attributes => true
         attribute :sample, Sample, :relation => :parent
 
         def on_load
-          @sample_collection.samples << @sample if @sample_collection && @sample
+          if @sample_collection && @sample
+#            @sample.sample_collections << @sample_collection unless @sample.sample_collections.include?(@sample_collection) 
+            @sample_collection.samples << @sample
+          end
         end
 
         def invalid?
