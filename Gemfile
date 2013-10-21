@@ -10,6 +10,7 @@ group :development do
   gem 'sqlite3', :platforms => :mri
   gem 'timecop', :platforms => :mri
   gem 'mysql2', :platforms => :mri
+  gem 'json'
 end
 
 group :debugger do
