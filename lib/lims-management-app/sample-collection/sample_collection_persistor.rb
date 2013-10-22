@@ -52,7 +52,6 @@ module Lims::ManagementApp
 
         def on_load
           if @sample_collection && @sample
-#            @sample.sample_collections << @sample_collection unless @sample.sample_collections.include?(@sample_collection) 
             @sample_collection.samples << @sample
           end
         end
