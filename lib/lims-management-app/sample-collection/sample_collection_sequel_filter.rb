@@ -146,11 +146,6 @@ module Lims::Core
           qualify(:samples, :id)
         ).having({:count => collection_uuids.size})
 
-        sample_ids = sample_dataset.all.inject([]) do |m, row|
-          m << row[:id]
-          m
-        end
-        
         self.dataset.join(
           ::Sequel.as(sample_dataset, :sample_dataset),
           qualify(:sample_dataset, :id) => qualify(:samples, :id)
