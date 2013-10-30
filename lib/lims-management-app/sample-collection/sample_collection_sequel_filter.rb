@@ -120,12 +120,52 @@ module Lims::Core
         criteria = criteria[:sample_collection] if criteria.keys.first.to_s == "sample_collection"
         criteria.rekey! { |k| k.to_sym }
 
+        result_dataset = if criteria.has_key?(:uuids_intersection)
+                           filter_by_uuids_intersection(criteria)
+                         else
+                           filter_by_sample_collection_attributes(criteria)
+                         end
+
+        self.class.new(self, result_dataset)
+      end
+
+      # @param [Hash] criteria
+      # @return [Dataset]
+      # Handle the case we search for samples which belongs to 
+      # collection 1 AND collection 2, ie an intersection of sample collections.
+      def filter_by_uuids_intersection(criteria)
+        collection_uuids= criteria[:uuids_intersection].map { |uuid| Lims::Core::Persistence::UuidResource.compact(uuid) }
+        sample_dataset = self.dataset.join(
+          :collections_samples, :sample_id => :samples__id
+        ).join(
+          :uuid_resources, qualify(:uuid_resources, :key) => qualify(:collections_samples, :sample_collection_id)
+        ).where(
+          qualify(:uuid_resources, :uuid) => collection_uuids,
+          qualify(:uuid_resources, :model_class) => "sample_collection"
+        ).group_and_count(
+          qualify(:samples, :id)
+        ).having({:count => collection_uuids.size})
+
+        sample_ids = sample_dataset.all.inject([]) do |m, row|
+          m << row[:id]
+          m
+        end
+        
+        self.dataset.join(
+          ::Sequel.as(sample_dataset, :sample_dataset),
+          qualify(:sample_dataset, :id) => qualify(:samples, :id)
+        ).select_all(:samples)
+      end
+
+      # @param [Hash] criteria
+      # @return [Dataset]
+      def filter_by_sample_collection_attributes(criteria)
         sample_collection_persistor = @session.sample_collection.multi_criteria_filter(criteria)
         sample_collection_dataset = sample_collection_persistor.dataset.join(
           :collections_samples, :sample_collection_id => :collections__id
         ).select_all(:collections_samples)
 
-        self.class.new(self, dataset.join(sample_collection_dataset, :sample_id => :samples__id).qualify.distinct)
+        dataset.join(sample_collection_dataset, :sample_id => :samples__id).qualify.distinct
       end
     end
   end
