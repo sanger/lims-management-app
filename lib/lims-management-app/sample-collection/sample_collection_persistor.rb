@@ -1,5 +1,6 @@
 require 'lims-core/persistence/persistor'
 require 'lims-core/persistence/persist_association_trait'
+require 'lims-management-app/sample-collection/data/data_types'
 
 module Lims::ManagementApp
   class SampleCollection
@@ -23,13 +24,6 @@ module Lims::ManagementApp
         end
       end
 
-      # TODO : probably not the right place for that
-      alias :filter_attributes_on_load_old :filter_attributes_on_load
-      def filter_attributes_on_load(attributes)
-        @session.sample.in_collection!
-        filter_attributes_on_load_old(attributes)
-      end
-
       # @param [SampleCollection] sample_collection
       # @param [Array] children
       # For each type defined in DATA_TYPES we create the corresponding children_ method.
@@ -48,16 +42,19 @@ module Lims::ManagementApp
 
       association_class "CollectionSample" do
         attribute :sample_collection, SampleCollection, :relation => :parent, :skip_parents_for_attributes => true
-        attribute :sample, Sample, :relation => :parent
+        attribute :sample, Sample, :relation => :parent, :skip_parents_for_attributes => true
 
         def on_load
           if @sample_collection && @sample
-            @sample_collection.samples << @sample
+            @sample_collection.samples << @sample unless @sample_collection.samples.include?(@sample)
+            @sample.sample_collections << @sample_collection unless @sample.sample_collections.include?(@sample_collection)
           end
         end
 
         def invalid?
-          @sample && !@sample_collection.samples.include?(@sample)
+          @sample_collection && @sample && 
+            !@sample_collection.samples.include?(@sample) &&
+            !@sample.sample_collections.include?(@sample_collection)
         end
       end
 
