@@ -30,6 +30,14 @@ module Lims::ManagementApp
           end
         end.to change { db[:collections_samples].count }.by(-1)
       end
+
+      it "does not delete any sample collections" do
+        expect do
+          store.with_session do |session|
+            session.delete(session[sample_uuid])
+          end
+        end.to change { db[:collections].count }.by(0)
+      end
     end
   end
 end
