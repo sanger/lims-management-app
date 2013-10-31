@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: 7fb3a95fd0b3e7d96cd3b7f28ded176c2d60074d
+  revision: e3e2f5d141643e28c4772a5c911219e8e593fa8d
   branch: development
   specs:
-    lims-api (3.0.0.1.0)
+    lims-api (3.1.0.0.2)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: 6309215547b5ee446fe271619bda77d95842a766
+  revision: 69e066f520b2ae9380d463df45f4b59e020a6b5e
   branch: development
   specs:
-    lims-core (3.0.0.5.0)
+    lims-core (3.1.0.0.1)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -141,8 +141,8 @@ DEPENDENCIES
   jdbc-mysql
   jrjackson
   json
-  lims-api (~> 3.0)!
-  lims-core (~> 3.0)!
+  lims-api (~> 3.1)!
+  lims-core (~> 3.1)!
   lims-management-app!
   mysql2
   oj
