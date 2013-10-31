@@ -43,12 +43,12 @@ module Lims::ManagementApp
       it_behaves_like "changing the table", :collection_data_bool, 0
       it_behaves_like "changing the table", :collection_data_uuid, 0
 
-      context "when 2 samples are added and 2 samples deleted" do
+      context "when 2 samples are added and 2 samples removed" do
         it_behaves_like "changing the table", :collections_samples, 0
         it_behaves_like "changing the table", :samples, 0
       end
 
-      context "when 2 samples are deleted" do
+      context "when 2 samples are removed" do
         let(:new_sample_uuids) { []}
         let(:updated_sample_uuids) {["11111111-0000-0000-0000-111111111111"]}
         it_behaves_like "changing the table", :collections_samples, -2
