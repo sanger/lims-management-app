@@ -2,6 +2,7 @@ require 'lims-core/persistence/persistable_trait'
 require 'lims-core/persistence/persist_association_trait'
 require 'lims-core/persistence/sequel/persistor'
 require 'lims-core/actions/action'
+require 'lims-management-app/sample-collection/sample_collection_persistor'
 
 module Lims::ManagementApp
   class Sample
@@ -13,8 +14,20 @@ module Lims::ManagementApp
       {:name => :rna, :deletable => true},
       {:name => :cellular_material, :deletable => true},
       {:name => :genotyping, :deletable => true}
+    ], :children => [
+      {:name => :collection_sample, :session_name => :collection_sample, :deletable => true}
     ]
-      
+
+    class SamplePersistor
+      def children_collection_sample(sample, children)
+        # nothing as we do not intend to save sample collection through sample
+      end
+
+      def collection_sample
+        @session.sample_collection.collection_sample
+      end
+    end
+
     class SampleSequelPersistor < SamplePersistor
       include Lims::Core::Persistence::Sequel::Persistor
 
@@ -78,38 +91,6 @@ module Lims::ManagementApp
           id = attributes[:scientific_taxon_id]
           a[:taxon_id] = @session.taxonomy[id].taxon_id if id 
         end
-      end
-
-      # @param [Lims::Core::Persistence::StateGroup] states
-      # Sample collections are defined as sample's children.
-      def load_children(states)
-        if @in_collection
-          super(states)
-        else
-          load_sample_collections(states.map(&:id)) do |sample_id, collection|
-            sample = @session.sample[sample_id]
-            unless sample.sample_collections.include?(collection)
-              sample.sample_collections << collection
-            end
-          end
-        end
-      end
-
-      # @param [Array] sample_ids
-      # @param [Block] block
-      def load_sample_collections(sample_ids, &block)
-        sample_ids.each do |sample_id|
-          collection_id_rows = self.class.dataset(@session).from(:collections_samples).select(:sample_collection_id).where(:sample_id => sample_id).all
-          collection_ids = collection_id_rows.map { |r| r[:sample_collection_id] }
-
-          collection_ids.map { |id| @session.sample_collection[id] }.tap do |sample_collections|
-            sample_collections.each { |collection| block.call(sample_id, collection) } 
-          end
-        end
-      end
-
-      def in_collection!
-        @in_collection = true
       end
 
       def sample_collection
