@@ -19,8 +19,16 @@ module Lims::ManagementApp
     ]
 
     class SamplePersistor
+      # Even if we do not intend to save sample collection through sample
+      # we need to define collection_sample as children of sample as it is
+      # used for the deletion.
       def children_collection_sample(sample, children)
-        # nothing as we do not intend to save sample collection through sample
+        sample.sample_collections.each do |sample_collection|
+          collection_sample = SampleCollection::SampleCollectionPersistor::CollectionSample.new(sample_collection, sample)
+          state = @session.state_for(collection_sample)
+          state.resource = collection_sample
+          children << collection_sample
+        end
       end
 
       def collection_sample
