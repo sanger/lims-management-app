@@ -152,6 +152,21 @@ describe "search_for_samples_by_sample_collections_intersection", :searches => t
             "sample_collections": [
                 {
                     "actions": {
+                        "read": "http://example.org/11111111-2222-3333-4444-888888888888",
+                        "create": "http://example.org/11111111-2222-3333-4444-888888888888",
+                        "update": "http://example.org/11111111-2222-3333-4444-888888888888",
+                        "delete": "http://example.org/11111111-2222-3333-4444-888888888888"
+                    },
+                    "uuid": "11111111-2222-3333-4444-888888888888",
+                    "type": "User",
+                    "data": {
+                        "key_string": "value string 3",
+                        "key_bool": false,
+                        "key_int": 300
+                    }
+                },
+                {
+                    "actions": {
                         "read": "http://example.org/11111111-2222-3333-4444-666666666666",
                         "create": "http://example.org/11111111-2222-3333-4444-666666666666",
                         "update": "http://example.org/11111111-2222-3333-4444-666666666666",
@@ -182,21 +197,6 @@ describe "search_for_samples_by_sample_collections_intersection", :searches => t
                         "key_int": 245,
                         "key_url": "http://www.sanger.ac.uk",
                         "key_uuid": "11111111-0000-0000-0000-111111111111"
-                    }
-                },
-                {
-                    "actions": {
-                        "read": "http://example.org/11111111-2222-3333-4444-888888888888",
-                        "create": "http://example.org/11111111-2222-3333-4444-888888888888",
-                        "update": "http://example.org/11111111-2222-3333-4444-888888888888",
-                        "delete": "http://example.org/11111111-2222-3333-4444-888888888888"
-                    },
-                    "uuid": "11111111-2222-3333-4444-888888888888",
-                    "type": "User",
-                    "data": {
-                        "key_string": "value string 3",
-                        "key_bool": false,
-                        "key_int": 300
                     }
                 }
             ]
