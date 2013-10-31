@@ -52,9 +52,7 @@ module Lims::ManagementApp
         end
 
         def invalid?
-          @sample_collection && @sample && 
-            !@sample_collection.samples.include?(@sample) &&
-            !@sample.sample_collections.include?(@sample_collection)
+          @sample_collection && @sample && !@sample_collection.samples.include?(@sample)
         end
       end
 
