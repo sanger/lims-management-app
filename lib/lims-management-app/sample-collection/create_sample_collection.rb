@@ -33,6 +33,7 @@ module Lims::ManagementApp
 
         unless samples.empty?
           quantity = samples[:quantity] || samples["quantity"]
+          session.persistor_for(:sanger_sample_id_number).prefetch_sanger_sample_id_number(quantity)
           quantity.times do
             collection_samples << _create(session, samples)[:sample]
           end
