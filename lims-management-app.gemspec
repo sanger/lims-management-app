@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors = ["Loic Le Henaff"]
   s.email = ["llh1@sanger.ac.uk"]
   s.homepage = "http://sanger.ac.uk/"
-  s.summary = %q{Application supporting the LIMS functionality}
-  s.description = %q{Lims samples and studies management}
+  s.summary = %q{Sample and sample collection management}
+  s.description = %q{Sample and sample collection management}
 
   s.rubyforge_project = "lims-management-app"
 
@@ -27,5 +27,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency('yard', '>= 0.7.0')
   s.add_development_dependency('yard-rspec', '0.1')
   s.add_development_dependency('github-markup', '~> 0.7.1')
-  s.add_development_dependency('rest-client')
 end
