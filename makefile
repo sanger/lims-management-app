@@ -1,8 +1,8 @@
 .PHONY: migrate_test serve
 MANAGEMENT_APP_PATH = `bundle show lims-management-app | grep lims-management-app`
 migrate_test_mysql:
-	mysql -uroot -p -e "DROP DATABASE IF EXISTS test_lims_api; CREATE DATABASE test_lims_api DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
-	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e test config/database.yml
+	mysql -uroot -p -e "DROP DATABASE IF EXISTS management_test; CREATE DATABASE management_test DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e test_mysql config/database.yml
 migrate_dev_mysql:
 	mysql -uroot -p -e "DROP DATABASE IF EXISTS management_development; CREATE DATABASE management_development DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 	bundle exec sequel -m $(MANAGEMENT_APP_PATH)/db/migrations -e development_mysql config/database.yml
