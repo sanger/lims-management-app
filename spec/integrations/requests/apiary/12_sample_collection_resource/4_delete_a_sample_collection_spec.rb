@@ -24,7 +24,7 @@ describe "delete_a_sample_collection", :sample_collection => true do
       :type => "Study",
       :data => [
           Lims::ManagementApp::SampleCollection::SampleCollectionData::DataString.new(:key => "key_string", "value" => "value string"),
-          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataBool.new(:key => "key_bool", "value" => "value bool"),
+          Lims::ManagementApp::SampleCollection::SampleCollectionData::DataBool.new(:key => "key_bool", "value" => true),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUuid.new(:key => "key_uuid", "value" => "11111111-0000-0000-0000-000000000000"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::DataUrl.new(:key => "key_url", "value" => "http://www.sanger.ac.uk"),
           Lims::ManagementApp::SampleCollection::SampleCollectionData::DataInt.new(:key => "key_int", "value" => 132)
