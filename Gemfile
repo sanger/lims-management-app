@@ -5,17 +5,14 @@ gem 'sinatra', :git => 'http://github.com/sinatra/sinatra.git', :branch => '4593
 gem 'lims-core', '~>3.1', :git => 'http://github.com/sanger/lims-core.git' , :branch => 'development'
 gem 'lims-api', '~>3.1', :git => 'http://github.com/sanger/lims-api.git' , :branch => 'development'
 
+gem 'json'
 gem 'oj', :platforms => :mri
-#gem 'jrjackson', :platforms => :jruby
 
 group :development do
-  gem 'redcarpet', '~> 2.1.0', :platforms => :mri
   gem 'sqlite3', :platforms => :mri
-  gem 'timecop', :platforms => :mri
   gem 'mysql2', :platforms => :mri
   gem 'jdbc-mysql', :platforms => :jruby
   gem 'jdbc-sqlite3', :platforms => :jruby
-  gem 'json'
   gem 'timecop'
 end
 
