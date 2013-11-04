@@ -14,6 +14,7 @@ group :development do
   gem 'jdbc-mysql', :platforms => :jruby
   gem 'jdbc-sqlite3', :platforms => :jruby
   gem 'timecop'
+  gem 'rest-client', :platforms => :mri
 end
 
 group :debugger do
