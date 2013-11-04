@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: a37bdb3b8986745ef41b7449578df6136c111635
+  revision: cd31d92e4e89d664a31958080c0ea34a632b1241
   branch: development
   specs:
-    lims-api (3.1.0.1.1)
+    lims-api (3.1.0.1.2)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: 26aefafda3ee0c9a880f391acc9fc1a372f98cce
+  revision: f87c5ed325db1042d126ba8fee08933f81c151eb
   branch: development
   specs:
-    lims-core (3.1.0.1.0)
+    lims-core (3.1.0.1.1)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -84,7 +84,6 @@ GEM
     jruby-rack (1.1.13.2)
     json (1.8.1)
     json (1.8.1-java)
-    linecache (0.46-java)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mime-types (1.25)
@@ -110,8 +109,6 @@ GEM
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
     ruby-debug-base (0.10.4-java)
     sequel (4.4.0)
     shotgun (0.9)
