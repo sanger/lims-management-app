@@ -50,19 +50,19 @@ end
 # 2 - bulk update 2 samples - draft
 # 3 - finalize bulk update 2 samples - published
 if options[:workflow]
-  parameters = {:bulk_create_sample => {:user => "username", :sanger_sample_id_core => "S2",  :quantity => 1}}
-  response = RestClient.post("http://localhost:9292/actions/bulk_create_sample",
+  parameters = {:sample_collection => {:user => "username", :type => "Study", :samples => {:sanger_sample_id_core => "S2",  :quantity => 1}}}
+  response = RestClient.post("http://localhost:9292/sample_collections",
                              parameters.to_json,
                              {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
   result = JSON.parse(response)
   sample_uuids = [].tap do |uuids|
-    result["bulk_create_sample"]["result"]["samples"].each do |sample|
+    result["sample_collection"]["samples"].each do |sample|
       uuids << sample["uuid"]
     end
   end
   puts response
   sanger_sample_ids = [].tap do |ids|
-    result["bulk_create_sample"]["result"]["samples"].each do |sample|
+    result["sample_collection"]["samples"].each do |sample|
       ids << sample["sanger_sample_id"]
     end
   end
@@ -183,55 +183,60 @@ else
   # Sample bulk create
   sample_uuids = []
   parameters = {
-    :bulk_create_sample => {
-      :quantity => options[:quantity],
-      :sanger_sample_id_core => "StudyX",
-      :gender => "Male",
-      :sample_type => "RNA",
-      :taxon_id => 9606,
-      :volume => 100,
-      :supplier_sample_name => "supplier sample name",
-      :common_name => "man",
-      :scientific_name => "homo sapiens",
-      :hmdmc_number => "123456",
-      :ebi_accession_number => "accession number",
-      :sample_source => "sample source",
-      :mother => "mother",
-      :father => "father",
-      :sibling => "sibling",
-      :gc_content => "gc content",
-      :public_name => "public name",
-      :cohort => "cohort",
-      :storage_conditions => "storage conditions",
-      :date_of_sample_collection => "2013-06-24",
-      :is_sample_a_control => false,
-      :is_re_submitted_sample => true,
-      :dna => {
-        :pre_amplified => false,
-        :date_of_sample_extraction => "2013-06-02",
-        :extraction_method => "extraction method",
-        :concentration => 120,
-        :sample_purified => false,
-        :concentration_determined_by_which_method => "method"
-      },
-      :cellular_material => {
-        :lysed => false
-      },
-      :genotyping => {
-        :country_of_origin => "england",
-        :geographical_region => "europe",
-        :ethnicity => "english"
+    :sample_collection => {
+      :type => "Study",
+      :samples => {
+        :state => "published",
+        :quantity => options[:quantity],
+        :sanger_sample_id_core => "StudyX",
+        :gender => "Male",
+        :sample_type => "RNA",
+        :taxon_id => 9606,
+        :volume => 100,
+        :supplier_sample_name => "supplier sample name",
+        :common_name => "man",
+        :scientific_name => "homo sapiens",
+        :hmdmc_number => "123456",
+        :ebi_accession_number => "accession number",
+        :sample_source => "sample source",
+        :mother => "mother",
+        :father => "father",
+        :sibling => "sibling",
+        :gc_content => "gc content",
+        :public_name => "public name",
+        :cohort => "cohort",
+        :storage_conditions => "storage conditions",
+        :date_of_sample_collection => "2013-06-24",
+        :is_sample_a_control => false,
+        :is_re_submitted_sample => true,
+        :dna => {
+          :pre_amplified => false,
+          :date_of_sample_extraction => "2013-06-02",
+          :extraction_method => "extraction method",
+          :concentration => 120,
+          :sample_purified => false,
+          :concentration_determined_by_which_method => "method"
+        },
+        :cellular_material => {
+          :lysed => false,
+          :extraction_process => "DNaA & RNA Manual"
+        },
+        :genotyping => {
+          :country_of_origin => "england",
+          :geographical_region => "europe",
+          :ethnicity => "english"
+        }
       }
     }
   }
 
   if options[:create]
-    response = RestClient.post("http://localhost:9292/actions/bulk_create_sample",
+    response = RestClient.post("http://localhost:9292/sample_collections",
                                parameters.to_json,
                                {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     result = JSON.parse(response)
     sample_uuids = [].tap do |uuids|
-      result["bulk_create_sample"]["result"]["samples"].each do |sample|
+      result["sample_collection"]["samples"].each do |sample|
         uuids << sample["uuid"]
       end
     end
@@ -243,7 +248,7 @@ else
   if options[:update]
     updated_parameters = {}.tap do |h|
       sample_uuids.each do |uuid|
-        h[uuid] = update_parameters(parameters[:bulk_create_sample].merge({:state => "published"}) - [:quantity, :sanger_sample_id_core])
+        h[uuid] = update_parameters(parameters[:sample_collection][:samples].merge({:state => "published"}) - [:quantity, :sanger_sample_id_core])
       end
     end
 
