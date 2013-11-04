@@ -1,0 +1,2 @@
+
+{"header":["Accept: application/json"],"response_header":["Content-Type: application/json"],"method":"GET","url":"/sample_collections","status":200,"response":"{ \"sample_collections\": {\n    \"actions\": {\n        \"create\": \"/sample_collections\",\n        \"read\": \"/sample_collections\",\n        \"first\": \"/sample_collections/page=1\",\n        \"last\": \"/sample_collections/page=-1\"\n    }\n} }\n"}

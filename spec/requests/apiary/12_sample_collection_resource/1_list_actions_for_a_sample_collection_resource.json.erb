@@ -1,0 +1,20 @@
+<%
+require 'json'
+h={:header => [], :response_header => [] }
+h[:method] = "GET"
+h[:url]='/sample_collections'
+h[:header] << 'Accept: application/json'
+h[:status]=200
+h[:response_header] << 'Content-Type: application/json'
+h[:response]=<<EOD
+{ "sample_collections": {
+    "actions": {
+        "create": "/sample_collections",
+        "read": "/sample_collections",
+        "first": "/sample_collections/page=1",
+        "last": "/sample_collections/page=-1"
+    }
+} }
+EOD
+%>
+<%= h.to_json %>

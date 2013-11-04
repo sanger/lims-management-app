@@ -2,6 +2,7 @@ require 'lims-management-app'
 require 'rack/test'
 require 'hashdiff'
 require 'timecop'
+require 'json'
 
 # setup test environment
 set :environment, :test
@@ -101,3 +102,12 @@ shared_context "timecop" do
 end
 
 Sequel.default_timezone = :utc
+
+shared_context "sample collection configuration" do
+  before(:all) do 
+    unless defined?(Lims::ManagementApp::Configuration::SAMPLE_COLLECTION_TYPES)
+      sample_collection_conf = YAML.load_file(File.join('config','sample_collection.yml'))
+      Lims::ManagementApp::Configuration.set_sample_collection_configuration(sample_collection_conf)
+    end
+  end
+end

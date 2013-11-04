@@ -3,9 +3,6 @@ require 'lims-api/struct_stream'
 
 module Lims::ManagementApp
   class Sample
-    class BulkCreateSampleResource < Lims::Api::CoreActionResource
-    end
-
     class BulkUpdateSampleResource < Lims::Api::CoreActionResource
     end
 

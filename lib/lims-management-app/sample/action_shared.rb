@@ -18,7 +18,7 @@ module Lims::ManagementApp
 
       # Only for create, bulk create and update actions
       def self.included(klass)
-        if klass.to_s.downcase =~ /::create|::bulkcreate|::update/
+        if klass.to_s.downcase =~ /::createsample|::update/
           ATTRIBUTES.each do |name, type|
             klass.class_eval do
               attribute :"#{name}", type, :required => false
@@ -32,13 +32,17 @@ module Lims::ManagementApp
       # Shared method for sample creation and bulk creation
       # Generate the sanger sample id, set the dna/rna/cellular material data
       # if requested.
-      def _create(session)
-        sample = Sample.new(filtered_attributes)
+      def _create(session, sample_attributes=nil)
+        sample = Sample.new(filtered_attributes(sample_attributes))
         sample.dna = Dna.new(dna) if dna && dna.size > 0
         sample.rna = Rna.new(rna) if rna && rna.size > 0
         sample.cellular_material = CellularMaterial.new(cellular_material) if cellular_material && cellular_material.size > 0
         sample.genotyping = Genotyping.new(genotyping) if genotyping && genotyping.size > 0
-        sample.sanger_sample_id = generate_sanger_sample_id(sanger_sample_id_core, session)
+        
+        # TODO: to refactor when bulk_create_sample is not used anymore
+        # no method sanger_sample_id_core when using sample collection
+        core = sample_attributes ? sample_attributes[:sanger_sample_id_core] : sanger_sample_id_core
+        sample.sanger_sample_id = generate_sanger_sample_id(core, session)
         session << sample
 
         {:sample => sample, :uuid => session.uuid_for!(sample)}
@@ -123,10 +127,12 @@ module Lims::ManagementApp
         unfiltered_attributes.rekey! { |k| k.to_sym }
         unfiltered_attributes.mash do |k,v|
           case k
-          when :date_of_sample_collection then v ? [k, Time.parse(v)] : [k, v] 
+          when :date_of_sample_collection then v ? [k, Time.parse(v.to_s)] : [k, v] 
           when :quantity then [k, v ? v : 1]
           else [k,v]
           end
+        end.tap do |a|
+          a[:state] = Sample::DRAFT_STATE unless a[:state] 
         end
       end
     end
