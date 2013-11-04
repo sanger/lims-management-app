@@ -1712,3 +1712,35 @@ POST /searches
         "uuid": "11111111-2222-3333-4444-555555555555"
     }
 }
+
+
+**Search for samples by collection uuids (intersection)**
+
+The following search will get back all the samples which can be found in the collection 
+`11111111-0000-0000-0000-111111111111` AND in the collection `11111111-0000-0000-0000-222222222222`.
+
+POST /searches
+> Accept: application/json
+{
+    "search": {
+        "description": "search for samples in an intersection of collections",
+        "model": "sample",
+        "criteria": {
+            "sample_collection": {
+                "uuids_intersection": ["11111111-0000-0000-0000-111111111111", "11111111-0000-0000-0000-222222222222"]
+            }
+        }
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "search": {
+        "actions": {
+            "read": "/11111111-2222-3333-4444-555555555555",
+            "first": "/11111111-2222-3333-4444-555555555555/page=1",
+            "last": "/11111111-2222-3333-4444-555555555555/page=-1"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555"
+    }
+}
