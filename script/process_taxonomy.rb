@@ -1,3 +1,4 @@
+require 'yaml'
 require 'open-uri'
 require 'tmpdir'
 require 'sequel'
