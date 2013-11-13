@@ -63,6 +63,11 @@ describe "root" do
             "create": "http://example.org/actions/delete_sample"
         }
     },
+    "bulk_create_samples": {
+        "actions": {
+            "create": "http://example.org/actions/bulk_create_sample"
+        }
+    },
     "bulk_delete_samples": {
         "actions": {
             "create": "http://example.org/actions/bulk_delete_sample"
