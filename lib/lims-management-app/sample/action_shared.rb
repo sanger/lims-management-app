@@ -18,7 +18,7 @@ module Lims::ManagementApp
 
       # Only for create, bulk create and update actions
       def self.included(klass)
-        if klass.to_s.downcase =~ /::createsample|::update/
+        if klass.to_s.downcase =~ /::bulkcreatesample|::createsample|::update/
           ATTRIBUTES.each do |name, type|
             klass.class_eval do
               attribute :"#{name}", type, :required => false
