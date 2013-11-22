@@ -5,6 +5,7 @@ require 'digest/md5'
 require 'fileutils'
 require 'zlib'
 require 'rubygems/package'
+require 'yaml'
 
 require 'logger'
 

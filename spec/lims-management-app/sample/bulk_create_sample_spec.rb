@@ -14,7 +14,7 @@ module Lims::ManagementApp
       end
 
       it "creates sample objects" do
-        Lims::Core::Persistence::Session.any_instance.should_receive(:save)
+        Lims::Core::Persistence::Session.any_instance.should_receive(:save_all)
         result = subject.call
         samples = result[:samples]
         samples.should be_a(Array)
