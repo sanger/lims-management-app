@@ -38,6 +38,7 @@ def update_parameters(parameters)
       when :sample_type then [k, "Blood"]
       when :common_name then [k, "great apes"]
       when :scientific_name then [k, "Hominidae"]
+      when :state then [k,v]
       else [k, "new #{v}"]
       end
     end
@@ -184,7 +185,7 @@ else
   parameters = {
     :bulk_create_sample => {
       :quantity => options[:quantity],
-      :sanger_sample_id_core => "S2",
+      :sanger_sample_id_core => "StudyX",
       :gender => "Male",
       :sample_type => "RNA",
       :taxon_id => 9606,
@@ -203,8 +204,8 @@ else
       :cohort => "cohort",
       :storage_conditions => "storage conditions",
       :date_of_sample_collection => "2013-06-24",
-      :is_sample_a_control => true,
-      :is_re_submitted_sample => false,
+      :is_sample_a_control => false,
+      :is_re_submitted_sample => true,
       :dna => {
         :pre_amplified => false,
         :date_of_sample_extraction => "2013-06-02",
@@ -242,7 +243,7 @@ else
   if options[:update]
     updated_parameters = {}.tap do |h|
       sample_uuids.each do |uuid|
-        h[uuid] = update_parameters(parameters[:bulk_create_sample] - [:quantity, :sanger_sample_id_core])
+        h[uuid] = update_parameters(parameters[:bulk_create_sample].merge({:state => "published"}) - [:quantity, :sanger_sample_id_core])
       end
     end
 
