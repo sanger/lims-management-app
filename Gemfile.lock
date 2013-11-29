@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: d73ab226b8c431522ff3497b38e2c9de92ac32cb
+  revision: 11e3daf4cac29c79c46975b073a743a5c225835c
   branch: development
   specs:
-    lims-api (3.1.0.3.0)
+    lims-api (3.1.0.7.0)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: 3f9f4ff9c316d2d91eb6bba8354ec6c727a94b21
+  revision: fdefd9962a8639f3999c6699bdee566a0046dd9b
   branch: development
   specs:
-    lims-core (3.1.0.2.0)
+    lims-core (3.1.0.4.1)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -46,7 +46,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (3.2.0)
+    lims-management-app (3.2.1)
       bunny (= 0.9.0.pre10)
 
 GEM
@@ -57,7 +57,7 @@ GEM
     activesupport (3.0.0)
     addressable (2.3.5)
     aequitas (0.0.2)
-    amq-protocol (1.8.0)
+    amq-protocol (1.9.0)
     bond (0.4.3)
     bunny (0.9.0.pre10)
       amq-protocol (>= 1.4.0)
