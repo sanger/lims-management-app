@@ -1,5 +1,5 @@
 module Lims
   module ManagementApp
-    VERSION = "3.0.1.rc1"
+    VERSION = "3.1.0.pre"
   end
 end
