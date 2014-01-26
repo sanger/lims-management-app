@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-api.git
-  revision: 73870c86a3e9e4158d73d57375b83160b4ebb05a
+  revision: c83019c6dd308235a026e6f005e19f638579320d
   branch: uat
   specs:
-    lims-api (3.0.1.rc1)
+    lims-api (3.1.1.pre)
       active_support
       bunny (= 0.9.0.pre10)
       json
@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: bc263264c56d16e5edf5141d5fa26b033e548fab
+  revision: 70785367d45b535c37cb469a3f5b828f765d5fa2
   branch: uat
   specs:
-    lims-core (3.0.0.rc1)
+    lims-core (3.1.0.pre)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -26,6 +26,14 @@ GIT
       state_machine
       uuid
       virtus (= 0.2.0)
+
+GIT
+  remote: http://github.com/sanger/lims-exception-notifier-app.git
+  revision: 4e789cdb62446d6b0b3496046350a111d245fd38
+  branch: master
+  specs:
+    lims-exception-notifier-app (0.1.2)
+      mustache (~> 0.99.4)
 
 GIT
   remote: http://github.com/sanger/psd_logger.git
@@ -88,6 +96,7 @@ GEM
       systemu (~> 2.5.0)
     mime-types (1.23)
     modularity (0.6.1)
+    mustache (0.99.5)
     mysql2 (0.3.11)
     rack (1.5.2)
     rack-protection (1.5.0)
@@ -106,7 +115,7 @@ GEM
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.8.0)
-    sequel (4.3.0)
+    sequel (4.6.0)
     shotgun (0.9)
       rack (>= 1.0)
     sqlite3 (1.3.7)
@@ -138,8 +147,9 @@ DEPENDENCIES
   github-markup (~> 0.7.1)
   hashdiff
   jdbc-mysql
-  lims-api (~> 3.0.1.rc1)!
-  lims-core (~> 3.0.0.rc1)!
+  lims-api (~> 3.1.1.pre)!
+  lims-core (~> 3.1.0.pre)!
+  lims-exception-notifier-app (~> 0.1.2)!
   lims-management-app!
   mysql2
   psd_logger!
