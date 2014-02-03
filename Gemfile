@@ -2,8 +2,8 @@ source "http://rubygems.org"
 gemspec
 
 gem 'sinatra', :git => 'http://github.com/sinatra/sinatra.git', :branch => '459369eb66224836f72e21bbece58c007f3422fa'
-gem 'lims-core', '~>3.1.0.pre', :git => 'http://github.com/sanger/lims-core.git' , :branch => 'uat'
-gem 'lims-api', '~>3.1.1.pre', :git => 'http://github.com/sanger/lims-api.git' , :branch => 'uat'
+gem 'lims-core', '~>3.2.0.pre', :git => 'http://github.com/sanger/lims-core.git' , :branch => 'uat_blood_reception'
+gem 'lims-api', '~>3.2.0.pre', :git => 'http://github.com/sanger/lims-api.git' , :branch => 'uat_blood_reception'
 gem 'lims-exception-notifier-app', '~>0.1.2', :git => 'http://github.com/sanger/lims-exception-notifier-app.git', :branch => 'master'
 
 group :development do
