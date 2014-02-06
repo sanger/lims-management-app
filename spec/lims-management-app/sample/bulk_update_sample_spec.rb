@@ -68,6 +68,14 @@ module Lims::ManagementApp
         described_class.new(wrong_parameters).valid?.should == false
       end
 
+      it "requires a valid age band" do
+        described_class.new(parameters[:updates].merge({:age_band => "dummy"})).valid?.should == false
+      end
+
+      it "requires a valid age band interval" do
+        described_class.new(parameters[:updates].merge({:age_band => "45-10"})).valid?.should == false
+      end
+
       it "requires a correct state" do
         described_class.new(parameters[:updates].merge({'dummy_uuid' => {:state => 'dummy'}})).valid?.should == false
       end

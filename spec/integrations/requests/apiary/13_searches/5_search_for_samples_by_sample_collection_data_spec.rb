@@ -139,6 +139,8 @@ describe "search_for_samples_by_sample_collection_data", :searches => true do
             "hmdmc_number": null,
             "ebi_accession_number": null,
             "sample_source": null,
+            "disease_phenotype": null,
+            "age_band": null,
             "mother": null,
             "father": null,
             "sibling": null,

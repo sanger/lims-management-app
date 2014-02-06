@@ -136,6 +136,8 @@ describe "search_for_samples_by_sample_collections_intersection", :searches => t
             "common_name": "human",
             "hmdmc_number": null,
             "ebi_accession_number": null,
+            "disease_phenotype": null,
+            "age_band": null,
             "sample_source": null,
             "mother": null,
             "father": null,
