@@ -77,6 +77,8 @@ describe "get_a_sample_belonging_to_sample_collections", :sample_collection => t
         "cohort": null,
         "storage_conditions": null,
         "taxon_id": 9606,
+        "disease_phenotype": null,
+        "age_band": null,
         "volume": null,
         "date_of_sample_collection": null,
         "is_sample_a_control": null,

@@ -22,7 +22,8 @@ module Lims::ManagementApp
     # The attributes below are all strings and not required
     %w(state supplier_sample_name gender sanger_sample_id sample_type 
     scientific_name common_name hmdmc_number ebi_accession_number sample_source
-    mother father sibling gc_content public_name cohort storage_conditions).each do |name|
+    mother father sibling gc_content public_name cohort storage_conditions
+    disease_phenotype age_band).each do |name|
       attribute :"#{name}", String, :required => false, :initializable => true
     end
 

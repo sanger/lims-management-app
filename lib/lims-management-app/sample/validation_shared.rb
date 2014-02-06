@@ -7,6 +7,7 @@ module Lims::ManagementApp
       HUMAN_SAMPLE_TAXON_ID = 9606
       HUMAN_SAMPLE_GENDER = GENDER - ["Not applicable"]
       STATES = [Sample::DRAFT_STATE, Sample::PUBLISHED_STATE]
+      AGE_BAND_PATTERN = /^([0-9]{1,2})-([0-9]{1,3})$/
 
       private
 
@@ -52,6 +53,17 @@ module Lims::ManagementApp
         end
       end
 
+      # @param [String] age_band
+      # @return [Array]
+      def validate_age_band(age_band)
+        age_band_match = age_band.match(AGE_BAND_PATTERN)
+        if age_band.nil? || (age_band_match && $1.to_i <= $2.to_i)
+          [true]
+        else
+          [false, "'#{age_band}' is not a valid age band. Age band pattern example: '12-45'"]
+        end
+      end
+
       # @param [Sample] sample
       # @return [Array]
       def validate_published_data(sample, accessor=nil)
@@ -94,6 +106,7 @@ module Lims::ManagementApp
             validates_with_method :ensure_sample_type_value
             validates_with_method :ensure_gender_for_human_sample
             validates_with_method :ensure_state
+            validates_with_method :ensure_age_band
           end
         end
 
@@ -122,6 +135,11 @@ module Lims::ManagementApp
         # @return [Array]
         def ensure_state
           state ? validate_state(state) : [true]
+        end
+
+        # @return [Array]
+        def ensure_age_band
+          age_band ? validate_age_band(age_band) : [true] 
         end
 
         # @return [Array]
