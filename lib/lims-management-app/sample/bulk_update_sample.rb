@@ -59,6 +59,7 @@ module Lims::ManagementApp
                      when :sample_type then validate_sample_type(value)
                      when :taxon_id then validate_gender_for_human_sample(value, parameters[:gender] || parameters["gender"])
                      when :state then validate_state(value)
+                     when :age_band then validate_age_band(value)
                      else [true]
                      end
 

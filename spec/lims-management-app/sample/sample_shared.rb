@@ -72,7 +72,8 @@ module Lims::ManagementApp
         :sibling => "test", :gc_content => "test", :public_name => "test", :cohort => "test", 
         :storage_conditions => "test", :taxon_id => 9606, :scientific_name => "Homo sapiens",
         :gender => "male", :sample_type => "RNA", :volume => 1, :date_of_sample_collection => DateTime.now, 
-        :is_sample_a_control => true, :is_re_submitted_sample => false
+        :is_sample_a_control => true, :is_re_submitted_sample => false, :disease_phenotype => "normal",
+        :age_band => "45-60"
       }.merge(parameters)
     end
 
@@ -138,6 +139,7 @@ module Lims::ManagementApp
           when :sample_type then [k, "Blood"]
           when :common_name then [k, v]
           when :scientific_name then [k, v]
+          when :age_band then [k, "50-112"]
           else [k, "new #{v}"]
           end
         end
