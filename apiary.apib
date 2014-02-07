@@ -39,61 +39,92 @@ GET /
 < Content-Type: application/json
 {
     "actions": {
-        "read": "http://localhost:9292/"
-    },
-    "searches": {
-        "actions": {
-            "create": "http://localhost:9292/searches",
-            "read": "http://localhost:9292/searches",
-            "first": "http://localhost:9292/searches/page=1",
-            "last": "http://localhost:9292/searches/page=-1"
-        }
+        "read": "http://example.org/"
     },
     "samples": {
         "actions": {
-            "create": "http://localhost:9292/samples",
-            "read": "http://localhost:9292/samples",
-            "first": "http://localhost:9292/samples/page=1",
-            "last": "http://localhost:9292/samples/page=-1"
+            "create": "http://example.org/samples",
+            "read": "http://example.org/samples",
+            "first": "http://example.org/samples/page=1",
+            "last": "http://example.org/samples/page=-1"
         }
+    },
+    "sample_collections": {
+      "actions": {
+        "create": "http://example.org/sample_collections",
+        "read": "http://example.org/sample_collections",
+        "first": "http://example.org/sample_collections/page=1",
+        "last": "http://example.org/sample_collections/page=-1"
+      }
     },
     "uuid_resources": {
         "actions": {
-            "create": "http://localhost:9292/uuid_resources",
-            "read": "http://localhost:9292/uuid_resources",
-            "first": "http://localhost:9292/uuid_resources/page=1",
-            "last": "http://localhost:9292/uuid_resources/page=-1"
+            "create": "http://example.org/uuid_resources",
+            "read": "http://example.org/uuid_resources",
+            "first": "http://example.org/uuid_resources/page=1",
+            "last": "http://example.org/uuid_resources/page=-1"
         }
     },
-    "bulk_create_samples": {
-        "actions": {
-            "create": "http://localhost:9292/actions/bulk_create_sample"
-        }
-    },
+    "searches": {
+      "actions": {
+             "create": "http://example.org/searches",
+             "read": "http://example.org/searches",
+             "first": "http://example.org/searches/page=1",
+             "last": "http://example.org/searches/page=-1"
+           }
+       },
     "update_samples": {
         "actions": {
-            "create": "http://localhost:9292/actions/update_sample"
-        }
-    },
-    "bulk_update_samples": {
-        "actions": {
-            "create": "http://localhost:9292/actions/bulk_update_sample"
+            "create": "http://example.org/actions/update_sample"
         }
     },
     "delete_samples": {
         "actions": {
-            "create": "http://localhost:9292/actions/delete_sample"
+            "create": "http://example.org/actions/delete_sample"
         }
     },
     "bulk_delete_samples": {
         "actions": {
-            "create": "http://localhost:9292/actions/bulk_delete_sample"
+            "create": "http://example.org/actions/bulk_delete_sample"
         }
     },
     "create_samples": {
         "actions": {
-            "create": "http://localhost:9292/actions/create_sample"
+            "create": "http://example.org/actions/create_sample"
         }
+    },
+    "bulk_update_samples": {
+        "actions": {
+            "create": "http://example.org/actions/bulk_update_sample"
+        }
+    },
+    "create_sample_collections": {
+      "actions": {
+        "create": "http://example.org/actions/create_sample_collection"
+      }
+    },
+    "update_sample_collections": {
+      "actions": {
+        "create": "http://example.org/actions/update_sample_collection"
+      }
+    },
+    "delete_sample_collections": {
+      "actions": {
+        "create": "http://example.org/actions/delete_sample_collection"
+      }
+    },
+    "create_searches": {
+      "actions": {
+        "create": "http://example.org/actions/create_search"
+      }
+    },
+    "multi_criteria_filters": {
+      "actions": {
+        "create": "http://example.org/multi_criteria_filters",
+        "read": "http://example.org/multi_criteria_filters",
+        "first": "http://example.org/multi_criteria_filters/page=1",
+        "last": "http://example.org/multi_criteria_filters/page=-1"
+      }
     },
     "revision": 3
 }
@@ -409,6 +440,9 @@ DELETE /11111111-2222-3333-4444-555555555555
 
 
 **Bulk create samples**
+
+__FROM LIMS-MANAGEMENT-APP VERSION 2.0.1, BULK_CREATE_SAMPLE ACTION IS NOT AVAILABLE ANYMORE.
+USE THE CREATE COLLECTION ACTION INSTEAD.__
 
 * `quantity` and `sanger_sample_id_core` are mandatory
 * If `state` is set to `published`, `taxon_id`, `scientific_name`, `common_name` and `supplier_sample_name` are mandatory
@@ -1099,6 +1133,214 @@ POST /sample_collections
 }
 
 
+**Create a new sample collection and bulk create samples**
+
+* `type` is mandatory
+* `data` is an array containing hash. Each hash must follow the pattern `{'key': "key", 'value': "value", 'type': "type"}`. 
+The supported types are `int`, `bool`, `string`, `uuid` and `url`. Note that `:type` is optional in the hash, the type being 
+automatically deducted from the value if it is not explicitely set.
+* `samples` the parameters of the samples to create
+
+POST /sample_collections
+> Accept: application/json
+{
+    "sample_collection": {
+        "type": "Study",
+        "data": [
+            {"key": "key_string", "value": "value string", "type": "string"},
+            {"key": "key_bool", "value": false},
+            {"key": "key_int", "value": 123, "type": "int"},
+            {"key": "key_url", "value": "http://www.example.org"},
+            {"key": "key_uuid", "value": "11111111-1234-5678-9012-111111111111", "type": "uuid"}
+        ],
+        "samples": {
+            "sanger_sample_id_core": "S2",
+            "quantity": 2,
+            "gender": "Male",
+            "sample_type": "RNA",
+            "taxon_id": 9606,
+            "volume": 100,
+            "date_of_sample_collection": "2013-04-25 10:27 UTC",
+            "is_sample_a_control": true,
+            "is_re_submitted_sample": false,
+            "hmdmc_number": "number",
+            "supplier_sample_name": "name",
+            "common_name": "human",
+            "scientific_name": "homo sapiens",
+            "ebi_accession_number": "number",
+            "sample_source": "source",
+            "mother": "mother",
+            "father": "father",
+            "sibling": "sibling",
+            "gc_content": "content",
+            "public_name": "name",
+            "cohort": "cohort",
+            "storage_conditions": "conditions",
+            "dna": {
+                "pre_amplified": true,
+                "date_of_sample_extraction": "2013-04-25 11:10 UTC",
+                "extraction_method": "method",
+                "concentration": 20,
+                "sample_purified": false,
+                "concentration_determined_by_which_method": "method"
+            },
+            "rna": {
+                "pre_amplified": true,
+                "date_of_sample_extraction": "2013-04-25 11:10 UTC",
+                "extraction_method": "method",
+                "concentration": 20,
+                "sample_purified": false,
+                "concentration_determined_by_which_method": "method"
+            },
+            "cellular_material": {
+                "lysed": true,
+                "donor_id": "donor id"
+            },
+            "genotyping": {
+                "country_of_origin": "England",
+                "geographical_region": "UK",
+                "ethnicity": "english"
+            }
+        }
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "sample_collection": {
+        "actions": {
+            "read": "http://example.org/11111111-2222-3333-4444-555555555555",
+            "create": "http://example.org/11111111-2222-3333-4444-555555555555",
+            "update": "http://example.org/11111111-2222-3333-4444-555555555555",
+            "delete": "http://example.org/11111111-2222-3333-4444-555555555555"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555",
+        "type": "Study",
+        "data": {
+            "key_string": "value string",
+            "key_bool": false,
+            "key_uuid": "11111111-1234-5678-9012-111111111111",
+            "key_url": "http://www.example.org",
+            "key_int": 123
+        },
+        "samples": [
+            {
+                "actions": {
+                    "read": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "create": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "update": "http://example.org/11111111-2222-3333-4444-666666666666",
+                    "delete": "http://example.org/11111111-2222-3333-4444-666666666666"
+                },
+                "uuid": "11111111-2222-3333-4444-666666666666",
+                "state": "draft",
+                "supplier_sample_name": "name",
+                "gender": "Male",
+                "sanger_sample_id": "S2-1",
+                "sample_type": "RNA",
+                "scientific_name": "homo sapiens",
+                "common_name": "human",
+                "hmdmc_number": "number",
+                "ebi_accession_number": "number",
+                "sample_source": "source",
+                "mother": "mother",
+                "father": "father",
+                "sibling": "sibling",
+                "gc_content": "content",
+                "public_name": "name",
+                "cohort": "cohort",
+                "storage_conditions": "conditions",
+                "taxon_id": 9606,
+                "volume": 100,
+                "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
+                "is_sample_a_control": true,
+                "is_re_submitted_sample": false,
+                "dna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "rna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "cellular_material": {
+                    "lysed": true,
+                    "donor_id": "donor id"
+                },
+                "genotyping": {
+                    "country_of_origin": "England",
+                    "geographical_region": "UK",
+                    "ethnicity": "english"
+                }
+            },
+            {
+                "actions": {
+                    "read": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "create": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "update": "http://example.org/11111111-2222-3333-4444-777777777777",
+                    "delete": "http://example.org/11111111-2222-3333-4444-777777777777"
+                },
+                "uuid": "11111111-2222-3333-4444-777777777777",
+                "state": "draft",
+                "supplier_sample_name": "name",
+                "gender": "Male",
+                "sanger_sample_id": "S2-2",
+                "sample_type": "RNA",
+                "scientific_name": "homo sapiens",
+                "common_name": "human",
+                "hmdmc_number": "number",
+                "ebi_accession_number": "number",
+                "sample_source": "source",
+                "mother": "mother",
+                "father": "father",
+                "sibling": "sibling",
+                "gc_content": "content",
+                "public_name": "name",
+                "cohort": "cohort",
+                "storage_conditions": "conditions",
+                "taxon_id": 9606,
+                "volume": 100,
+                "date_of_sample_collection": "2013-04-25T10:27:00+00:00",
+                "is_sample_a_control": true,
+                "is_re_submitted_sample": false,
+                "dna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "rna": {
+                    "pre_amplified": true,
+                    "date_of_sample_extraction": "2013-04-25T11:10:00+00:00",
+                    "extraction_method": "method",
+                    "concentration": 20,
+                    "sample_purified": false,
+                    "concentration_determined_by_which_method": "method"
+                },
+                "cellular_material": {
+                    "lysed": true,
+                    "donor_id": "donor id"
+                },
+                "genotyping": {
+                    "country_of_origin": "England",
+                    "geographical_region": "UK",
+                    "ethnicity": "english"
+                }
+            }
+        ]
+    }
+}
+
+
 **Update a sample collection**
 
 * `data` parameter is identical with the one in the sample collection create action
@@ -1454,6 +1696,38 @@ POST /searches
                     "key_string": "abcd",
                     "key_int": 1
                 }
+            }
+        }
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "search": {
+        "actions": {
+            "read": "/11111111-2222-3333-4444-555555555555",
+            "first": "/11111111-2222-3333-4444-555555555555/page=1",
+            "last": "/11111111-2222-3333-4444-555555555555/page=-1"
+        },
+        "uuid": "11111111-2222-3333-4444-555555555555"
+    }
+}
+
+
+**Search for samples by collection uuids (intersection)**
+
+The following search will get back all the samples which can be found in the collection 
+`11111111-0000-0000-0000-111111111111` AND in the collection `11111111-0000-0000-0000-222222222222`.
+
+POST /searches
+> Accept: application/json
+{
+    "search": {
+        "description": "search for samples in an intersection of collections",
+        "model": "sample",
+        "criteria": {
+            "sample_collection": {
+                "uuids_intersection": ["11111111-0000-0000-0000-111111111111", "11111111-0000-0000-0000-222222222222"]
             }
         }
     }

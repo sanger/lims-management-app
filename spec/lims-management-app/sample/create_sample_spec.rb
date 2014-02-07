@@ -84,6 +84,14 @@ module Lims::ManagementApp
         described_class.new(parameters - [:sanger_sample_id_core]).valid?.should == false
       end
 
+      it "requires a valid age band" do
+        described_class.new(parameters.merge({:age_band => "dummy"})).valid?.should == false
+      end
+
+      it "requires a valid age band interval" do
+        described_class.new(parameters.merge({:age_band => "45-10"})).valid?.should == false
+      end
+
       it "raises an exception with empty sample and published state" do
         expect do
           described_class.new(:store => store, :user => user, :application => application) do |a,s|
