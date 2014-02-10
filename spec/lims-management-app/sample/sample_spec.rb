@@ -43,7 +43,8 @@ module Lims::ManagementApp
       end
 
       %w(hmdmc_number ebi_accession_number sample_source
-    mother father sibling gc_content public_name cohort storage_conditions).each do |name|
+    mother father sibling gc_content public_name cohort storage_conditions
+    age_band disease_phenotype).each do |name|
         it_has_a name
       end
 
@@ -77,6 +78,14 @@ module Lims::ManagementApp
 
       it "is invalid if a human sample has a not applicable gender" do
         Sample.new(full_sample_parameters.merge({:taxon_id => 9606, :gender => "Not applicable"})).valid?.should == false
+      end
+
+      it "is invalid if the age band is incorrect" do
+        Sample.new(full_sample_parameters.merge({:age_band => "dummy"})).valid?.should == false
+      end
+
+      it "is invalid if the age band is not a proper interval" do
+        Sample.new(full_sample_parameters.merge({:age_band => "45-10"})).valid?.should == false
       end
     end
   end
