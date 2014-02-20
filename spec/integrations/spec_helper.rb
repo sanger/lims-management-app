@@ -55,6 +55,7 @@ shared_context 'use core context service' do
   let(:message_bus) { mock(:message_bus).tap { |m| 
     m.stub(:publish) 
     m.stub(:connect)
+    m.stub(:backend_application_id) { "lims-management-app/spec" }
   }} 
   let(:context_service) { Lims::Api::ContextService.new(store, message_bus) }
   include_context "initialize taxonomies table"
@@ -69,14 +70,18 @@ end
 shared_context "clean store" do
   #This code is cleaning up the DB after each test case execution
   after(:each) do
-    # list of all the tables in our DB
-    %w{collections_samples samples taxonomies dna rna cellular_material genotyping 
+    store.with_session(:backend_application_id => "lims-management-app/spec", :parameters => {action: "purge"}) do
+      # list of all the tables in our DB
+      %w{collections_samples samples taxonomies dna rna cellular_material genotyping 
     collection_data_bool collection_data_string  collection_data_url collection_data_uuid 
     collection_data_int collections searches uuid_resources}.each do |table|
-      db[table.to_sym].delete
+        db[table.to_sym].delete
+        revision_table = "#{table.to_sym}_revision".to_sym
+        db[revision_table].delete if db.table_exists?(revision_table)
+      end
+      db[:sanger_sample_id_number].where(:id => 1).update(:number => 0)
+      db.disconnect
     end
-    db[:sanger_sample_id_number].where(:id => 1).update(:number => 0)
-    db.disconnect
   end 
 end
 
