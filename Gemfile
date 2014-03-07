@@ -15,10 +15,6 @@ group :development do
   gem 'jdbc-sqlite3', :platforms => :jruby
   gem 'timecop'
   gem 'rest-client', :platforms => :mri
-  # fix dependency problem for macaddr gem, to remove when macaddr gem is fixed
-  # https://github.com/ahoward/macaddr/commit/a0ae1a76775c705206bde51772d53b178be5ce45
-  # https://github.com/ahoward/macaddr/issues/2
-  gem 'systemu'
 end
 
 group :debugger do
