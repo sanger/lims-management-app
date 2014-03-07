@@ -46,7 +46,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-management-app (3.4.0)
+    lims-management-app (3.4.1)
       bunny (= 0.9.0.pre10)
 
 GEM
