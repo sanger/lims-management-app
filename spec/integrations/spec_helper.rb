@@ -40,7 +40,12 @@ end
 shared_context 'use core context service' do
   let(:db) { connect_db(:test) }
   let(:store) { Lims::Core::Persistence::Sequel::Store.new(db) }
-  let(:message_bus) { mock(:message_bus).tap { |m| m.stub(:publish) } } 
+  let(:message_bus) { mock(:message_bus).tap { |m| 
+      m.stub(:connect)
+      m.stub(:publish)
+      m.stub(:backend_application_id)
+    } 
+  } 
   let(:context_service) { Lims::Api::ContextService.new(store, message_bus) }
   include_context "initialize taxonomies table"
 
