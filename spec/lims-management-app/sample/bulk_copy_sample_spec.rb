@@ -1,14 +1,14 @@
-require 'lims-management-app/sample/bulk_delete_sample'
+require 'lims-management-app/sample/bulk_copy_sample'
 require 'lims-management-app/sample/sample_shared'
 require 'lims-management-app/spec_helper'
 require 'integrations/spec_helper'
 
 module Lims::ManagementApp
-  describe Sample::BulkDeleteSample do
-    shared_examples_for "bulk deleting samples" do
+  describe Sample::BulkCopySample do
+    shared_examples_for "bulk copying existing samples from S2 to Sequencescape" do
       it_behaves_like "an action"
 
-      it "deletes sample objects" do
+      it "creates an array of sample objects" do
         samples = result[:samples]
         samples.should be_a(Array)
         samples.size.should == 2
@@ -19,7 +19,7 @@ module Lims::ManagementApp
     end
 
     include_context "sample factory"
-    include_context "for application", "sample creation"
+    include_context "for application", "sample copying"
     include_context "sequel store"
     let(:parameters) { 
       {
@@ -62,7 +62,7 @@ module Lims::ManagementApp
               end.call
             end
           end
-          it_behaves_like "bulk deleting samples"
+          it_behaves_like "bulk copying existing samples from S2 to Sequencescape"
         end
 
         context "with invalid sample uuids" do
@@ -79,7 +79,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkDeleteSample::SampleUuidNotFound)
+            }.to raise_error(Sample::BulkCopySample::SampleUuidNotFound)
           end
         end
       end
@@ -106,7 +106,7 @@ module Lims::ManagementApp
               end.call
             end
           end
-          it_behaves_like "bulk deleting samples"
+          it_behaves_like "bulk copying existing samples from S2 to Sequencescape"
         end
 
         context "with invalid sanger sample ids" do
@@ -123,7 +123,7 @@ module Lims::ManagementApp
           it "raises an exception" do
             expect {
               subject.call
-            }.to raise_error(Sample::BulkDeleteSample::SangerSampleIdNotFound)
+            }.to raise_error(Sample::BulkCopySample::SangerSampleIdNotFound)
           end
         end
       end
