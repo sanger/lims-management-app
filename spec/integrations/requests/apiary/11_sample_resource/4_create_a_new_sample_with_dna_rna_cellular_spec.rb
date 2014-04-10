@@ -57,7 +57,7 @@ describe "create_a_new_sample_with_dna_rna_cellular", :sample => true do
     }
 }
     EOD
-    #response.status.should == 200
+    response.status.should == 200
     response.body.should match_json <<-EOD
     {
     "sample": {
