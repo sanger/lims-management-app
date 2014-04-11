@@ -3,7 +3,7 @@ require 'lims-management-app/sample/action_shared'
 
 module Lims::ManagementApp
   class Sample
-    class BulkDeleteSample
+    class BulkCopySample
       include Lims::Core::Actions::Action
       include ActionShared
 
@@ -15,7 +15,8 @@ module Lims::ManagementApp
 
       def _call_in_session(session)
         samples = load_samples(session)
-        _delete(samples, session)
+
+        {:samples => samples}
       end
     end
   end

@@ -75,6 +75,11 @@ describe "root" do
             "create": "http://example.org/actions/bulk_update_sample"
         }
     },
+    "bulk_copy_samples": {
+        "actions": {
+            "create": "http://example.org/actions/bulk_copy_sample"
+        }
+    },
     "revision": 3
 }
     EOD
