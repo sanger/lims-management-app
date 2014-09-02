@@ -12,6 +12,7 @@ describe "delete_sample", :sample => true do
         "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "disease_phenotype" => "normal",
         "age_band" => "45-60",
+        "sample_description" => "it is a really great sample",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -40,7 +41,7 @@ describe "delete_sample", :sample => true do
         "lysed" => true
       }
     })
-    
+
     save_with_uuid sample => [1,2,3,4,5]
 
     header('Accept', 'application/json')
@@ -79,6 +80,7 @@ describe "delete_sample", :sample => true do
         "cohort": "cohort",
         "disease_phenotype": "normal",
         "age_band": "45-60",
+        "sample_description": "it is a really great sample",
         "storage_conditions": "conditions",
         "taxon_id": 9606,
         "volume": 1000,

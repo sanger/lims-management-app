@@ -19,6 +19,7 @@ describe "create_a_new_sample_with_common_name_taxon_id_mismatch_error", :sample
         "is_sample_a_control": true,
         "is_re_submitted_sample": false,
         "hmdmc_number": "number",
+        "sample_description": "it is a really great sample",
         "supplier_sample_name": "name",
         "common_name": "humannn",
         "scientific_name": "homo sapiens",
