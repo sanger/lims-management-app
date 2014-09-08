@@ -11,6 +11,7 @@ describe "bulk_update_sample", :sample => true do
         "taxon_id" => 9606,
         "disease_phenotype" => "normal",
         "age_band" => "45-60",
+        "sample_description" => "it is a really great sample",
         "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
@@ -28,7 +29,7 @@ describe "bulk_update_sample", :sample => true do
         "cohort" => "cohort",
         "storage_conditions" => "conditions"
     })
-    
+
     sample2 = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-2",
         "gender" => "Male",
@@ -36,6 +37,7 @@ describe "bulk_update_sample", :sample => true do
         "sample_type" => "RNA",
         "disease_phenotype" => "abnormal",
         "age_band" => "45-100",
+        "sample_description" => "it is a really great sample",
         "taxon_id" => 9606,
         "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
@@ -54,7 +56,7 @@ describe "bulk_update_sample", :sample => true do
         "cohort" => "cohort",
         "storage_conditions" => "conditions"
     })
-    
+
     save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
 
     header('Accept', 'application/json')
@@ -100,6 +102,7 @@ describe "bulk_update_sample", :sample => true do
                     "supplier_sample_name": "name",
                     "disease_phenotype": "normal",
                     "age_band": "45-60",
+                    "sample_description": "it is a really great sample",
                     "common_name": "human",
                     "scientific_name": "Homo sapiens",
                     "ebi_accession_number": "number",
@@ -131,6 +134,7 @@ describe "bulk_update_sample", :sample => true do
                     "sample_type": "RNA",
                     "disease_phenotype": "abnormal",
                     "age_band": "45-100",
+                    "sample_description": "it is a really great sample",
                     "hmdmc_number": "number",
                     "supplier_sample_name": "name",
                     "common_name": "human",

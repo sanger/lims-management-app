@@ -10,6 +10,7 @@ describe "update_a_sample", :sample => true do
         "sample_type" => "RNA",
         "disease_phenotype" => "normal",
         "age_band" => "45-60",
+        "sample_description" => "it is a really great sample",
         "taxon_id" => 9606,
         "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "is_sample_a_control" => true,
@@ -39,7 +40,7 @@ describe "update_a_sample", :sample => true do
         "lysed" => true
       }
     })
-    
+
     save_with_uuid sample => [1,2,3,4,5]
 
     header('Accept', 'application/json')
@@ -86,6 +87,7 @@ describe "update_a_sample", :sample => true do
         "sample_source": "source",
         "disease_phenotype": "normal",
         "age_band": "45-60",
+        "sample_description": "it is a really great sample",
         "mother": "mother",
         "father": "father",
         "sibling": "sibling",
