@@ -18,7 +18,6 @@ describe "create_a_new_sample_with_unknown_taxon_id_error", :sample => true do
         "date_of_sample_collection": "2013-04-25 10:27 UTC",
         "is_sample_a_control": true,
         "is_re_submitted_sample": false,
-        "sample_description": "it is a really great sample",
         "hmdmc_number": "number",
         "supplier_sample_name": "name",
         "common_name": "human",
