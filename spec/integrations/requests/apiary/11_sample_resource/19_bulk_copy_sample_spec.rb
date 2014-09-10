@@ -15,6 +15,9 @@ describe "bulk_copy_sample", :sample => true do
         "disease_phenotype" => "normal",
         "age_band" => "45-60",
         "sample_description" => "it is a really great sample",
+        "cell_type" => "Stem cell",
+        "growth_condition" => "Wildtype",
+        "time_point" => "24 hours",
         "hmdmc_number" => "number",
         "supplier_sample_name" => "name",
         "common_name" => "human",
@@ -30,7 +33,7 @@ describe "bulk_copy_sample", :sample => true do
         "volume" => 5000,
         "storage_conditions" => "conditions"
     })
-
+    
     sample2 = Lims::ManagementApp::Sample.new({
         "sanger_sample_id" => "S2-2",
         "gender" => "Male",
@@ -40,7 +43,10 @@ describe "bulk_copy_sample", :sample => true do
         "date_of_sample_collection" => "2013-04-25T10:27:00+00:00",
         "disease_phenotype" => "normal",
         "age_band" => "45-60",
-        "sample_description" => "it is a really great sample",
+        "sample_description" => "it is another really great sample",
+        "cell_type" => "Stem cell",
+        "growth_condition" => "Wildtype",
+        "time_point" => "48 hours",
         "is_sample_a_control" => true,
         "is_re_submitted_sample" => false,
         "hmdmc_number" => "number",
@@ -58,7 +64,7 @@ describe "bulk_copy_sample", :sample => true do
         "volume" => 5000,
         "storage_conditions" => "conditions"
     })
-
+    
     save_with_uuid sample => [1,2,3,4,5], sample2 => [1,2,3,4,6]
 
     header('Accept', 'application/json')
@@ -98,6 +104,9 @@ describe "bulk_copy_sample", :sample => true do
                     "disease_phenotype": "normal",
                     "age_band": "45-60",
                     "sample_description": "it is a really great sample",
+                    "cell_type": "Stem cell",
+                    "growth_condition": "Wildtype",
+                    "time_point": "24 hours",
                     "sample_type": "RNA",
                     "hmdmc_number": "number",
                     "supplier_sample_name": "name",
@@ -134,7 +143,10 @@ describe "bulk_copy_sample", :sample => true do
                     "supplier_sample_name": "name",
                     "disease_phenotype": "normal",
                     "age_band": "45-60",
-                    "sample_description": "it is a really great sample",
+                    "sample_description": "it is another really great sample",
+                    "cell_type": "Stem cell",
+                    "growth_condition": "Wildtype",
+                    "time_point": "48 hours",
                     "common_name": "human",
                     "scientific_name": "Homo sapiens",
                     "ebi_accession_number": "number",

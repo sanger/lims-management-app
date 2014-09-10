@@ -12,7 +12,8 @@ module Lims::ManagementApp
       :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash,
       :genotyping => Hash, :common_name => String, :gender => String, :sample_type => String,
       :taxon_id => Numeric, :supplier_sample_name => String, :scientific_name => String,
-      :disease_phenotype => String, :age_band => String, :sample_description => String}
+      :disease_phenotype => String, :age_band => String, :sample_description => String,
+      :cell_type => String, :growth_condition => String, :time_point => String}
 
       SampleUuidNotFound = Class.new(StandardError)
       SangerSampleIdNotFound = Class.new(StandardError)

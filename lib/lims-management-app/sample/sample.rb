@@ -23,7 +23,7 @@ module Lims::ManagementApp
     %w(state supplier_sample_name gender sanger_sample_id sample_type
     scientific_name common_name hmdmc_number ebi_accession_number sample_source
     mother father sibling gc_content public_name cohort storage_conditions
-    disease_phenotype age_band sample_description).each do |name|
+    disease_phenotype age_band sample_description cell_type growth_condition time_point).each do |name|
       attribute :"#{name}", String, :required => false, :initializable => true
     end
 
