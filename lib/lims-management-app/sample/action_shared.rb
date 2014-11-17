@@ -7,12 +7,13 @@ module Lims::ManagementApp
       # Only the attributes which are common to all actions and NOT required
       ATTRIBUTES = {:volume => Integer, :date_of_sample_collection => String,
       :is_sample_a_control => Integer, :is_re_submitted_sample => Integer, :hmdmc_number => String,
-      :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String, 
-      :sibling => String, :gc_content => String, :public_name => String, :cohort => String, 
+      :ebi_accession_number => String, :sample_source => String, :mother => String, :father => String,
+      :sibling => String, :gc_content => String, :public_name => String, :cohort => String,
       :storage_conditions => String, :dna => Hash, :rna => Hash, :cellular_material => Hash,
       :genotyping => Hash, :common_name => String, :gender => String, :sample_type => String,
       :taxon_id => Numeric, :supplier_sample_name => String, :scientific_name => String,
-      :disease_phenotype => String, :age_band => String}
+      :disease_phenotype => String, :age_band => String, :sample_description => String,
+      :cell_type => String, :growth_condition => String, :time_point => String}
 
       SampleUuidNotFound = Class.new(StandardError)
       SangerSampleIdNotFound = Class.new(StandardError)
@@ -59,7 +60,7 @@ module Lims::ManagementApp
       # @return [Hash]
       # Shared method for sample update and bulk update.
       # If we want to update a sample with dna/rna/cellular data
-      # and if the sample doesn't have a Dna/Rna/CellularMaterial 
+      # and if the sample doesn't have a Dna/Rna/CellularMaterial
       # object associated, we need to create it first.
       def _update(sample, parameters = nil, session)
         filtered_attributes(parameters).each do |k,v|
@@ -76,7 +77,7 @@ module Lims::ManagementApp
                               end
                   sample.send("#{k}=", component)
                 end
-                sample.send(k).send("#{component_key}=", component_value) 
+                sample.send(k).send("#{component_key}=", component_value)
               end
             else
               sample.send("#{k}=", v)
@@ -86,7 +87,7 @@ module Lims::ManagementApp
 
         # If the sample state is updated to published, we need to
         # be sure that the sample data are valid. So, we validate
-        # the sample here one more time, after it has been updated 
+        # the sample here one more time, after it has been updated
         # with the new parameter. If it's not valid, we raise an error.
         result = validate_published_data(sample)
         raise Lims::Core::Actions::Action::InvalidParameters, {:ensure_published_data => result[1]} unless result.first
@@ -117,14 +118,14 @@ module Lims::ManagementApp
         attributes.include?(name)
       end
 
-      # @param [Hash] unfiltered_attributes 
+      # @param [Hash] unfiltered_attributes
       # @return [Hash]
       def filtered_attributes(unfiltered_attributes = nil)
         unfiltered_attributes = self.attributes unless unfiltered_attributes
         unfiltered_attributes.rekey! { |k| k.to_sym }
         unfiltered_attributes.mash do |k,v|
           case k
-          when :date_of_sample_collection then v ? [k, Time.parse(v)] : [k, v] 
+          when :date_of_sample_collection then v ? [k, Time.parse(v)] : [k, v]
           when :quantity then [k, v ? v : 1]
           else [k,v]
           end
