@@ -265,6 +265,7 @@ describe "bulk_create_new_samples", :sample => true do
             ]
         },
         "sanger_sample_id_core": "S2",
+        "sanger_sample_id": null,
         "quantity": 3,
         "taxon_id": 9606,
         "volume": 100,
