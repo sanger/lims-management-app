@@ -13,6 +13,7 @@ module Lims::ManagementApp
 
       attribute :sample, Sample, :required => true
       attribute :state, String, :required => false
+      attribute :sanger_sample_id, String, :required => false
 
       def _call_in_session(session)
         _update(sample, session)

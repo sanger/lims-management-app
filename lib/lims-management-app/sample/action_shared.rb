@@ -114,7 +114,7 @@ module Lims::ManagementApp
       # @return [Bool]
       # Return true if name is a specific parameter for a sample
       def is_a_sample_attribute(name)
-        attributes = ATTRIBUTES.keys | [:state]
+        attributes = ATTRIBUTES.keys | [:state, :sanger_sample_id]
         attributes.include?(name)
       end
 
