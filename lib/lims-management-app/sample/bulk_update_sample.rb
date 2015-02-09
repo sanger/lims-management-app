@@ -11,7 +11,7 @@ module Lims::ManagementApp
       include ValidationShared
 
       BY_ATTRIBUTE_VALUES = ["sanger_sample_id", "uuid"]
-      UPDATE_ATTRIBUTES = ATTRIBUTES.merge({:state => String})
+      UPDATE_ATTRIBUTES = ATTRIBUTES.merge({:state => String, :sanger_sample_id => String})
 
       attribute :by, String, :required => false
       attribute :updates, Hash, :default => {}, :required => true
