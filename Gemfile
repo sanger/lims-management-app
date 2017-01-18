@@ -6,6 +6,8 @@ gem 'lims-core', '~>3.2.1', :git => 'http://github.com/sanger/lims-core.git' , :
 gem 'lims-api', '~>3.2.2', :git => 'http://github.com/sanger/lims-api.git' , :branch => 'master'
 gem 'lims-exception-notifier-app', '~>0.1', :git => 'http://github.com/sanger/lims-exception-notifier-app.git', :branch => 'master'
 
+gem 'open_uri_redirections'
+
 group :development do
   gem 'redcarpet', '~> 2.1.0', :platforms => :mri
   gem 'sqlite3', :platforms => :mri
