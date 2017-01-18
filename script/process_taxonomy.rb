@@ -1,5 +1,5 @@
 require 'open-uri'
-require 'open_uri_redirections'
+#require 'open_uri_redirections'
 require 'tmpdir'
 require 'sequel'
 require 'digest/md5'

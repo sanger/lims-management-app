@@ -1,4 +1,4 @@
-url: http://ftp.ncbi.nih.gov/pub/taxonomy/
+url: https://ftp.ncbi.nih.gov/pub/taxonomy/
 taxdump_file_name: taxdump.tar.gz
 taxonomy_names_file_name: names.dmp
 types_to_process: [scientific name, common name]
