@@ -57,7 +57,7 @@ def save_file(filename, url)
   began_at = Time.now
   @logger.info("Started saving temporary file #{filename} in the following location: #{@path}")
   File.open("#{@path}/#{filename}", "wb") do |taxdump_local|
-    open(url, :allow_redirections => :safe) do |taxdump_ftp|
+    open(url, 'rb') do |taxdump_ftp|
       taxdump_local.write(taxdump_ftp.read)
     end
   end
