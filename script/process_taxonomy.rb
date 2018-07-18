@@ -55,13 +55,9 @@ end
 
 def save_file(filename, url)
   began_at = Time.now
-  @logger.info("Started saving temporary file #{filename} in the following location: #{@path}")
-  #`wget #{url} -O #{@path}/#{filename} --no-check-certificate`
-  File.open("#{@path}/#{filename}", "wb") do |taxdump_local|
-    open(url, 'rb') do |taxdump_ftp|
-      taxdump_local.write(taxdump_ftp.read)
-    end
-  end
+  @logger.info("Started saving temporary file #{filename} from #{url} into the following location: #{@path}")
+  `wget #{url} -O #{@path}/#{filename} --no-check-certificate`
+  @logger.info("Now calculating time...")
   spent_time = Time.now - began_at
   @logger.info("Temporary file #{filename} has been created in #{spent_time.to_s} seconds in the following location: #{@path}")
 end
