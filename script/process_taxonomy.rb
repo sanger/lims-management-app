@@ -56,7 +56,7 @@ end
 def save_file(filename, url)
   began_at = Time.now
   @logger.info("Started saving temporary file #{filename} from #{url} into the following location: #{@path}")
-  `wget #{url} -O #{@path}/#{filename} --no-check-certificate`
+  system("wget #{url} -O #{@path}/#{filename} --no-check-certificate")
   @logger.info("Now calculating time...")
   spent_time = Time.now - began_at
   @logger.info("Temporary file #{filename} has been created in #{spent_time.to_s} seconds in the following location: #{@path}")
